@@ -1,0 +1,6 @@
+numpy==1.26.4
+requests==2.31.0
+paho-mqtt==1.6.1
+psutil==6.1.0
+pytest>=8.0
+ruff>=0.15  # dev dependency: lint only, not shipped

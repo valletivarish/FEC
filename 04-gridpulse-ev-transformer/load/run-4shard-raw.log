@@ -1,0 +1,96 @@
+[loadDriver] stream=gridpulse-telemetry-stream shardCount=4 endpoint=http://localhost:4566
+[loadDriver] ops counters before: {"messagesReceived":0,"messagesStored":0}
+[loadDriver] step target=50msg/s sent=143 elapsedMs=3017
+[loadDriver] step target=100msg/s sent=421 elapsedMs=3005
+[loadDriver] step target=150msg/s sent=885 elapsedMs=3001
+[loadDriver] step target=200msg/s sent=1441 elapsedMs=3000
+[loadDriver] step target=250msg/s sent=2143 elapsedMs=3000
+[loadDriver] step target=300msg/s sent=3094 elapsedMs=3001
+[loadDriver] draining... messagesReceived=192 (+192/3094)
+[loadDriver] draining... messagesReceived=212 (+212/3094)
+[loadDriver] draining... messagesReceived=232 (+232/3094)
+[loadDriver] draining... messagesReceived=252 (+252/3094)
+[loadDriver] draining... messagesReceived=282 (+282/3094)
+[loadDriver] draining... messagesReceived=302 (+302/3094)
+[loadDriver] draining... messagesReceived=322 (+322/3094)
+[loadDriver] draining... messagesReceived=342 (+342/3094)
+[loadDriver] draining... messagesReceived=362 (+362/3094)
+[loadDriver] draining... messagesReceived=382 (+382/3094)
+[loadDriver] draining... messagesReceived=402 (+402/3094)
+[loadDriver] draining... messagesReceived=422 (+422/3094)
+[loadDriver] draining... messagesReceived=442 (+442/3094)
+[loadDriver] draining... messagesReceived=462 (+462/3094)
+[loadDriver] draining... messagesReceived=482 (+482/3094)
+[loadDriver] draining... messagesReceived=502 (+502/3094)
+[loadDriver] draining... messagesReceived=522 (+522/3094)
+[loadDriver] draining... messagesReceived=542 (+542/3094)
+[loadDriver] draining... messagesReceived=562 (+562/3094)
+[loadDriver] draining... messagesReceived=582 (+582/3094)
+[loadDriver] draining... messagesReceived=602 (+602/3094)
+[loadDriver] draining... messagesReceived=622 (+622/3094)
+[loadDriver] draining... messagesReceived=642 (+642/3094)
+[loadDriver] draining... messagesReceived=662 (+662/3094)
+[loadDriver] draining... messagesReceived=682 (+682/3094)
+[loadDriver] draining... messagesReceived=702 (+702/3094)
+[loadDriver] draining... messagesReceived=722 (+722/3094)
+[loadDriver] draining... messagesReceived=742 (+742/3094)
+[loadDriver] draining... messagesReceived=762 (+762/3094)
+[loadDriver] draining... messagesReceived=782 (+782/3094)
+[loadDriver] draining... messagesReceived=802 (+802/3094)
+[loadDriver] draining... messagesReceived=822 (+822/3094)
+[loadDriver] draining... messagesReceived=842 (+842/3094)
+[loadDriver] draining... messagesReceived=862 (+862/3094)
+[loadDriver] draining... messagesReceived=882 (+882/3094)
+[loadDriver] draining... messagesReceived=902 (+902/3094)
+[loadDriver] draining... messagesReceived=922 (+922/3094)
+[loadDriver] draining... messagesReceived=942 (+942/3094)
+[loadDriver] draining... messagesReceived=962 (+962/3094)
+[loadDriver] draining... messagesReceived=982 (+982/3094)
+[loadDriver] draining... messagesReceived=1002 (+1002/3094)
+[loadDriver] draining... messagesReceived=1022 (+1022/3094)
+[loadDriver] draining... messagesReceived=1042 (+1042/3094)
+[loadDriver] draining... messagesReceived=1062 (+1062/3094)
+[loadDriver] draining... messagesReceived=1082 (+1082/3094)
+[loadDriver] draining... messagesReceived=1102 (+1102/3094)
+[loadDriver] draining... messagesReceived=1122 (+1122/3094)
+[loadDriver] draining... messagesReceived=1142 (+1142/3094)
+[loadDriver] draining... messagesReceived=1162 (+1162/3094)
+[loadDriver] draining... messagesReceived=1182 (+1182/3094)
+[loadDriver] draining... messagesReceived=1202 (+1202/3094)
+[loadDriver] draining... messagesReceived=1222 (+1222/3094)
+[loadDriver] draining... messagesReceived=1242 (+1242/3094)
+[loadDriver] draining... messagesReceived=1262 (+1262/3094)
+[loadDriver] draining... messagesReceived=1282 (+1282/3094)
+[loadDriver] draining... messagesReceived=1302 (+1302/3094)
+[loadDriver] draining... messagesReceived=1322 (+1322/3094)
+[loadDriver] draining... messagesReceived=1342 (+1342/3094)
+[loadDriver] draining... messagesReceived=1362 (+1362/3094)
+[loadDriver] draining... messagesReceived=1382 (+1382/3094)
+[loadDriver] RESULT {
+  "shardCount": 4,
+  "totalSent": 3094,
+  "totalErrors": 0,
+  "totalDurationSec": 18.02,
+  "achievedRateMsgPerSec": 171.7,
+  "putRecordLatencyMs": {
+    "min": 1.17,
+    "avg": 2.75,
+    "p50": 2.46,
+    "p95": 4.9,
+    "p99": 6.16,
+    "max": 32.87
+  },
+  "consumerLagMsAfterLastRecord": 120315,
+  "drainedFully": false,
+  "drainedCount": 1382,
+  "drainRateMsgPerSec": 11.5,
+  "opsCountersBefore": {
+    "messagesReceived": 0,
+    "messagesStored": 0
+  },
+  "opsCountersAfter": {
+    "counterId": "gridpulse-backend",
+    "messagesReceived": 1382,
+    "messagesStored": 1382
+  }
+}

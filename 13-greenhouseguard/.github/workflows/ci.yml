@@ -1,0 +1,95 @@
+name: greenhouseguard-ci
+
+on:
+  push:
+    paths:
+      - '13-greenhouseguard/**'
+  pull_request:
+    paths:
+      - '13-greenhouseguard/**'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: 13-greenhouseguard
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Lint
+        run: |
+          npm install
+          node_modules/.bin/eslint sensors fog backend integration-test dashboard
+      - name: Unit test sensors
+        working-directory: 13-greenhouseguard/sensors
+        run: |
+          npm install
+          npm test
+      - name: Unit test fog
+        working-directory: 13-greenhouseguard/fog
+        run: |
+          npm install
+          npm test
+      - name: Unit test backend
+        working-directory: 13-greenhouseguard/backend
+        run: |
+          npm install
+          npm test
+      - name: Start local AWS emulator
+        run: docker compose -f ../docker-compose.yml up -d
+      - name: Wait for emulator health
+        run: |
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:4566/_localstack/health > /dev/null && break
+            sleep 2
+          done
+      - name: Integration test
+        working-directory: 13-greenhouseguard/integration-test
+        run: |
+          npm install
+          npx jest
+        env:
+          AWS_ENDPOINT_URL: http://localhost:4566
+          AWS_REGION: eu-west-1
+          AWS_DEFAULT_REGION: eu-west-1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          GREENHOUSEGUARD_COMMAND_LEDGER_TABLE: greenhouseguard-command-ledger-table
+          GREENHOUSEGUARD_FAULTS_TABLE: greenhouseguard-faults-table
+      - name: CDK synth (validates infra)
+        working-directory: 13-greenhouseguard/infra
+        run: |
+          npm install
+          npx tsc --noEmit
+          npx --yes aws-cdk@2 synth
+      - name: Dashboard Playwright tests
+        working-directory: 13-greenhouseguard/dashboard
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+          npm run test:e2e
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: greenhouseguard-production
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Deploy to AWS
+        working-directory: 13-greenhouseguard/infra
+        run: |
+          npm install
+          npx --yes aws-cdk@2 deploy --require-approval never
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-west-1

@@ -1,0 +1,20 @@
+{
+  "zoneId": "zone-01",
+  "bays": ["bay-01", "bay-02", "bay-03", "bay-04", "bay-05", "bay-06"],
+  "disabledBayId": "bay-05",
+  "evBayId": "bay-06",
+  "bayMetrics": {
+    "bay-magnetometer": { "sampleFrequencyMs": 3000, "dispatchRateMs": 3000 },
+    "bay-infrared": { "sampleFrequencyMs": 3000, "dispatchRateMs": 3000 },
+    "anpr-permit-check": { "sampleFrequencyMs": 3000, "dispatchRateMs": 60000 },
+    "meter-payment": { "sampleFrequencyMs": 10000, "dispatchRateMs": 10000 },
+    "ev-charge-state": { "sampleFrequencyMs": 5000, "dispatchRateMs": 5000 },
+    "disabled-bay-badge-scan": { "sampleFrequencyMs": 4000, "dispatchRateMs": 4000 }
+  },
+  "zoneMetrics": {
+    "barrier-entry-count": { "sampleFrequencyMs": 8000, "dispatchRateMs": 8000 },
+    "kerb-flood-level": { "sampleFrequencyMs": 8000, "dispatchRateMs": 8000 },
+    "approach-inbound-count": { "sampleFrequencyMs": 8000, "dispatchRateMs": 8000 },
+    "camera-free-space-count": { "sampleFrequencyMs": 8000, "dispatchRateMs": 8000 }
+  }
+}

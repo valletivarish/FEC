@@ -1,0 +1,108 @@
+CampusPulse ingest load test - 2026-07-03T18:08:43.088Z
+Target queue: http://localhost:4566/000000000000/campuspulse-ingest-queue.fifo
+Levels: 5, 10, 20, 40 concurrent publishers, 10 messages each
+
+running concurrency=5... p95=8ms throughput=1088.9msg/s depthAfter(visible=50, inFlight=0) failed=0
+running concurrency=10... p95=7ms throughput=2270.6msg/s depthAfter(visible=150, inFlight=0) failed=0
+running concurrency=20... p95=108.3ms throughput=780.8msg/s depthAfter(visible=350, inFlight=0) failed=0
+running concurrency=40... p95=27.8ms throughput=3176.9msg/s depthAfter(visible=750, inFlight=0) failed=0
+
+--- JSON summary ---
+{
+  "ranAt": "2026-07-03T18:08:51.607Z",
+  "queueUrl": "http://localhost:4566/000000000000/campuspulse-ingest-queue.fifo",
+  "results": [
+    {
+      "concurrency": 5,
+      "messagesPerPublisher": 10,
+      "totalMessages": 50,
+      "wallElapsedMs": 46,
+      "throughputMsgPerSec": 1088.9,
+      "depthBefore": {
+        "visible": 0,
+        "inFlight": 0
+      },
+      "depthAfter": {
+        "visible": 50,
+        "inFlight": 0
+      },
+      "latencyMs": {
+        "p50": 3.7,
+        "p95": 8,
+        "p99": 9.1,
+        "min": 1,
+        "max": 9.1
+      },
+      "failed": 0
+    },
+    {
+      "concurrency": 10,
+      "messagesPerPublisher": 10,
+      "totalMessages": 100,
+      "wallElapsedMs": 44,
+      "throughputMsgPerSec": 2270.6,
+      "depthBefore": {
+        "visible": 50,
+        "inFlight": 0
+      },
+      "depthAfter": {
+        "visible": 150,
+        "inFlight": 0
+      },
+      "latencyMs": {
+        "p50": 3.6,
+        "p95": 7,
+        "p99": 8,
+        "min": 1.3,
+        "max": 8.1
+      },
+      "failed": 0
+    },
+    {
+      "concurrency": 20,
+      "messagesPerPublisher": 10,
+      "totalMessages": 200,
+      "wallElapsedMs": 256,
+      "throughputMsgPerSec": 780.8,
+      "depthBefore": {
+        "visible": 150,
+        "inFlight": 0
+      },
+      "depthAfter": {
+        "visible": 350,
+        "inFlight": 0
+      },
+      "latencyMs": {
+        "p50": 8.4,
+        "p95": 108.3,
+        "p99": 128.9,
+        "min": 1,
+        "max": 178.7
+      },
+      "failed": 0
+    },
+    {
+      "concurrency": 40,
+      "messagesPerPublisher": 10,
+      "totalMessages": 400,
+      "wallElapsedMs": 126,
+      "throughputMsgPerSec": 3176.9,
+      "depthBefore": {
+        "visible": 350,
+        "inFlight": 0
+      },
+      "depthAfter": {
+        "visible": 750,
+        "inFlight": 0
+      },
+      "latencyMs": {
+        "p50": 8.5,
+        "p95": 27.8,
+        "p99": 45.1,
+        "min": 0.8,
+        "max": 49.4
+      },
+      "failed": 0
+    }
+  ]
+}

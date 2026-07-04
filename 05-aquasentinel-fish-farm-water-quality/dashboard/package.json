@@ -1,0 +1,16 @@
+{
+  "name": "aquasentinel-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AquaSentinel fish-farm water-quality dashboard (vanilla JS + Bootstrap 5)",
+  "type": "module",
+  "scripts": {
+    "serve": "http-server . -p 8092 -c-1",
+    "serve:floci-fallback": "http-server . -p 8092 -c-1 -P $AQUASENTINEL_FUNCTION_URL_FALLBACK",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.0",
+    "http-server": "^14.1.1"
+  }
+}

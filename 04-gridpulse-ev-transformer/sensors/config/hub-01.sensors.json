@@ -1,0 +1,16 @@
+{
+  "hubId": "hub-01",
+  "bayIds": ["bay-01", "bay-02", "bay-03", "bay-04", "bay-05", "bay-06"],
+  "sensors": {
+    "bay-session-power": { "sampleFrequencyMs": 2000, "dispatchRateMs": 10000 },
+    "bay-connector-state": { "sampleFrequencyMs": 4000, "dispatchRateMs": 15000 },
+    "bay-ev-soc": { "sampleFrequencyMs": 5000, "dispatchRateMs": 20000 },
+    "transformer-winding-temp": { "sampleFrequencyMs": 1000, "dispatchRateMs": 5000 },
+    "transformer-load-amps": { "sampleFrequencyMs": 1000, "dispatchRateMs": 5000 },
+    "feeder-voltage": { "sampleFrequencyMs": 5000, "dispatchRateMs": 15000 },
+    "feeder-frequency": { "sampleFrequencyMs": 5000, "dispatchRateMs": 15000 },
+    "der-solar-generation": { "sampleFrequencyMs": 3000, "dispatchRateMs": 10000 },
+    "der-battery-soc": { "sampleFrequencyMs": 3000, "dispatchRateMs": 10000 },
+    "der-tariff-price": { "sampleFrequencyMs": 3000, "dispatchRateMs": 10000 }
+  }
+}

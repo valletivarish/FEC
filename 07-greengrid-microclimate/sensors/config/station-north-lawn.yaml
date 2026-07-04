@@ -1,0 +1,33 @@
+station_id: station-north-lawn
+
+sensors:
+  air-temperature:
+    sample_interval_s: 5
+    dispatch_interval_s: 5
+  soil-moisture:
+    sample_interval_s: 30
+    dispatch_interval_s: 30
+  rainfall:
+    sample_interval_s: 10
+    dispatch_interval_s: 10
+  wind-speed:
+    sample_interval_s: 5
+    dispatch_interval_s: 5
+  wind-direction:
+    sample_interval_s: 5
+    dispatch_interval_s: 5
+  uv-index:
+    sample_interval_s: 10
+    dispatch_interval_s: 10
+  barometric-pressure:
+    sample_interval_s: 5
+    dispatch_interval_s: 5
+  pm2-5:
+    sample_interval_s: 15
+    dispatch_interval_s: 15
+  ambient-noise:
+    sample_interval_s: 15
+    dispatch_interval_s: 15
+  leaf-wetness:
+    sample_interval_s: 30
+    dispatch_interval_s: 30

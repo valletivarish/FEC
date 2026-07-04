@@ -1,0 +1,5 @@
+# Generous line length; only real correctness/style issues matter here, not wrapping.
+line-length = 120
+
+[lint]
+select = ["E", "F"]

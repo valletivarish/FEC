@@ -1,0 +1,96 @@
+{
+  "endpoint": "http://localhost:4566",
+  "function_name": "aerosense-advisory-intake-fn",
+  "queue_name": "aerosense-advisory-queue",
+  "started_at": "2026-07-03T18:11:41Z",
+  "stages": [
+    {
+      "target_rps": 10,
+      "duration_s": 5,
+      "requests_sent": 50,
+      "errors": 0,
+      "actual_rps": 10.0,
+      "p50_ms": 592.88,
+      "p95_ms": 791.08,
+      "p99_ms": 822.02,
+      "mean_ms": 413.57,
+      "max_ms": 822.02,
+      "next_seq": 50,
+      "queue_depth_before": {
+        "visible": 0,
+        "in_flight": 0
+      },
+      "queue_depth_after_drain": {
+        "visible": 0,
+        "in_flight": 0
+      }
+    },
+    {
+      "target_rps": 20,
+      "duration_s": 5,
+      "requests_sent": 100,
+      "errors": 0,
+      "actual_rps": 14.0,
+      "p50_ms": 1053.88,
+      "p95_ms": 1561.41,
+      "p99_ms": 1697.6,
+      "mean_ms": 826.88,
+      "max_ms": 1697.6,
+      "next_seq": 150,
+      "queue_depth_before": {
+        "visible": 0,
+        "in_flight": 0
+      },
+      "queue_depth_after_drain": {
+        "visible": 20,
+        "in_flight": 0
+      }
+    },
+    {
+      "target_rps": 40,
+      "duration_s": 5,
+      "requests_sent": 200,
+      "errors": 0,
+      "actual_rps": 12.1,
+      "p50_ms": 2454.88,
+      "p95_ms": 3499.98,
+      "p99_ms": 3646.17,
+      "mean_ms": 2146.29,
+      "max_ms": 3671.23,
+      "next_seq": 350,
+      "queue_depth_before": {
+        "visible": 20,
+        "in_flight": 0
+      },
+      "queue_depth_after_drain": {
+        "visible": 40,
+        "in_flight": 0
+      }
+    },
+    {
+      "target_rps": 80,
+      "duration_s": 5,
+      "requests_sent": 400,
+      "errors": 0,
+      "actual_rps": 10.5,
+      "p50_ms": 5742.31,
+      "p95_ms": 8133.18,
+      "p99_ms": 8645.78,
+      "mean_ms": 5001.43,
+      "max_ms": 8785.29,
+      "next_seq": 750,
+      "queue_depth_before": {
+        "visible": 40,
+        "in_flight": 0
+      },
+      "queue_depth_after_drain": {
+        "visible": 50,
+        "in_flight": 0
+      }
+    }
+  ],
+  "dlq_depth_end": {
+    "visible": 0,
+    "in_flight": 0
+  }
+}

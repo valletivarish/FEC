@@ -1,0 +1,82 @@
+name: campuspulse-ci-cd
+
+on:
+  push:
+    paths:
+      - '02-campuspulse-smart-campus/**'
+  pull_request:
+    paths:
+      - '02-campuspulse-smart-campus/**'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: 02-campuspulse-smart-campus
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install workspace dependencies
+        run: npm install
+      - name: Lint
+        run: npm run lint --workspaces --if-present
+      - name: Unit test (sensors, fog, backend)
+        run: |
+          npm test --workspace=sensors
+          npm test --workspace=fog
+          npm test --workspace=backend
+      - name: Start local AWS emulator + MQTT broker
+        run: docker compose up -d
+        working-directory: .
+      - name: Wait for emulator health
+        run: |
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:4566/_localstack/health > /dev/null && break
+            sleep 2
+          done
+      - name: Integration test
+        run: npm test --workspace=integration-test
+        env:
+          AWS_ENDPOINT_URL: http://localhost:4566
+          AWS_REGION: us-east-1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          CAMPUSPULSE_READINGS_TABLE: CampusPulseReadings
+          CAMPUSPULSE_ALERTS_TABLE: CampusPulseAlerts
+      - name: CDK synth (validates infra)
+        working-directory: 02-campuspulse-smart-campus/infra
+        run: |
+          npm install
+          npx tsc --noEmit
+          npx --yes aws-cdk@2 synth
+      - name: Dashboard Playwright tests
+        working-directory: 02-campuspulse-smart-campus/dashboard
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+          npm run test:e2e
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: campuspulse-production
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Deploy to AWS
+        working-directory: 02-campuspulse-smart-campus/infra
+        run: |
+          npm install
+          npx --yes aws-cdk@2 deploy --require-approval never
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1

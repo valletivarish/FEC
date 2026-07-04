@@ -1,0 +1,21 @@
+entityId: bin-02
+entityType: bin
+metrics:
+  - name: fill-level
+    sampleIntervalSeconds: 5
+    dispatchIntervalSeconds: 5
+  - name: bin-weight
+    sampleIntervalSeconds: 8
+    dispatchIntervalSeconds: 8
+  - name: lid-state
+    sampleIntervalSeconds: 10
+    dispatchIntervalSeconds: 10
+  - name: internal-temp
+    sampleIntervalSeconds: 5
+    dispatchIntervalSeconds: 5
+  - name: methane-ppm
+    sampleIntervalSeconds: 5
+    dispatchIntervalSeconds: 5
+  - name: tilt
+    sampleIntervalSeconds: 10
+    dispatchIntervalSeconds: 10

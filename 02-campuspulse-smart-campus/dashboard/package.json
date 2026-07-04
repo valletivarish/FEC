@@ -1,0 +1,17 @@
+{
+  "name": "campuspulse-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CampusPulse control-room dashboard - static ES modules, no build step",
+  "type": "module",
+  "scripts": {
+    "serve": "http-server . -p 8086",
+    "test:e2e": "playwright test",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.0",
+    "eslint": "^9.39.2",
+    "http-server": "^14.1.1"
+  }
+}

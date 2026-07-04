@@ -1,0 +1,12 @@
+entityId: test-bin-99
+entityType: bin
+metrics:
+  - name: fill-level
+    sampleIntervalSeconds: 5
+    dispatchIntervalSeconds: 6
+  - name: bin-weight
+    sampleIntervalSeconds: 7
+    dispatchIntervalSeconds: 9
+  - name: lid-state
+    sampleIntervalSeconds: 11
+    dispatchIntervalSeconds: 13

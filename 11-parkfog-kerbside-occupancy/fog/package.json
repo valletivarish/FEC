@@ -1,0 +1,20 @@
+{
+  "name": "parkfog-fog",
+  "version": "1.0.0",
+  "description": "ParkFog virtual fog nodes (bay-sensing, access-payment, kerb-conditions)",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest",
+    "lint": "eslint --config ../eslint.config.js ."
+  },
+  "dependencies": {
+    "mqtt": "^5.10.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "eslint": "^9.9.0",
+    "@eslint/js": "^9.9.0"
+  }
+}

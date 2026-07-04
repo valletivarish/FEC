@@ -1,0 +1,36 @@
+{
+  "events": [
+    {
+      "truckId": "TRK-9003",
+      "shipmentId": "TRK-9003-2026-07-02",
+      "eventType": "EXCURSION_BREACH",
+      "severity": "BREACH",
+      "payload": { "zone": "A", "deltaC": 8.9 },
+      "timestamp": "2026-07-02T13:05:00Z"
+    },
+    {
+      "truckId": "TRK-9003",
+      "shipmentId": "TRK-9003-2026-07-02",
+      "eventType": "EXCURSION_WARN",
+      "severity": "WARN",
+      "payload": { "zone": "A", "deltaC": 2.1 },
+      "timestamp": "2026-07-02T12:40:00Z"
+    },
+    {
+      "truckId": "TRK-9003",
+      "shipmentId": "TRK-9003-2026-07-02",
+      "eventType": "TELEMATICS_ROUTE",
+      "severity": "INFO",
+      "payload": { "note": "route deviation logged" },
+      "timestamp": "2026-07-02T12:10:00Z"
+    },
+    {
+      "truckId": "TRK-9003",
+      "shipmentId": "TRK-9003-2026-07-02",
+      "eventType": "REEFER_FAULT",
+      "severity": "WARN",
+      "payload": { "code": "COMP_OVERCURRENT" },
+      "timestamp": "2026-07-02T11:55:00Z"
+    }
+  ]
+}

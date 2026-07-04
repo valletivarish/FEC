@@ -1,0 +1,5 @@
+paho-mqtt==1.6.1
+requests==2.32.3
+psutil==6.1.0
+pytest==8.3.3
+ruff==0.6.9  # dev-only: lint

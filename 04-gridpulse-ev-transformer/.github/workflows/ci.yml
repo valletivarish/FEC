@@ -1,0 +1,88 @@
+name: gridpulse-ci
+
+on:
+  push:
+    paths:
+      - '04-gridpulse-ev-transformer/**'
+  pull_request:
+    paths:
+      - '04-gridpulse-ev-transformer/**'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: 04-gridpulse-ev-transformer
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Lint (sensors, fog, backend, dashboard)
+        run: |
+          npm install
+          npm install --prefix sensors && npm run lint --prefix sensors
+          npm install --prefix fog && npm run lint --prefix fog
+          npm install --prefix backend && npm run lint --prefix backend
+          npm install --prefix dashboard && npm run lint --prefix dashboard
+      - name: Unit test (sensors, fog, backend)
+        run: |
+          npm install --prefix sensors && npm test --prefix sensors
+          npm install --prefix fog && npm test --prefix fog
+          npm install --prefix backend && npm test --prefix backend
+      - name: Start local AWS emulator + MQTT broker
+        run: docker compose -f ../docker-compose.yml up -d
+      - name: Wait for emulator health
+        run: |
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:4566/_localstack/health > /dev/null && break
+            sleep 2
+          done
+      - name: Integration test
+        working-directory: 04-gridpulse-ev-transformer/integration-test
+        run: |
+          npm install
+          npx jest
+        env:
+          AWS_ENDPOINT_URL: http://localhost:4566
+          AWS_REGION: eu-west-1
+          AWS_DEFAULT_REGION: eu-west-1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          GRIDPULSE_READINGS_TABLE: GridPulseHubSensorReadings
+          GRIDPULSE_CURTAILMENT_TABLE: GridPulseCurtailmentEvents
+      - name: CDK synth (validates infra)
+        working-directory: 04-gridpulse-ev-transformer/infra
+        run: |
+          npm install
+          npx tsc --noEmit
+          npx --yes aws-cdk@2 synth
+      - name: Dashboard Playwright tests
+        working-directory: 04-gridpulse-ev-transformer/dashboard
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+          npm run test:e2e
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: gridpulse-production
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Deploy to AWS
+        working-directory: 04-gridpulse-ev-transformer/infra
+        run: |
+          npm install
+          npx --yes aws-cdk@2 deploy --require-approval never
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-west-1

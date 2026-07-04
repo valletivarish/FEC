@@ -1,0 +1,191 @@
+ParkFog ingestBayEvents reserved-concurrency load test
+target function: parkfog-ingest-bay-events
+endpoint: http://localhost:4566
+started: 2026-07-03T19:20:31.605Z
+
+=== reserved concurrency = 5 ===
+  rate=10req/s  ok=3/15  throttled=12  errors=0  p50=5584ms  p95=5993ms  p99=5993ms  max=5993ms
+  rate=20req/s  ok=30/30  throttled=0  errors=0  p50=8ms  p95=13ms  p99=14ms  max=14ms
+  rate=40req/s  ok=60/60  throttled=0  errors=0  p50=6ms  p95=9ms  p99=33ms  max=33ms
+  rate=60req/s  ok=90/90  throttled=0  errors=0  p50=6ms  p95=9ms  p99=20ms  max=20ms
+  rate=80req/s  ok=120/120  throttled=0  errors=0  p50=6ms  p95=8ms  p99=12ms  max=13ms
+
+=== reserved concurrency = 20 ===
+  rate=10req/s  ok=15/15  throttled=0  errors=0  p50=12ms  p95=15ms  p99=15ms  max=15ms
+  rate=20req/s  ok=30/30  throttled=0  errors=0  p50=8ms  p95=15ms  p99=19ms  max=19ms
+  rate=40req/s  ok=60/60  throttled=0  errors=0  p50=7ms  p95=9ms  p99=11ms  max=11ms
+  rate=60req/s  ok=90/90  throttled=0  errors=0  p50=6ms  p95=11ms  p99=27ms  max=27ms
+  rate=80req/s  ok=120/120  throttled=0  errors=0  p50=7ms  p95=10ms  p99=12ms  max=13ms
+
+=== RAW JSON RESULTS ===
+{
+  "finishedAt": "2026-07-03T19:21:02.121Z",
+  "configResults": [
+    {
+      "reservedConcurrency": 5,
+      "levelSummaries": [
+        {
+          "ratePerSec": 10,
+          "startedAt": "2026-07-03T19:20:33.622Z",
+          "finishedAt": "2026-07-03T19:20:40.932Z",
+          "total": 15,
+          "ok": 3,
+          "throttled": 12,
+          "errors": 0,
+          "p50": 5584,
+          "p95": 5993,
+          "p99": 5993,
+          "max": 5993,
+          "min": 4194
+        },
+        {
+          "ratePerSec": 20,
+          "startedAt": "2026-07-03T19:20:41.434Z",
+          "finishedAt": "2026-07-03T19:20:42.987Z",
+          "total": 30,
+          "ok": 30,
+          "throttled": 0,
+          "errors": 0,
+          "p50": 8,
+          "p95": 13,
+          "p99": 14,
+          "max": 14,
+          "min": 6
+        },
+        {
+          "ratePerSec": 40,
+          "startedAt": "2026-07-03T19:20:43.490Z",
+          "finishedAt": "2026-07-03T19:20:45.075Z",
+          "total": 60,
+          "ok": 60,
+          "throttled": 0,
+          "errors": 0,
+          "p50": 6,
+          "p95": 9,
+          "p99": 33,
+          "max": 33,
+          "min": 5
+        },
+        {
+          "ratePerSec": 60,
+          "startedAt": "2026-07-03T19:20:45.576Z",
+          "finishedAt": "2026-07-03T19:20:47.143Z",
+          "total": 90,
+          "ok": 90,
+          "throttled": 0,
+          "errors": 0,
+          "p50": 6,
+          "p95": 9,
+          "p99": 20,
+          "max": 20,
+          "min": 5
+        },
+        {
+          "ratePerSec": 80,
+          "startedAt": "2026-07-03T19:20:47.643Z",
+          "finishedAt": "2026-07-03T19:20:49.250Z",
+          "total": 120,
+          "ok": 120,
+          "throttled": 0,
+          "errors": 0,
+          "p50": 6,
+          "p95": 8,
+          "p99": 12,
+          "max": 13,
+          "min": 5
+        }
+      ],
+      "queueDepth": {
+        "ApproximateNumberOfMessages": "0",
+        "ApproximateNumberOfMessagesNotVisible": "0"
+      },
+      "counters": {
+        "receivedCount": "1025",
+        "storedCount": "1025"
+      }
+    },
+    {
+      "reservedConcurrency": 20,
+      "levelSummaries": [
+        {
+          "ratePerSec": 10,
+          "startedAt": "2026-07-03T19:20:51.759Z",
+          "finishedAt": "2026-07-03T19:20:53.288Z",
+          "total": 15,
+          "ok": 15,
+          "throttled": 0,
+          "errors": 0,
+          "p50": 12,
+          "p95": 15,
+          "p99": 15,
+          "max": 15,
+          "min": 6
+        },
+        {
+          "ratePerSec": 20,
+          "startedAt": "2026-07-03T19:20:53.790Z",
+          "finishedAt": "2026-07-03T19:20:55.347Z",
+          "total": 30,
+          "ok": 30,
+          "throttled": 0,
+          "errors": 0,
+          "p50": 8,
+          "p95": 15,
+          "p99": 19,
+          "max": 19,
+          "min": 5
+        },
+        {
+          "ratePerSec": 40,
+          "startedAt": "2026-07-03T19:20:55.849Z",
+          "finishedAt": "2026-07-03T19:20:57.442Z",
+          "total": 60,
+          "ok": 60,
+          "throttled": 0,
+          "errors": 0,
+          "p50": 7,
+          "p95": 9,
+          "p99": 11,
+          "max": 11,
+          "min": 5
+        },
+        {
+          "ratePerSec": 60,
+          "startedAt": "2026-07-03T19:20:57.944Z",
+          "finishedAt": "2026-07-03T19:20:59.517Z",
+          "total": 90,
+          "ok": 90,
+          "throttled": 0,
+          "errors": 0,
+          "p50": 6,
+          "p95": 11,
+          "p99": 27,
+          "max": 27,
+          "min": 4
+        },
+        {
+          "ratePerSec": 80,
+          "startedAt": "2026-07-03T19:21:00.020Z",
+          "finishedAt": "2026-07-03T19:21:01.602Z",
+          "total": 120,
+          "ok": 120,
+          "throttled": 0,
+          "errors": 0,
+          "p50": 7,
+          "p95": 10,
+          "p99": 12,
+          "max": 13,
+          "min": 4
+        }
+      ],
+      "queueDepth": {
+        "ApproximateNumberOfMessages": "0",
+        "ApproximateNumberOfMessagesNotVisible": "0"
+      },
+      "counters": {
+        "receivedCount": "1655",
+        "storedCount": "1655"
+      }
+    }
+  ]
+}

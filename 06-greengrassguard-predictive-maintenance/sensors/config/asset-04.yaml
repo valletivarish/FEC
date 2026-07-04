@@ -1,0 +1,46 @@
+# Per-sensor timing: sample_interval_s controls how often a new value is generated,
+# dispatch_interval_s controls how often it is published over MQTT (can differ so a
+# sensor can sample faster than it reports, or vice versa).
+asset_id: asset-04
+
+sensors:
+  vibe-axial:
+    unit: mm/s
+    sample_interval_s: 1
+    dispatch_interval_s: 1
+  vibe-radial:
+    unit: mm/s
+    sample_interval_s: 1
+    dispatch_interval_s: 1
+  acoustic-emission:
+    unit: dB
+    sample_interval_s: 2
+    dispatch_interval_s: 2
+  thermal-winding:
+    unit: degC
+    sample_interval_s: 5
+    dispatch_interval_s: 5
+  thermal-bearing:
+    unit: degC
+    sample_interval_s: 5
+    dispatch_interval_s: 5
+  electrical-current-rms:
+    unit: A
+    sample_interval_s: 2
+    dispatch_interval_s: 2
+  mech-rpm:
+    unit: rpm
+    sample_interval_s: 2
+    dispatch_interval_s: 2
+  hydraulic-discharge-pressure:
+    unit: bar
+    sample_interval_s: 3
+    dispatch_interval_s: 3
+  hydraulic-flow:
+    unit: m3/h
+    sample_interval_s: 3
+    dispatch_interval_s: 3
+  env-humidity:
+    unit: "%RH"
+    sample_interval_s: 30
+    dispatch_interval_s: 30

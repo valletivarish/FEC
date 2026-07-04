@@ -1,0 +1,19 @@
+{
+  "name": "officeiq-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OfficeIQ smart-office dashboard — vanilla JS + Bootstrap 5",
+  "type": "module",
+  "scripts": {
+    "serve": "http-server . -p 8098 -c-1",
+    "test:e2e": "playwright test",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.0",
+    "http-server": "^14.1.1",
+    "eslint": "^10.6.0",
+    "@eslint/js": "^10.0.1",
+    "globals": "^17.7.0"
+  }
+}

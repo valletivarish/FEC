@@ -1,0 +1,23 @@
+{
+  "name": "greenhouseguard-infra",
+  "version": "1.0.0",
+  "private": true,
+  "bin": {
+    "greenhouseguard": "bin/greenhouseguard.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "cdk": "cdk"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.150.0",
+    "constructs": "^10.3.0",
+    "source-map-support": "^0.5.21"
+  },
+  "devDependencies": {
+    "aws-cdk": "^2.150.0",
+    "typescript": "^5.4.5",
+    "ts-node": "^10.9.2",
+    "@types/node": "^20.12.12"
+  }
+}

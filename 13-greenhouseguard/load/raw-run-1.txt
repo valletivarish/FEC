@@ -1,0 +1,127 @@
+Purging ingest queue and DLQ before run...
+
+--- Level: 5 zones (20 events) ---
+Relay-call latency (fog-node-facing): p50=15.91ms p95=17.11ms p99=18.81ms, wall=16.2ms, failed=0
+Queue depth after 15s drain window: visible=0 inFlight=0, DLQ depth: 0
+
+--- Level: 10 zones (40 events) ---
+Relay-call latency (fog-node-facing): p50=10.43ms p95=11.63ms p99=11.7ms, wall=11.6ms, failed=0
+Queue depth after 15s drain window: visible=0 inFlight=0, DLQ depth: 0
+
+--- Level: 20 zones (80 events) ---
+Relay-call latency (fog-node-facing): p50=20.76ms p95=23.42ms p99=24.21ms, wall=22.6ms, failed=0
+Queue depth after 15s drain window: visible=0 inFlight=0, DLQ depth: 0
+
+--- Level: 40 zones (160 events) ---
+Relay-call latency (fog-node-facing): p50=31.18ms p95=33.61ms p99=34.02ms, wall=33.6ms, failed=0
+Queue depth after 15s drain window: visible=10 inFlight=0, DLQ depth: 0
+
+=== FULL JSON RESULT ===
+{
+  "ranAt": "2026-07-03T19:16:00.140Z",
+  "reservedConcurrentExecutions": 20,
+  "readingsPerZonePerTick": 4,
+  "queueUrl": "http://localhost:4566/000000000000/greenhouseguard-ingest-queue",
+  "dlqUrl": "http://localhost:4566/000000000000/greenhouseguard-ingest-dlq",
+  "countersBefore": {
+    "messagesReceived": 0,
+    "messagesStored": 0
+  },
+  "countersAfter": {
+    "zoneId": "__counters__",
+    "eventTypeTimestamp": "system_message_counters",
+    "messagesReceived": 290,
+    "messagesStored": 290
+  },
+  "messagesActuallyProcessedByLambda": 290,
+  "results": [
+    {
+      "zoneCount": 5,
+      "totalEvents": 20,
+      "wallElapsedMs": 16.2,
+      "failed": 0,
+      "latencyMs": {
+        "p50": 15.91,
+        "p95": 17.11,
+        "p99": 18.81,
+        "min": 12.14,
+        "max": 18.81
+      },
+      "queueDepthAfter15sWindow": {
+        "visible": 0,
+        "inFlight": 0
+      },
+      "dlqDepth": {
+        "visible": 0,
+        "inFlight": 0
+      },
+      "ranAt": "2026-07-03T19:15:32.750Z"
+    },
+    {
+      "zoneCount": 10,
+      "totalEvents": 40,
+      "wallElapsedMs": 11.6,
+      "failed": 0,
+      "latencyMs": {
+        "p50": 10.43,
+        "p95": 11.63,
+        "p99": 11.7,
+        "min": 8.49,
+        "max": 11.7
+      },
+      "queueDepthAfter15sWindow": {
+        "visible": 0,
+        "inFlight": 0
+      },
+      "dlqDepth": {
+        "visible": 0,
+        "inFlight": 0
+      },
+      "ranAt": "2026-07-03T19:15:36.800Z"
+    },
+    {
+      "zoneCount": 20,
+      "totalEvents": 80,
+      "wallElapsedMs": 22.6,
+      "failed": 0,
+      "latencyMs": {
+        "p50": 20.76,
+        "p95": 23.42,
+        "p99": 24.21,
+        "min": 17.72,
+        "max": 24.21
+      },
+      "queueDepthAfter15sWindow": {
+        "visible": 0,
+        "inFlight": 0
+      },
+      "dlqDepth": {
+        "visible": 0,
+        "inFlight": 0
+      },
+      "ranAt": "2026-07-03T19:15:44.920Z"
+    },
+    {
+      "zoneCount": 40,
+      "totalEvents": 160,
+      "wallElapsedMs": 33.6,
+      "failed": 0,
+      "latencyMs": {
+        "p50": 31.18,
+        "p95": 33.61,
+        "p99": 34.02,
+        "min": 25.93,
+        "max": 34.08
+      },
+      "queueDepthAfter15sWindow": {
+        "visible": 10,
+        "inFlight": 0
+      },
+      "dlqDepth": {
+        "visible": 0,
+        "inFlight": 0
+      },
+      "ranAt": "2026-07-03T19:16:00.138Z"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "gridpulse-fog",
+  "version": "1.0.0",
+  "description": "GridPulse fog layer: bay setpoint, transformer curtailment, and DER balancing agents",
+  "main": "fog/index.js",
+  "scripts": {
+    "test": "jest fog/__tests__",
+    "lint": "eslint ."
+  },
+  "jest": {
+    "testPathIgnorePatterns": ["/node_modules/", "/fog/__tests__/testUtils/"]
+  },
+  "dependencies": {
+    "@aws-sdk/client-kinesis": "^3.600.0",
+    "mqtt": "^5.7.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "eslint": "^9.17.0"
+  }
+}

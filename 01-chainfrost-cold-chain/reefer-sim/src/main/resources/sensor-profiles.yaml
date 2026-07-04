@@ -1,0 +1,92 @@
+# One profile per sensor topic in the ChainFrost shared contract.
+# {truckId} is substituted at runtime by FleetConfigLoader/SensorSimulator.
+sensors:
+  - key: ZONE1_TEMP
+    topic: "chainfrost/{truckId}/reefer/zone1/temp"
+    unit: "celsius"
+    min: -30
+    max: 10
+    sampleFrequencyMs: 5000
+    dispatchRateMs: 15000
+    valueModel: RANDOM_WALK
+
+  - key: ZONE2_TEMP
+    topic: "chainfrost/{truckId}/reefer/zone2/temp"
+    unit: "celsius"
+    min: -30
+    max: 10
+    sampleFrequencyMs: 5000
+    dispatchRateMs: 15000
+    valueModel: RANDOM_WALK
+
+  - key: HUMIDITY
+    topic: "chainfrost/{truckId}/reefer/humidity"
+    unit: "percent_rh"
+    min: 40
+    max: 95
+    sampleFrequencyMs: 10000
+    dispatchRateMs: 30000
+    valueModel: DIURNAL_CYCLE
+
+  - key: DOOR_STATE
+    topic: "chainfrost/{truckId}/reefer/door_state"
+    unit: "boolean"
+    min: 0
+    max: 1
+    sampleFrequencyMs: 2000
+    dispatchRateMs: 10000
+    valueModel: BOOLEAN_FLICKER
+
+  - key: COMPRESSOR_CURRENT
+    topic: "chainfrost/{truckId}/reefer/compressor_current"
+    unit: "amps"
+    min: 0
+    max: 18
+    sampleFrequencyMs: 5000
+    dispatchRateMs: 15000
+    valueModel: RANDOM_WALK
+
+  - key: SETPOINT
+    topic: "chainfrost/{truckId}/reefer/setpoint"
+    unit: "celsius"
+    min: -25
+    max: 4
+    sampleFrequencyMs: 30000
+    dispatchRateMs: 60000
+    valueModel: RANDOM_WALK
+
+  - key: GPS
+    topic: "chainfrost/{truckId}/telematics/gps"
+    unit: "lat_lon_json"
+    min: -180
+    max: 180
+    sampleFrequencyMs: 5000
+    dispatchRateMs: 60000
+    valueModel: GPS_RANDOM_WALK
+
+  - key: SPEED
+    topic: "chainfrost/{truckId}/telematics/speed"
+    unit: "km_h"
+    min: 0
+    max: 120
+    sampleFrequencyMs: 5000
+    dispatchRateMs: 60000
+    valueModel: DIURNAL_CYCLE
+
+  - key: SHOCK
+    topic: "chainfrost/{truckId}/telematics/shock"
+    unit: "g_force"
+    min: 0
+    max: 8
+    sampleFrequencyMs: 2000
+    dispatchRateMs: 5000
+    valueModel: RANDOM_WALK
+
+  - key: BATTERY_LEVEL
+    topic: "chainfrost/{truckId}/reefer/battery_level"
+    unit: "percent"
+    min: 0
+    max: 100
+    sampleFrequencyMs: 30000
+    dispatchRateMs: 60000
+    valueModel: RANDOM_WALK

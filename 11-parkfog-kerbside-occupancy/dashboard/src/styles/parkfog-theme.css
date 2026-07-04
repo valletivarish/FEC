@@ -1,0 +1,319 @@
+/* ParkFog: plain, conventional ops-dashboard look. Plum-tinted near-black sidebar,
+   white content, clean white data cards. One accent color (plum) marks the
+   active nav item and status highlights - nothing else is themed. */
+:root {
+  --pf-sidebar-bg: #1a1620;
+  --pf-sidebar-text: rgba(255, 255, 255, 0.72);
+  --pf-sidebar-text-active: #ffffff;
+  --pf-accent: #7a4a8a;
+  --pf-page-bg: #f5f6f8;
+  --pf-ink: #1a1d29;
+  --pf-muted: #6b7280;
+  --bs-primary: var(--pf-accent);
+  --bs-primary-rgb: 122, 74, 138;
+  --pf-sidebar-width: 232px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--pf-page-bg);
+  color: var(--pf-ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+/* --- Sidebar: plain dark panel, text nav with a solid accent block on the active item --- */
+.app-sidebar {
+  width: var(--pf-sidebar-width);
+  background-color: var(--pf-sidebar-bg);
+  color: var(--pf-sidebar-text);
+}
+
+.sidebar-brand {
+  color: #fff;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.brand-subtitle {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Nav tiles: each item stacks icon-square over label instead of a flat text row,
+   so the nav reads as a distinct rail rather than a plain link list. */
+.nav.flex-column.mb-auto {
+  gap: 0.5rem;
+}
+
+.sidebar-link {
+  color: var(--pf-sidebar-text);
+  text-align: center;
+  border-radius: 10px;
+  margin-bottom: 0;
+  padding: 0.6rem 0.5rem 0.55rem;
+  font-size: 0.72rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  line-height: 1.2;
+}
+
+.sidebar-link i {
+  font-size: 1.35rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  text-align: center;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.06);
+  color: inherit;
+}
+
+.sidebar-link:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--pf-sidebar-text-active);
+}
+
+.sidebar-link:hover:not(:disabled) i {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-link:disabled {
+  color: rgba(255, 255, 255, 0.25);
+  cursor: not-allowed;
+}
+
+.sidebar-link-active {
+  background-color: var(--pf-accent) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.sidebar-link-active i {
+  background-color: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.sidebar-footnote {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.app-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Header: plain white bar, page title + zone breadcrumb left, meta text right --- */
+.app-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--pf-ink);
+}
+
+.header-crumb {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--pf-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.app-content {
+  flex: 1;
+}
+
+.panel-header {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--pf-ink);
+}
+
+/* --- KPI summary cards: compact 2x2 grid of square stat tiles (not a wide icon-left row) --- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(120px, 160px));
+  grid-auto-rows: 140px;
+  gap: 0.85rem;
+  margin-bottom: 1.5rem;
+  max-width: 340px;
+}
+
+.kpi-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  border: 1px solid #eef0f3;
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.kpi-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.kpi-icon-plum { background: #f1e8f5; color: var(--pf-accent); }
+.kpi-icon-blue { background: #e8f0fe; color: #3364d6; }
+.kpi-icon-green { background: #e6f7f1; color: #1f9d78; }
+.kpi-icon-amber { background: #fdf3e2; color: #b8720f; }
+.kpi-icon-red { background: #fce9e9; color: #c23b3b; }
+
+.kpi-value {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--pf-ink);
+  line-height: 1.1;
+}
+
+.kpi-label {
+  font-size: 0.72rem;
+  color: var(--pf-muted);
+}
+
+/* --- Plain white cards, normal shadow, no tint/blur/gradient --- */
+.card {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  color: var(--pf-ink);
+}
+
+.card-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--pf-ink);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.text-muted {
+  color: var(--pf-muted) !important;
+}
+
+td.num, th, .badge {
+  font-variant-numeric: tabular-nums;
+}
+
+.table {
+  color: var(--pf-ink);
+  font-size: 0.85rem;
+}
+
+.table thead th {
+  color: var(--pf-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border-bottom-color: #eef0f3;
+}
+
+/* --- Bay tiles: plain white cards with a status dot, no terminal chrome --- */
+.bay-tile {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+}
+
+.bay-tile-id {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--pf-ink);
+}
+
+.bay-state-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.bay-tile-vote {
+  font-size: 0.72rem;
+  color: var(--pf-muted) !important;
+}
+
+.bay-ev-badge {
+  font-size: 0.62rem;
+}
+
+.bay-violation-badge {
+  font-size: 0.65rem;
+}
+
+/* --- Debounce trace: plain monospaced readout inside a white card (tabular data,
+   not a terminal effect -- same muted/ink palette as every other panel) --- */
+.pf-trace-log {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--pf-muted);
+}
+
+.pf-trace-line {
+  display: block;
+}
+
+.pf-trace-confirmed {
+  color: var(--pf-ink);
+}
+
+.pf-trace-pending {
+  color: #b8720f;
+}
+
+/* --- Narrow viewports: stack the sidebar above the content so the shell stays usable --- */
+@media (max-width: 768px) {
+  .app-shell {
+    flex-direction: column;
+  }
+  .app-sidebar {
+    width: 100%;
+  }
+  .app-sidebar .nav {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+  }
+}

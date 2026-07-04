@@ -1,0 +1,303 @@
+/* HarborPulse: plain, conventional ops-dashboard look. Dark sidebar, white content,
+   icon+number KPI cards, clean white data cards. One accent color (navy) marks the
+   active nav item and highlights - nothing else is themed. */
+:root {
+  --hp-sidebar-bg: #10141c;
+  --hp-sidebar-text: rgba(255, 255, 255, 0.72);
+  --hp-sidebar-text-active: #ffffff;
+  --hp-accent: #2a4d7a;
+  --hp-page-bg: #f5f6f8;
+  --hp-ink: #1a1d29;
+  --hp-muted: #6b7280;
+  --hp-alarm-red: #c23b3b;
+  --bs-primary: var(--hp-accent);
+  --bs-primary-rgb: 42, 77, 122;
+  --hp-sidebar-width: 232px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--hp-page-bg);
+  color: var(--hp-ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+/* --- Sidebar: plain dark panel, no blur/glass, text nav with a solid accent block on the active item --- */
+.app-sidebar {
+  width: var(--hp-sidebar-width);
+  background-color: var(--hp-sidebar-bg);
+  color: var(--hp-sidebar-text);
+}
+
+.sidebar-brand {
+  color: #fff;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.brand-subtitle {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.sidebar-link {
+  color: var(--hp-sidebar-text);
+  text-align: left;
+  border-radius: 999px;
+  margin: 0 0.5rem 0.6rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  width: auto;
+}
+
+.sidebar-link i {
+  font-size: 0.95rem;
+  width: 1.1rem;
+  text-align: center;
+}
+
+.sidebar-link:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: var(--hp-sidebar-text-active);
+}
+
+.sidebar-link-active {
+  background-color: var(--hp-accent) !important;
+  border-color: var(--hp-accent) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+/* status dot on Safety & Alarms only: reflects genuine active-alarm count, not a fabricated signal */
+.sidebar-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-left: auto;
+  flex-shrink: 0;
+  background-color: var(--hp-muted);
+  opacity: 0.6;
+}
+
+.sidebar-status-dot-alert {
+  background-color: var(--hp-alarm-red);
+  opacity: 1;
+}
+
+.sidebar-footnote {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.app-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Header: plain white bar, page title left, meta text right --- */
+.app-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--hp-ink);
+}
+
+.header-meta {
+  color: var(--hp-muted);
+  display: inline-flex;
+  align-items: center;
+}
+
+.header-meta-icon {
+  margin-right: 0.4rem;
+  font-size: 0.95rem;
+  color: var(--hp-muted);
+}
+
+.app-content {
+  flex: 1;
+}
+
+/* --- KPI summary cards --- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  border: 1px solid #eef0f3;
+  padding: 1.1rem 1.25rem 1.1rem 2.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+/* Icon renders as a circular badge breaking out of the card's top-left corner,
+   like a notification badge, instead of sitting inline as a left-aligned square. */
+.kpi-icon-badge {
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.16);
+}
+
+.kpi-icon-blue { background: #e8eefb; color: var(--hp-accent); }
+.kpi-icon-green { background: #e6f7f1; color: #1a8a6f; }
+.kpi-icon-amber { background: #fdf3e2; color: #b8720f; }
+.kpi-icon-red { background: #fce9e9; color: var(--hp-alarm-red); }
+
+.kpi-value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--hp-ink);
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-label {
+  font-size: 0.78rem;
+  color: var(--hp-muted);
+}
+
+/* --- Plain white cards, normal shadow, no tint/blur/gradient --- */
+.card {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  color: var(--hp-ink);
+}
+
+.card-title,
+.section-header {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--hp-ink);
+  text-transform: none;
+  letter-spacing: normal;
+  margin-bottom: 0.75rem;
+}
+
+.text-muted,
+.text-body-secondary {
+  color: var(--hp-muted) !important;
+}
+
+/* --- Tables: normal Bootstrap light tables, no dark theme --- */
+.table {
+  color: var(--hp-ink);
+  margin-bottom: 0;
+}
+
+.table.table-dark {
+  --bs-table-bg: #fff;
+  --bs-table-color: var(--hp-ink);
+  --bs-table-striped-bg: #f7f8fa;
+  --bs-table-striped-color: var(--hp-ink);
+  --bs-table-hover-bg: #eef1f5;
+  --bs-table-hover-color: var(--hp-ink);
+  --bs-table-border-color: #eef0f3;
+  color: var(--hp-ink);
+}
+
+.table thead th {
+  color: var(--hp-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border-bottom-color: #eef0f3;
+}
+
+td, th {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Status badges: plain semantic colors --- */
+.badge.rounded-pill {
+  font-weight: 500;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  padding: 0.35em 0.6em;
+}
+
+.badge.text-bg-success { background-color: #1a8a6f !important; color: #fff !important; }
+.badge.text-bg-danger { background-color: #c23b3b !important; color: #fff !important; }
+.badge.text-bg-warning { background-color: #b8720f !important; color: #fff !important; }
+.badge.text-bg-info { background-color: #3364d6 !important; color: #fff !important; }
+.badge.text-bg-dark { background-color: #3a3f4b !important; color: #fff !important; }
+.badge.text-bg-secondary { background-color: #eef0f3 !important; color: var(--hp-muted) !important; }
+
+/* --- Fleet radar canvas + legend --- */
+#fleet-radar-canvas.border {
+  border-color: #eef0f3 !important;
+  border-radius: 8px;
+}
+
+.radar-legend {
+  min-width: 180px;
+  padding-top: 0.25rem;
+}
+
+.radar-legend .text-brass {
+  color: var(--hp-muted) !important;
+  font-weight: 600;
+}
+
+.legend-swatch {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 2px;
+  border: 1px solid #d7dbe0;
+}
+
+.legend-label {
+  font-size: 0.82rem;
+}
+
+.empty-state-note {
+  color: var(--hp-muted);
+  font-size: 0.9rem;
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+}

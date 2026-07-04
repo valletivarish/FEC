@@ -1,0 +1,84 @@
+name: guardianedge-ci
+
+on:
+  push:
+    paths:
+      - '12-guardianedge-fall-detection/**'
+  pull_request:
+    paths:
+      - '12-guardianedge-fall-detection/**'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: 12-guardianedge-fall-detection
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Lint (checkstyle)
+        run: mvn install -N -q && mvn -pl sensor-sim,fog-runtime,backend checkstyle:check
+      - name: Unit test all Java modules
+        run: mvn install -DskipTests -q && mvn -pl sensor-sim,fog-runtime,backend test
+      - name: Start local AWS emulator
+        run: docker compose -f ../docker-compose.yml up -d
+      - name: Wait for emulator health
+        run: |
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:4566/_localstack/health > /dev/null && break
+            sleep 2
+          done
+      - name: Integration test
+        working-directory: 12-guardianedge-fall-detection
+        run: mvn -pl integration-test test
+        env:
+          AWS_ENDPOINT_URL: http://localhost:4566
+          AWS_REGION: eu-west-1
+          AWS_DEFAULT_REGION: eu-west-1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          GUARDIANEDGE_HISTORY_TABLE: guardianedge-event-history-table
+          GUARDIANEDGE_STATUS_TABLE: guardianedge-resident-status-table
+      - name: Package backend (produces the jar infra references)
+        run: mvn -pl backend package -DskipTests
+      - name: CDK synth (validates infra)
+        working-directory: 12-guardianedge-fall-detection/infra
+        run: npx --yes aws-cdk@2 synth
+      - name: Dashboard Playwright tests
+        working-directory: 12-guardianedge-fall-detection/dashboard
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+          npm run test:e2e
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: guardianedge-prod
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Deploy to AWS
+        working-directory: 12-guardianedge-fall-detection
+        run: |
+          mvn install -DskipTests -q
+          mvn -pl backend package -DskipTests
+          cd infra && npx --yes aws-cdk@2 deploy --require-approval never
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-west-1

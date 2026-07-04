@@ -1,0 +1,22 @@
+{
+  "name": "parkfog-infra",
+  "version": "1.0.0",
+  "private": true,
+  "bin": {
+    "parkfog": "bin/parkfog.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "synth": "cdk synth",
+    "deploy": "cdk deploy",
+    "diff": "cdk diff"
+  },
+  "devDependencies": {
+    "aws-cdk": "^2.150.0",
+    "aws-cdk-lib": "^2.150.0",
+    "constructs": "^10.3.0",
+    "typescript": "^5.5.0",
+    "ts-node": "^10.9.2",
+    "source-map-support": "^0.5.21"
+  }
+}

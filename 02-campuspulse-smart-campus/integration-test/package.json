@@ -1,0 +1,17 @@
+{
+  "name": "campuspulse-integration-test",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Proves sensor -> fog -> backend end to end against the local AWS emulator",
+  "scripts": {
+    "test": "jest --runInBand",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@aws-sdk/client-api-gateway": "^3.600.0",
+    "@aws-sdk/client-iam": "^3.600.0",
+    "@aws-sdk/client-sqs": "^3.600.0",
+    "eslint": "^9.39.2",
+    "jest": "^29.7.0"
+  }
+}

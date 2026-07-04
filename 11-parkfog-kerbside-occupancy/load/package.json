@@ -1,0 +1,18 @@
+{
+  "name": "parkfog-load-test",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reserved-concurrency load-test driver for the ingestBayEvents Lambda (bay-events ingest scalability mechanism)",
+  "scripts": {
+    "test": "node run.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-lambda": "^3.1079.0",
+    "@aws-sdk/client-sqs": "^3.1079.0",
+    "@aws-sdk/client-dynamodb": "^3.1079.0"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-cloudformation": "^3.1079.0",
+    "@aws-sdk/client-iam": "^3.1079.0"
+  }
+}

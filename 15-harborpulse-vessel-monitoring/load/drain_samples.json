@@ -1,0 +1,68 @@
+[
+  {
+    "t_s": 0.0,
+    "wall_clock_utc": "2026-07-04T01:15:14.000Z",
+    "visible": 380,
+    "in_flight": 0
+  },
+  {
+    "t_s": 5.0,
+    "wall_clock_utc": "2026-07-04T01:15:19.000Z",
+    "visible": 330,
+    "in_flight": 0
+  },
+  {
+    "t_s": 10.0,
+    "wall_clock_utc": "2026-07-04T01:15:24.000Z",
+    "visible": 280,
+    "in_flight": 0
+  },
+  {
+    "t_s": 15.0,
+    "wall_clock_utc": "2026-07-04T01:15:29.000Z",
+    "visible": 230,
+    "in_flight": 0
+  },
+  {
+    "t_s": 20.0,
+    "wall_clock_utc": "2026-07-04T01:15:34.000Z",
+    "visible": 180,
+    "in_flight": 0
+  },
+  {
+    "t_s": 25.0,
+    "wall_clock_utc": "2026-07-04T01:15:39.000Z",
+    "visible": 130,
+    "in_flight": 0
+  },
+  {
+    "t_s": 30.0,
+    "wall_clock_utc": "2026-07-04T01:15:44.000Z",
+    "visible": 80,
+    "in_flight": 0
+  },
+  {
+    "t_s": 35.0,
+    "wall_clock_utc": "2026-07-04T01:15:49.000Z",
+    "visible": 30,
+    "in_flight": 0
+  },
+  {
+    "t_s": 40.0,
+    "wall_clock_utc": "2026-07-04T01:15:54.000Z",
+    "visible": 0,
+    "in_flight": 0
+  },
+  {
+    "t_s": 45.0,
+    "wall_clock_utc": "2026-07-04T01:15:59.000Z",
+    "visible": 0,
+    "in_flight": 0
+  },
+  {
+    "t_s": 50.0,
+    "wall_clock_utc": "2026-07-04T01:31:05.000Z",
+    "visible": 0,
+    "in_flight": 0
+  }
+]

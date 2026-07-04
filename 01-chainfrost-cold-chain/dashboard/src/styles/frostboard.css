@@ -1,0 +1,336 @@
+/* ChainFrost: plain, conventional ops-dashboard look. Dark sidebar, white content,
+   icon+number KPI cards, clean white data cards. One accent color (blue) marks the
+   active nav item and status highlights - nothing else is themed. */
+:root {
+  --cf-sidebar-bg: #12161f;
+  --cf-sidebar-text: rgba(255, 255, 255, 0.72);
+  --cf-sidebar-text-active: #ffffff;
+  --cf-accent: #2f6fb0;
+  --cf-page-bg: #f5f6f8;
+  --cf-ink: #1a1d29;
+  --cf-muted: #6b7280;
+  --bs-primary: var(--cf-accent);
+  --bs-primary-rgb: 47, 111, 176;
+  --cf-sidebar-width: 232px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--cf-page-bg);
+  color: var(--cf-ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+/* --- Sidebar: plain dark panel, no blur/glass, text nav with a solid accent block on the active item --- */
+.app-sidebar {
+  width: var(--cf-sidebar-width);
+  background-color: var(--cf-sidebar-bg);
+  color: var(--cf-sidebar-text);
+}
+
+.sidebar-brand {
+  color: #fff;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.brand-subtitle {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* --- Stepper nav: Fleet Manifest -> Shipment Lane -> Excursion Ledger is a real
+   progressive-disclosure sequence, so the sidebar renders it as a numbered wizard
+   with a connector line joining each step circle, not a flat icon list. --- */
+.stepper-nav {
+  position: relative;
+}
+
+.sidebar-link {
+  color: var(--cf-sidebar-text);
+  text-align: left;
+  border-radius: 6px;
+  margin-bottom: 0.2rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: transparent;
+  border: none;
+  width: 100%;
+  position: relative;
+}
+
+.sidebar-link i {
+  font-size: 0.95rem;
+  width: 1.1rem;
+  text-align: center;
+}
+
+.step-badge {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.55);
+  background: transparent;
+  position: relative;
+  z-index: 1;
+}
+
+/* Connector line runs down the sidebar between consecutive step circles. */
+.sidebar-link:not(:last-child) .step-badge::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 1.55rem;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-link.is-active .step-badge {
+  background: var(--cf-accent);
+  border-color: var(--cf-accent);
+  color: #fff;
+}
+
+.sidebar-link:disabled .step-badge {
+  border-color: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.sidebar-link:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--cf-sidebar-text-active);
+}
+
+.sidebar-link:disabled {
+  color: rgba(255, 255, 255, 0.25);
+  cursor: not-allowed;
+}
+
+.sidebar-link.is-active {
+  background-color: var(--cf-accent) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.sidebar-footnote {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.app-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Header: plain white bar, page title left, meta text right --- */
+.app-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--cf-ink);
+}
+
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.header-meta .fleet-status {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.3em 0.75em;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.header-meta .fleet-status[data-severity="OK"] {
+  background-color: #e6f7f1;
+  color: #227a6e;
+}
+
+.header-meta .fleet-status[data-severity="WARN"] {
+  background-color: #fdf3e2;
+  color: #b8720f;
+}
+
+.header-meta .fleet-status[data-severity="BREACH"] {
+  background-color: #fce9e9;
+  color: #c23b3b;
+}
+
+.app-content {
+  flex: 1;
+}
+
+/* --- KPI summary cards --- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  border: 1px solid #eef0f3;
+  border-left: 3px solid var(--cf-accent);
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  align-items: center;
+}
+
+.kpi-icon {
+  font-size: 0.95rem;
+  color: var(--cf-accent);
+  margin-right: 0.4rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.kpi-value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--cf-ink);
+  line-height: 1.15;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.kpi-label {
+  font-size: 0.78rem;
+  color: var(--cf-muted);
+}
+
+/* --- Plain white cards, normal shadow, no tint/blur/gradient --- */
+.card {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  color: var(--cf-ink);
+}
+
+.card-header {
+  background-color: transparent;
+  border-bottom: 1px solid #eef0f3;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--cf-ink);
+  text-transform: none;
+  letter-spacing: normal;
+  padding: 0.85rem 1rem;
+}
+
+.card-title,
+.panel-heading {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--cf-ink);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.text-muted {
+  color: var(--cf-muted) !important;
+}
+
+.table {
+  color: var(--cf-ink);
+}
+
+.table thead th {
+  color: var(--cf-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border-bottom-color: #eef0f3;
+}
+
+.table > :not(caption) > * > * {
+  color: var(--cf-ink);
+}
+
+td.num, th, .badge, .header-meta, .info-row__value {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Numbers stay in the plain sans face; only tabular figures, no monospace terminal look. */
+.font-monospace {
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Status badges: plain Bootstrap pills, one per severity --- */
+.badge {
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.35em 0.7em;
+  letter-spacing: normal;
+}
+
+.badge.text-bg-success { background-color: #2f9e8f !important; color: #fff !important; }
+.badge.text-bg-warning { background-color: #b8720f !important; color: #fff !important; }
+.badge.text-bg-danger { background-color: #c23b3b !important; color: #fff !important; }
+.badge.text-bg-secondary { background-color: #6b7280 !important; color: #fff !important; }
+
+/* Zone temp delta severity coloring stays domain-grounded but plain. */
+.text-danger { color: #c23b3b !important; }
+.text-warning-emphasis { color: #b8720f !important; }
+
+/* Form controls (severity filter) plain Bootstrap look. */
+.form-select:focus {
+  border-color: var(--cf-accent);
+  box-shadow: 0 0 0 0.2rem rgba(47, 111, 176, 0.2);
+}
+
+.info-row__label {
+  min-width: 9rem;
+}
+
+.frost-trail .text-muted {
+  padding: 0.75rem 1rem;
+}
+
+/* Sparkline cells: inline block-trend, accent-tinted, no phosphor glow. */
+.cf-sparkline {
+  color: var(--cf-accent);
+  letter-spacing: 0.05em;
+  margin-left: 0.35rem;
+}

@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aerosense-sensors"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "paho-mqtt==2.1.0",
+    "PyYAML==6.0.2",
+]
+
+# Package lives one directory above this file so `import sensors.x` works
+# both when installed and when running tests from the module root.
+[tool.setuptools.packages.find]
+where = [".."]
+include = ["sensors*"]
+
+[tool.pytest.ini_options]
+pythonpath = [".."]

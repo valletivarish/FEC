@@ -1,0 +1,4 @@
+paho-mqtt==1.6.1
+PyYAML==6.0.2
+pytest==8.3.4
+ruff>=0.15  # dev dependency: lint only, not shipped

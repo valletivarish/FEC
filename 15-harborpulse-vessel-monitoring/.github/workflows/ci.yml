@@ -1,0 +1,100 @@
+name: harborpulse-ci
+
+on:
+  push:
+    paths:
+      - '15-harborpulse-vessel-monitoring/**'
+  pull_request:
+    paths:
+      - '15-harborpulse-vessel-monitoring/**'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: 15-harborpulse-vessel-monitoring
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Lint (ruff)
+        run: |
+          pip install ruff==0.6.9
+          ruff check .
+      - name: Unit test sensors
+        working-directory: 15-harborpulse-vessel-monitoring/sensors
+        run: |
+          pip install -r requirements.txt
+          python -m pytest tests/ -v
+      - name: Unit test fog
+        working-directory: 15-harborpulse-vessel-monitoring/fog
+        run: |
+          pip install -r requirements.txt pytest
+          python -m pytest tests/ -v
+      - name: Unit test backend
+        working-directory: 15-harborpulse-vessel-monitoring/backend
+        run: |
+          pip install boto3 moto pytest
+          python -m pytest tests/ -v
+      - name: Start local AWS emulator
+        run: docker compose -f ../docker-compose.yml up -d
+      - name: Wait for emulator health
+        run: |
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:4566/_localstack/health > /dev/null && break
+            sleep 2
+          done
+      - name: Precreate the relay-test queue and capture its deterministic URL
+        run: |
+          echo "HARBORPULSE_TARGET_QUEUE_URL=http://localhost:4566/000000000000/harborpulse-it-relay-queue" >> $GITHUB_ENV
+      - name: Integration test
+        working-directory: 15-harborpulse-vessel-monitoring/integration-test
+        run: |
+          pip install -r requirements.txt
+          python -m pytest -v
+        env:
+          AWS_ENDPOINT_URL: http://localhost:4566
+          AWS_REGION: eu-west-1
+          AWS_DEFAULT_REGION: eu-west-1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          HARBORPULSE_TELEMETRY_TABLE: harborpulse-telemetry-table
+          HARBORPULSE_ALARMS_TABLE: harborpulse-alarms-table
+      - name: CDK synth (validates infra)
+        working-directory: 15-harborpulse-vessel-monitoring/infra
+        run: |
+          pip install -r requirements.txt
+          npx --yes aws-cdk@2 synth
+      - name: Dashboard Playwright tests
+        working-directory: 15-harborpulse-vessel-monitoring/dashboard
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+          npm run test:e2e
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: production
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Deploy to AWS
+        working-directory: 15-harborpulse-vessel-monitoring/infra
+        run: |
+          pip install -r requirements.txt
+          npx --yes aws-cdk@2 deploy --require-approval never
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-west-1

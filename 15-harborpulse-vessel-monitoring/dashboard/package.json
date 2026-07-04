@@ -1,0 +1,14 @@
+{
+  "name": "harborpulse-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HarborPulse fleet monitoring dashboard",
+  "scripts": {
+    "serve": "http-server . -p 8108 -c-1",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.0",
+    "http-server": "^14.1.1"
+  }
+}

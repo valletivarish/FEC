@@ -1,0 +1,353 @@
+/* AquaSentinel: plain, conventional admin-dashboard look. Top tab bar carries a faint
+   aqua tint (this deployment's only nod to "water"), stat cards use an accent underline
+   instead of an icon tile, everything else stays a clean white data-card register. */
+:root {
+  --aq-topbar-bg: #f7fafa;
+  --aq-topbar-text: #4b5160;
+  --aq-topbar-text-active: #1a1d29;
+  --aq-accent: #2867a8;
+  --aq-page-bg: #f5f6f8;
+  --aq-ink: #1a1d29;
+  --aq-muted: #6b7280;
+  --bs-primary: var(--aq-accent);
+  --bs-primary-rgb: 40, 103, 168;
+  --aq-topbar-height: 64px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--aq-page-bg);
+  color: var(--aq-ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Top tab bar: faint aqua-tinted bar (distinct from the pure-white page/card surfaces
+   below it), brand left, tabs inline to its right --- */
+.app-topbar {
+  height: var(--aq-topbar-height);
+  background-color: var(--aq-topbar-bg);
+  border-bottom: 1px solid #e5e7eb;
+  flex-shrink: 0;
+}
+
+.topbar-brand {
+  line-height: 1.2;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--aq-ink);
+}
+
+.brand-subtitle {
+  font-size: 0.72rem;
+  color: var(--aq-muted);
+}
+
+.topbar-nav {
+  height: 100%;
+  gap: 0.5rem;
+}
+
+.topbar-link {
+  color: var(--aq-topbar-text);
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.9rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+}
+
+.topbar-link i {
+  font-size: 0.95rem;
+}
+
+.topbar-link:hover {
+  color: var(--aq-topbar-text-active);
+}
+
+.topbar-link-active {
+  color: var(--aq-topbar-text-active) !important;
+  font-weight: 600;
+  border-bottom-color: var(--aq-accent);
+}
+
+.app-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* --- Header: plain white bar, page title with its meta counts as inline pill badges --- */
+.app-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--aq-ink);
+}
+
+.header-meta-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.header-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background-color: #eef4fb;
+  color: var(--aq-accent);
+  font-size: 0.76rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.app-content {
+  flex: 1;
+}
+
+.section-heading {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--aq-ink);
+}
+
+/* --- KPI summary cards --- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Stat card with accent underline: no icon tile -- a small inline glyph sits next to the
+   label instead, and the card's identity color reads as a 3px bar along the bottom edge. */
+.kpi-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  border: 1px solid #eef0f3;
+  border-bottom: 3px solid var(--kpi-accent, var(--aq-accent));
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.kpi-icon {
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.kpi-icon-blue { color: #2867a8; }
+.kpi-icon-teal { color: #0f8a7e; }
+.kpi-icon-amber { color: #b8720f; }
+.kpi-icon-red { color: #c23b3b; }
+
+.kpi-card[data-tint="kpi-icon-blue"] { --kpi-accent: #2867a8; }
+.kpi-card[data-tint="kpi-icon-teal"] { --kpi-accent: #0f8a7e; }
+.kpi-card[data-tint="kpi-icon-amber"] { --kpi-accent: #b8720f; }
+.kpi-card[data-tint="kpi-icon-red"] { --kpi-accent: #c23b3b; }
+
+.kpi-value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--aq-ink);
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--aq-muted);
+}
+
+/* --- Plain white cards, normal shadow, no tint/blur/gradient --- */
+.card {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  color: var(--aq-ink);
+}
+
+.card-title,
+.panel-heading {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--aq-ink);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.text-muted {
+  color: var(--aq-muted) !important;
+}
+
+/* --- Accordion: plain white cards, normal rounding, subtle border/shadow --- */
+.accordion {
+  --bs-accordion-border-color: #eef0f3;
+  --bs-accordion-border-radius: 12px;
+  --bs-accordion-active-bg: #eef4fb;
+  --bs-accordion-active-color: var(--aq-ink);
+  --bs-accordion-btn-focus-box-shadow: 0 0 0 0.2rem rgba(40, 103, 168, 0.2);
+}
+
+.accordion-item {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  overflow: hidden;
+}
+
+.accordion-item + .accordion-item {
+  margin-top: 0.75rem;
+}
+
+.accordion-button {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  color: var(--aq-ink);
+  background-color: #fff;
+}
+
+.accordion-button:not(.collapsed) {
+  color: var(--aq-ink);
+  background-color: #eef4fb;
+  box-shadow: none;
+}
+
+.accordion-button:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 0.2rem rgba(40, 103, 168, 0.2);
+}
+
+.accordion-button:not(.collapsed)::after {
+  filter: none;
+}
+
+.pond-metric-label {
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 0.7rem;
+  color: var(--aq-muted);
+}
+
+.pond-metric-value {
+  color: var(--aq-ink);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Subsection headings inside a pond: plain small-caps label, no monospace/rules. */
+h3.text-uppercase {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--aq-muted);
+  font-weight: 600;
+}
+
+/* --- Tables: normal Bootstrap look, muted uppercase headers --- */
+.table {
+  color: var(--aq-ink);
+}
+
+.table thead th {
+  color: var(--aq-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border-bottom-color: #eef0f3;
+}
+
+/* --- Badges: normal Bootstrap pill semantics --- */
+.badge {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+#connection-banner {
+  border-radius: 12px;
+}
+
+/* --- Hypoxia stage ladder: plain stacked rows, active row tinted with the accent/status color.
+   Kept as an honest read-out of the real DO threshold bands, not a decorative signature motif. */
+.hypoxia-ladder {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 0.75rem;
+  max-width: 420px;
+}
+
+.hypoxia-rung {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #eef0f3;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  background-color: #fff;
+  color: var(--aq-muted);
+}
+
+.hypoxia-rung .hypoxia-rung-band {
+  color: var(--aq-muted);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.hypoxia-rung.is-active {
+  font-weight: 600;
+}
+
+.hypoxia-rung[data-rung="normoxic"].is-active {
+  background-color: #e6f5f0;
+  border-color: #b7e0d3;
+  color: #157a5b;
+}
+
+.hypoxia-rung[data-rung="mild"].is-active {
+  background-color: #fdf3e2;
+  border-color: #f0d9a8;
+  color: #b8720f;
+}
+
+.hypoxia-rung[data-rung="severe"].is-active,
+.hypoxia-rung[data-rung="anoxic"].is-active {
+  background-color: #fce9e9;
+  border-color: #f2c2c2;
+  color: #c23b3b;
+}
+
+.hypoxia-rung.is-active .hypoxia-rung-band {
+  color: inherit;
+}

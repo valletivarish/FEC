@@ -1,0 +1,407 @@
+[
+  {
+    "label": "low",
+    "target_rps": 10,
+    "duration_s": 8,
+    "messages_sent": 80,
+    "send_failures": 0,
+    "send_wall_elapsed_s": 8.008,
+    "achieved_send_rps": 9.99,
+    "processed": 80,
+    "unprocessed_within_timeout": 0,
+    "peak_queue_depth": 3,
+    "queue_depth_samples": [
+      {
+        "t": 119289.59,
+        "visible": 0,
+        "in_flight": 0
+      },
+      {
+        "t": 119290.62,
+        "visible": 2,
+        "in_flight": 0
+      },
+      {
+        "t": 119291.63,
+        "visible": 3,
+        "in_flight": 0
+      },
+      {
+        "t": 119292.63,
+        "visible": 3,
+        "in_flight": 0
+      },
+      {
+        "t": 119293.64,
+        "visible": 3,
+        "in_flight": 0
+      },
+      {
+        "t": 119294.64,
+        "visible": 3,
+        "in_flight": 0
+      },
+      {
+        "t": 119295.66,
+        "visible": 3,
+        "in_flight": 0
+      },
+      {
+        "t": 119296.67,
+        "visible": 3,
+        "in_flight": 0
+      },
+      {
+        "t": 119297.68,
+        "visible": 2,
+        "in_flight": 0
+      }
+    ],
+    "p50_s": 4.194,
+    "p95_s": 7.615,
+    "p99_s": 7.9089,
+    "min_s": 0.4855,
+    "max_s": 8.0127,
+    "mean_s": 4.1651
+  },
+  {
+    "label": "high",
+    "target_rps": 80,
+    "duration_s": 8,
+    "messages_sent": 640,
+    "send_failures": 0,
+    "send_wall_elapsed_s": 8.003,
+    "achieved_send_rps": 79.97,
+    "processed": 640,
+    "unprocessed_within_timeout": 0,
+    "peak_queue_depth": 560,
+    "queue_depth_samples": [
+      {
+        "t": 119301.43,
+        "visible": 0,
+        "in_flight": 0
+      },
+      {
+        "t": 119302.44,
+        "visible": 70,
+        "in_flight": 0
+      },
+      {
+        "t": 119303.44,
+        "visible": 141,
+        "in_flight": 0
+      },
+      {
+        "t": 119304.45,
+        "visible": 211,
+        "in_flight": 0
+      },
+      {
+        "t": 119305.45,
+        "visible": 282,
+        "in_flight": 0
+      },
+      {
+        "t": 119306.45,
+        "visible": 352,
+        "in_flight": 0
+      },
+      {
+        "t": 119307.46,
+        "visible": 422,
+        "in_flight": 0
+      },
+      {
+        "t": 119308.47,
+        "visible": 493,
+        "in_flight": 0
+      },
+      {
+        "t": 119309.47,
+        "visible": 560,
+        "in_flight": 0
+      },
+      {
+        "t": 119310.48,
+        "visible": 550,
+        "in_flight": 0
+      },
+      {
+        "t": 119311.48,
+        "visible": 540,
+        "in_flight": 0
+      },
+      {
+        "t": 119312.49,
+        "visible": 530,
+        "in_flight": 0
+      },
+      {
+        "t": 119313.49,
+        "visible": 520,
+        "in_flight": 0
+      },
+      {
+        "t": 119314.5,
+        "visible": 510,
+        "in_flight": 0
+      },
+      {
+        "t": 119315.5,
+        "visible": 500,
+        "in_flight": 0
+      },
+      {
+        "t": 119316.51,
+        "visible": 490,
+        "in_flight": 0
+      },
+      {
+        "t": 119317.52,
+        "visible": 480,
+        "in_flight": 0
+      },
+      {
+        "t": 119318.53,
+        "visible": 470,
+        "in_flight": 0
+      },
+      {
+        "t": 119319.53,
+        "visible": 460,
+        "in_flight": 0
+      },
+      {
+        "t": 119320.54,
+        "visible": 450,
+        "in_flight": 0
+      },
+      {
+        "t": 119321.55,
+        "visible": 440,
+        "in_flight": 0
+      },
+      {
+        "t": 119322.55,
+        "visible": 430,
+        "in_flight": 0
+      },
+      {
+        "t": 119323.56,
+        "visible": 420,
+        "in_flight": 0
+      },
+      {
+        "t": 119324.57,
+        "visible": 410,
+        "in_flight": 0
+      },
+      {
+        "t": 119325.57,
+        "visible": 400,
+        "in_flight": 0
+      },
+      {
+        "t": 119326.58,
+        "visible": 390,
+        "in_flight": 0
+      },
+      {
+        "t": 119327.58,
+        "visible": 380,
+        "in_flight": 0
+      },
+      {
+        "t": 119328.59,
+        "visible": 370,
+        "in_flight": 0
+      },
+      {
+        "t": 119329.6,
+        "visible": 360,
+        "in_flight": 0
+      },
+      {
+        "t": 119330.6,
+        "visible": 350,
+        "in_flight": 0
+      },
+      {
+        "t": 119331.61,
+        "visible": 340,
+        "in_flight": 0
+      },
+      {
+        "t": 119332.62,
+        "visible": 330,
+        "in_flight": 0
+      },
+      {
+        "t": 119333.63,
+        "visible": 320,
+        "in_flight": 0
+      },
+      {
+        "t": 119334.64,
+        "visible": 310,
+        "in_flight": 0
+      },
+      {
+        "t": 119335.65,
+        "visible": 300,
+        "in_flight": 0
+      },
+      {
+        "t": 119336.66,
+        "visible": 290,
+        "in_flight": 0
+      },
+      {
+        "t": 119337.67,
+        "visible": 280,
+        "in_flight": 0
+      },
+      {
+        "t": 119338.68,
+        "visible": 270,
+        "in_flight": 0
+      },
+      {
+        "t": 119339.68,
+        "visible": 260,
+        "in_flight": 0
+      },
+      {
+        "t": 119340.69,
+        "visible": 250,
+        "in_flight": 0
+      },
+      {
+        "t": 119341.69,
+        "visible": 240,
+        "in_flight": 0
+      },
+      {
+        "t": 119342.7,
+        "visible": 230,
+        "in_flight": 0
+      },
+      {
+        "t": 119343.71,
+        "visible": 220,
+        "in_flight": 0
+      },
+      {
+        "t": 119344.72,
+        "visible": 210,
+        "in_flight": 0
+      },
+      {
+        "t": 119345.72,
+        "visible": 200,
+        "in_flight": 0
+      },
+      {
+        "t": 119346.73,
+        "visible": 190,
+        "in_flight": 0
+      },
+      {
+        "t": 119347.74,
+        "visible": 180,
+        "in_flight": 0
+      },
+      {
+        "t": 119348.74,
+        "visible": 170,
+        "in_flight": 0
+      },
+      {
+        "t": 119349.75,
+        "visible": 160,
+        "in_flight": 0
+      },
+      {
+        "t": 119350.76,
+        "visible": 150,
+        "in_flight": 0
+      },
+      {
+        "t": 119351.76,
+        "visible": 140,
+        "in_flight": 0
+      },
+      {
+        "t": 119352.77,
+        "visible": 130,
+        "in_flight": 0
+      },
+      {
+        "t": 119353.78,
+        "visible": 120,
+        "in_flight": 0
+      },
+      {
+        "t": 119354.78,
+        "visible": 110,
+        "in_flight": 0
+      },
+      {
+        "t": 119355.79,
+        "visible": 100,
+        "in_flight": 0
+      },
+      {
+        "t": 119356.8,
+        "visible": 90,
+        "in_flight": 0
+      },
+      {
+        "t": 119357.81,
+        "visible": 80,
+        "in_flight": 0
+      },
+      {
+        "t": 119358.82,
+        "visible": 70,
+        "in_flight": 0
+      },
+      {
+        "t": 119359.83,
+        "visible": 60,
+        "in_flight": 0
+      },
+      {
+        "t": 119360.83,
+        "visible": 50,
+        "in_flight": 0
+      },
+      {
+        "t": 119361.84,
+        "visible": 40,
+        "in_flight": 0
+      },
+      {
+        "t": 119362.85,
+        "visible": 30,
+        "in_flight": 0
+      },
+      {
+        "t": 119363.86,
+        "visible": 20,
+        "in_flight": 0
+      },
+      {
+        "t": 119364.87,
+        "visible": 10,
+        "in_flight": 0
+      }
+    ],
+    "p50_s": 29.2554,
+    "p95_s": 53.4672,
+    "p99_s": 56.1533,
+    "min_s": 7.0763,
+    "max_s": 56.2172,
+    "mean_s": 29.1175
+  }
+]

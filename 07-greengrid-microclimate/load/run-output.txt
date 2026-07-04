@@ -1,0 +1,85 @@
+[2026-07-04T00:09:01] starting load test against http://localhost:4566
+ingest Lambda reserved concurrency: 20
+queue before run: {'ApproximateNumberOfMessages': '0', 'ApproximateNumberOfMessagesNotVisible': '0'}
+
+--- running level 'low': target 10 req/s for 8s ---
+{
+  "label": "low",
+  "target_rps": 10,
+  "duration_s": 8,
+  "messages_sent": 80,
+  "send_failures": 0,
+  "send_wall_elapsed_s": 8.008,
+  "achieved_send_rps": 9.99,
+  "processed": 80,
+  "unprocessed_within_timeout": 0,
+  "peak_queue_depth": 3,
+  "p50_s": 4.194,
+  "p95_s": 7.615,
+  "p99_s": 7.9089,
+  "min_s": 0.4855,
+  "max_s": 8.0127,
+  "mean_s": 4.1651
+}
+
+--- running level 'high': target 80 req/s for 8s ---
+{
+  "label": "high",
+  "target_rps": 80,
+  "duration_s": 8,
+  "messages_sent": 640,
+  "send_failures": 0,
+  "send_wall_elapsed_s": 8.003,
+  "achieved_send_rps": 79.97,
+  "processed": 640,
+  "unprocessed_within_timeout": 0,
+  "peak_queue_depth": 560,
+  "p50_s": 29.2554,
+  "p95_s": 53.4672,
+  "p99_s": 56.1533,
+  "min_s": 7.0763,
+  "max_s": 56.2172,
+  "mean_s": 29.1175
+}
+
+=== FINAL SUMMARY (depth samples omitted, see JSON file) ===
+[
+  {
+    "label": "low",
+    "target_rps": 10,
+    "duration_s": 8,
+    "messages_sent": 80,
+    "send_failures": 0,
+    "send_wall_elapsed_s": 8.008,
+    "achieved_send_rps": 9.99,
+    "processed": 80,
+    "unprocessed_within_timeout": 0,
+    "peak_queue_depth": 3,
+    "p50_s": 4.194,
+    "p95_s": 7.615,
+    "p99_s": 7.9089,
+    "min_s": 0.4855,
+    "max_s": 8.0127,
+    "mean_s": 4.1651
+  },
+  {
+    "label": "high",
+    "target_rps": 80,
+    "duration_s": 8,
+    "messages_sent": 640,
+    "send_failures": 0,
+    "send_wall_elapsed_s": 8.003,
+    "achieved_send_rps": 79.97,
+    "processed": 640,
+    "unprocessed_within_timeout": 0,
+    "peak_queue_depth": 560,
+    "p50_s": 29.2554,
+    "p95_s": 53.4672,
+    "p99_s": 56.1533,
+    "min_s": 7.0763,
+    "max_s": 56.2172,
+    "mean_s": 29.1175
+  }
+]
+
+full results (incl. queue depth samples) written to load/run-output.json

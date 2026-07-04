@@ -1,0 +1,17 @@
+{
+  "run_started_utc": "2026-07-04T01:15:14Z",
+  "run_finished_utc": "2026-07-04T01:31:10Z",
+  "burst_events_target": 400,
+  "burst_events_submitted": 400,
+  "burst_errors": 0,
+  "burst_wall_elapsed_s": 3.08,
+  "queue_baseline_before_burst": {
+    "visible": 0,
+    "in_flight": 0
+  },
+  "queue_immediately_after_burst": {
+    "visible": 380,
+    "in_flight": 0
+  },
+  "ingest_fn_reserved_concurrency": 20
+}

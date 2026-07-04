@@ -1,0 +1,14 @@
+{
+  "name": "chainfrost-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ChainFrost Frozen Manifest Board - vanilla JS dashboard, no build step",
+  "type": "module",
+  "scripts": {
+    "serve": "npx http-server . -p 8085",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.0"
+  }
+}

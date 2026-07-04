@@ -1,0 +1,367 @@
+/* GreenhouseGuard: plain, conventional ops-dashboard look. Dark sidebar, white content,
+   icon+number KPI cards, clean white data cards. One accent color (forest green) marks the
+   active nav item and status highlights - nothing else is themed. */
+:root {
+  --gg-sidebar-bg: #141c17;
+  --gg-sidebar-text: rgba(255, 255, 255, 0.72);
+  --gg-sidebar-text-active: #ffffff;
+  --gg-accent: #3a7d5c;
+  --gg-page-bg: #f5f6f8;
+  --gg-ink: #1a1d29;
+  --gg-muted: #6b7280;
+  --bs-primary: var(--gg-accent);
+  --bs-primary-rgb: 58, 125, 92;
+  --gg-sidebar-width: 232px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--gg-page-bg);
+  color: var(--gg-ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+/* --- Sidebar: plain dark panel, no blur/glass, text nav with a solid accent block on the active item --- */
+.app-sidebar {
+  width: var(--gg-sidebar-width);
+  background-color: var(--gg-sidebar-bg);
+  color: var(--gg-sidebar-text);
+}
+
+.sidebar-brand {
+  color: #fff;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.brand-subtitle {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* --- Zone identity strip: small pills naming the 3 real zones, sits above the nav list --- */
+.sidebar-zone-strip {
+  gap: 0.4rem;
+}
+
+.sidebar-zone-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--gg-sidebar-text);
+}
+
+.sidebar-zone-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+.sidebar-zone-dot.gg-zone-fault {
+  background-color: #e0716f;
+}
+
+.sidebar-zone-dot.gg-zone-nominal {
+  background-color: var(--gg-accent);
+}
+
+.sidebar-link {
+  color: var(--gg-sidebar-text);
+  text-align: left;
+  border-radius: 6px;
+  margin-bottom: 0.2rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: none;
+  width: 100%;
+}
+
+.sidebar-link i {
+  font-size: 0.95rem;
+  width: 1.1rem;
+  text-align: center;
+}
+
+.sidebar-link:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--gg-sidebar-text-active);
+}
+
+.sidebar-link:disabled {
+  color: rgba(255, 255, 255, 0.25);
+  cursor: not-allowed;
+}
+
+.sidebar-link-active {
+  background-color: var(--gg-accent) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.sidebar-footnote {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* --- Zone dot legend: tiny always-visible key so red/green doesn't rely on hover alone --- */
+.sidebar-zone-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.sidebar-zone-legend .sidebar-zone-dot {
+  display: inline-block;
+}
+
+.app-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Header: plain white bar, page title left, meta text right --- */
+.app-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gg-ink);
+}
+
+.header-meta {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Header VPD pill: same live computation as before, now a tinted badge next to the title --- */
+.header-vpd-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  padding: 0.32rem 0.75rem;
+  border-radius: 999px;
+  background-color: #e6f3ec;
+  color: var(--gg-accent);
+  white-space: nowrap;
+}
+
+.app-content {
+  flex: 1;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gg-ink);
+  margin-bottom: 0.75rem;
+}
+
+/* --- KPI summary: compact inline pill-stats, not boxed cards --- */
+.kpi-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+  background: #fff;
+  border-radius: 999px;
+  border: 1px solid #eef0f3;
+  padding: 0.45rem 0.9rem 0.45rem 0.7rem;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+}
+
+.kpi-pill-icon {
+  align-self: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.kpi-pill-green .kpi-pill-icon { color: var(--gg-accent); }
+.kpi-pill-blue .kpi-pill-icon { color: #3364d6; }
+.kpi-pill-amber .kpi-pill-icon { color: #b8720f; }
+.kpi-pill-red .kpi-pill-icon { color: #c23b3b; }
+
+.kpi-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gg-ink);
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-label {
+  font-size: 0.74rem;
+  color: var(--gg-muted);
+  white-space: nowrap;
+}
+
+/* --- Plain white cards, normal shadow, no tint/blur/gradient --- */
+.card {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  color: var(--gg-ink);
+}
+
+.card-title,
+.panel-heading {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--gg-ink);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.text-muted {
+  color: var(--gg-muted) !important;
+}
+
+/* --- Bench overview rows: plain white cards, vent gauge kept, no signature switch pair --- */
+.bench-row-card {
+  margin-bottom: 1rem;
+}
+
+.bench-vpd-value {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.bench-progress {
+  position: relative;
+  height: 1.25rem;
+  background-color: #eef0f3;
+  border-radius: 6px;
+}
+
+.bench-progress-bar {
+  background-color: var(--gg-accent);
+}
+
+.bench-setpoint-marker {
+  position: absolute;
+  top: -0.25rem;
+  bottom: -0.25rem;
+  width: 2px;
+  background-color: var(--gg-ink);
+  transform: translateX(-50%);
+}
+
+.bench-state-pill {
+  align-self: flex-start;
+  font-size: 0.78rem;
+}
+
+.bench-vent-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.gg-vent-check {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.gg-vent-check-label {
+  color: var(--gg-muted);
+}
+
+.gg-vent-state {
+  font-weight: 600;
+  color: var(--gg-ink);
+}
+
+.gg-match-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  background-color: #e6f3ec;
+  color: var(--gg-accent);
+}
+
+.gg-match-chip.gg-fault-chip {
+  background-color: #fce9e9;
+  color: #c23b3b;
+}
+
+.bench-cross-check-chip {
+  margin-left: auto;
+}
+
+.bench-empty-state {
+  border: 1px dashed #d7dbe0;
+  border-radius: 12px;
+  background-color: #fff;
+}
+
+/* --- Tables --- */
+.table {
+  color: var(--gg-ink);
+}
+
+.table thead th {
+  color: var(--gg-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border-bottom-color: #eef0f3;
+}
+
+td.num, th, .badge {
+  font-variant-numeric: tabular-nums;
+}
+
+.btn-acknowledge {
+  color: var(--gg-ink);
+  border-color: #d7dbe0;
+}
+
+.btn-acknowledge:hover {
+  background-color: var(--gg-page-bg);
+  color: var(--gg-ink);
+  border-color: #d7dbe0;
+}

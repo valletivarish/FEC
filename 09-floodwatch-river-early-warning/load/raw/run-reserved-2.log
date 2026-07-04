@@ -1,0 +1,26 @@
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+=== GaugeIntakeLoadDriver [reserved-concurrency-2] ===
+startedAt=2026-07-03T18:46:42.725105Z
+endpoint=http://localhost:4566 region=eu-west-1
+functionName=ReachIntakeHandler reservedConcurrentExecutions=2
+queueDepth[before]: visible=0 inFlight=0
+2026-07-03T18:46:42.827709Z step=0 targetRate=5req/s calls=20
+2026-07-03T18:46:46.829593Z step=1 targetRate=15req/s calls=60
+2026-07-03T18:46:50.833511Z step=2 targetRate=30req/s calls=120
+2026-07-03T18:46:54.839445Z step=3 targetRate=45req/s calls=180
+2026-07-03T18:46:58.841123Z step=4 targetRate=60req/s calls=240
+queueDepth[after]: visible=0 inFlight=0
+
+=== RESULTS [reserved-concurrency-2] ===
+finishedAt=2026-07-03T18:47:02.852168Z
+wallClockSeconds=20
+totalInvocationsSent=620
+success=609 functionErrors=11 throttled=11
+p50Ms=7
+p95Ms=977
+p99Ms=2935
+maxMs=5252
+minMs=4
+meanMs=134.30967741935484

@@ -1,0 +1,12 @@
+entityId: truck-01
+entityType: truck
+metrics:
+  - name: truck-gps
+    sampleIntervalSeconds: 3
+    dispatchIntervalSeconds: 3
+  - name: hopper-fill
+    sampleIntervalSeconds: 8
+    dispatchIntervalSeconds: 8
+  - name: fuel-level
+    sampleIntervalSeconds: 8
+    dispatchIntervalSeconds: 8

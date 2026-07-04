@@ -1,0 +1,20 @@
+{
+  "name": "campuspulse",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CampusPulse smart-campus building operations - fog/edge IoT CA project",
+  "workspaces": [
+    "sensors",
+    "fog",
+    "backend",
+    "dashboard",
+    "integration-test"
+  ],
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "eslint": "^9.39.2"
+  }
+}

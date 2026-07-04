@@ -1,0 +1,16 @@
+{
+  "shipmentId": "TRK-9003-2026-07-02",
+  "truckId": "TRK-9003",
+  "complianceStatus": "BREACH",
+  "humidityPct": 62,
+  "compressorCurrentA": 11.4,
+  "setpointC": -18.0,
+  "zoneATempSeries": [-18.0, -16.2, -14.0, -12.1, -10.5, -9.1],
+  "zoneBTempSeries": [-17.8, -16.0, -13.6, -11.8, -10.1, -8.7],
+  "routePoints": [
+    { "lat": 40.71, "lng": -74.01 },
+    { "lat": 40.73, "lng": -73.95 },
+    { "lat": 40.76, "lng": -73.88 },
+    { "lat": 40.80, "lng": -73.82 }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "officeiq-worker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OfficeIQ ECS Fargate ingestion worker - own package.json so the Docker build context (backend/worker, per infra/lib/officeiq-stack.ts's fromAsset) is self-contained",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.600.0",
+    "@aws-sdk/lib-dynamodb": "^3.600.0",
+    "@aws-sdk/client-sqs": "^3.600.0"
+  }
+}

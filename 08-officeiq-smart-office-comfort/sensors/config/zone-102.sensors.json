@@ -1,0 +1,15 @@
+{
+  "zoneId": "zone-102",
+  "sensors": {
+    "desk-occupancy": { "sampleFrequencyMs": 5000, "dispatchRateMs": 5000, "unit": "desks", "min": 0, "max": 6 },
+    "room-co2": { "sampleFrequencyMs": 10000, "dispatchRateMs": 10000, "unit": "ppm", "min": 400, "max": 2200 },
+    "room-temperature": { "sampleFrequencyMs": 10000, "dispatchRateMs": 10000, "unit": "degC", "min": 17, "max": 29 },
+    "room-humidity": { "sampleFrequencyMs": 10000, "dispatchRateMs": 10000, "unit": "%RH", "min": 20, "max": 70 },
+    "light-level": { "sampleFrequencyMs": 15000, "dispatchRateMs": 15000, "unit": "lux", "min": 0, "max": 1200 },
+    "people-counter": { "sampleFrequencyMs": 5000, "dispatchRateMs": 5000, "unit": "count", "min": 0, "max": 40 },
+    "plug-power": { "sampleFrequencyMs": 15000, "dispatchRateMs": 15000, "unit": "W", "min": 0, "max": 1800 },
+    "window-state": { "sampleFrequencyMs": 20000, "dispatchRateMs": 20000, "unit": "state", "min": 0, "max": 1 },
+    "pressure-differential": { "sampleFrequencyMs": 20000, "dispatchRateMs": 20000, "unit": "Pa", "min": -15, "max": 15 },
+    "meeting-room-noise": { "sampleFrequencyMs": 20000, "dispatchRateMs": 20000, "unit": "dB", "min": 30, "max": 95 }
+  }
+}

@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OfficeIQ — Smart Office Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="./src/styles/officeiq-theme.css" rel="stylesheet">
+</head>
+<body>
+  <div class="officeiq-shell">
+    <aside class="officeiq-rail">
+      <div class="officeiq-rail-brand">
+        <span class="officeiq-rail-title">OfficeIQ</span>
+        <span class="officeiq-rail-subtitle">Office Comfort Ops</span>
+      </div>
+      <nav aria-label="Primary" class="officeiq-rail-nav">
+        <span class="officeiq-rail-link active"><i class="bi bi-grid-1x2"></i> Dashboard <i class="bi bi-chevron-right officeiq-rail-link-chevron"></i></span>
+        <span class="officeiq-rail-link"><i class="bi bi-thermometer-half"></i> Sensors <i class="bi bi-chevron-right officeiq-rail-link-chevron"></i></span>
+        <span class="officeiq-rail-link"><i class="bi bi-diagram-3"></i> Fog Nodes <i class="bi bi-chevron-right officeiq-rail-link-chevron"></i></span>
+        <span class="officeiq-rail-link"><i class="bi bi-bell"></i> Alerts <i class="bi bi-chevron-right officeiq-rail-link-chevron"></i></span>
+      </nav>
+    </aside>
+
+    <div class="officeiq-main-col">
+      <header class="officeiq-topbar">
+        <h1 class="officeiq-topbar-title">Zone Climate Control</h1>
+        <span class="officeiq-topbar-sub">Smart-office occupancy &amp; comfort</span>
+      </header>
+
+      <main class="container-fluid py-4">
+        <div id="empty-state" class="alert alert-secondary d-none" role="alert">
+          No live data — start the local stack to see readings
+        </div>
+
+        <div id="kpi-row"></div>
+
+        <nav aria-label="Zone switcher" class="mb-3">
+          <ul class="nav nav-pills" id="zone-pill-nav">
+            <li class="nav-item">
+              <button type="button" class="nav-link active" data-zone-target="all">All Zones</button>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="nav-link" data-zone-target="zone-101">Zone 101</button>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="nav-link" data-zone-target="zone-102">Zone 102</button>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="nav-link" data-zone-target="zone-201">Zone 201</button>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="nav-link" data-zone-target="zone-202">Zone 202</button>
+            </li>
+          </ul>
+        </nav>
+
+        <nav aria-label="breadcrumb" class="mb-4">
+          <ol class="breadcrumb" id="zone-breadcrumb">
+            <li class="breadcrumb-item"><span data-breadcrumb-home>Home</span></li>
+            <li class="breadcrumb-item active" aria-current="page" id="zone-breadcrumb-current">All Zones</li>
+          </ol>
+        </nav>
+
+        <section class="mb-5">
+          <h2 class="h5 mb-3">Zone Overview</h2>
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                  <thead>
+                    <tr>
+                      <th scope="col">Zone</th>
+                      <th scope="col">Desk Occupancy</th>
+                      <th scope="col">CO2 (ppm)</th>
+                      <th scope="col">Temperature (&deg;C)</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="zone-overview-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-5">
+          <h2 class="h5 mb-3">Occupancy Reconciliation</h2>
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                  <thead>
+                    <tr>
+                      <th scope="col">Zone</th>
+                      <th scope="col">Verdict</th>
+                      <th scope="col">Desk Count</th>
+                      <th scope="col">People Count</th>
+                      <th scope="col">Resolved Headcount</th>
+                      <th scope="col">Timestamp</th>
+                    </tr>
+                  </thead>
+                  <tbody id="occupancy-reconciliation-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-5">
+          <h2 class="h5 mb-3">Comfort Events</h2>
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                  <thead>
+                    <tr>
+                      <th scope="col">Zone</th>
+                      <th scope="col">Verdict</th>
+                      <th scope="col">Severity</th>
+                      <th scope="col">CO2 Slope / Pressure Differential</th>
+                      <th scope="col">Humidity (%RH)</th>
+                      <th scope="col">Window</th>
+                      <th scope="col">Noise (dB)</th>
+                      <th scope="col">Timestamp</th>
+                    </tr>
+                  </thead>
+                  <tbody id="comfort-events-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-5">
+          <h2 class="h5 mb-3">Usage / Waste</h2>
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                  <thead>
+                    <tr>
+                      <th scope="col">Zone</th>
+                      <th scope="col">Verdict</th>
+                      <th scope="col">Estimated Watt-Hours Wasted</th>
+                      <th scope="col">Plug Power (W)</th>
+                      <th scope="col">Light Level (lux)</th>
+                      <th scope="col">Timestamp</th>
+                    </tr>
+                  </thead>
+                  <tbody id="usage-waste-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-5">
+          <h2 class="h5 mb-3">Scaling Status</h2>
+          <div id="scaling-status-card"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

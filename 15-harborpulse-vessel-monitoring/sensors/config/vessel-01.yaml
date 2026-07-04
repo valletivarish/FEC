@@ -1,0 +1,32 @@
+vesselId: vessel-01
+metrics:
+  engine-rpm:
+    sample_interval_seconds: 1
+    dispatch_interval_seconds: 1
+  engine-coolant-temp:
+    sample_interval_seconds: 5
+    dispatch_interval_seconds: 5
+  engine-oil-pressure:
+    sample_interval_seconds: 5
+    dispatch_interval_seconds: 5
+  engine-fuel-flow:
+    sample_interval_seconds: 5
+    dispatch_interval_seconds: 5
+  engine-vibration-raw:
+    sample_interval_seconds: 1
+    dispatch_interval_seconds: 1
+  hull-bilge-level:
+    sample_interval_seconds: 5
+    dispatch_interval_seconds: 5
+  nav-gps:
+    sample_interval_seconds: 3
+    dispatch_interval_seconds: 3
+  nav-attitude:
+    sample_interval_seconds: 2
+    dispatch_interval_seconds: 2
+  weather-wind-speed:
+    sample_interval_seconds: 8
+    dispatch_interval_seconds: 8
+  nav-heading:
+    sample_interval_seconds: 3
+    dispatch_interval_seconds: 3

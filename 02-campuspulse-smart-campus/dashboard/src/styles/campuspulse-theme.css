@@ -1,0 +1,253 @@
+/* CampusPulse: plain, conventional ops-dashboard look. Dark sidebar, white content,
+   icon+number KPI cards, clean white data cards. One accent color (teal) marks the
+   active nav item and status highlights - nothing else is themed. */
+:root {
+  --cp-sidebar-bg: #1b2027;
+  --cp-sidebar-text: rgba(255, 255, 255, 0.72);
+  --cp-sidebar-text-active: #ffffff;
+  --cp-accent: #2f9e8f;
+  --cp-page-bg: #f5f6f8;
+  --cp-ink: #1a1d29;
+  --cp-muted: #6b7280;
+  --bs-primary: var(--cp-accent);
+  --bs-primary-rgb: 47, 158, 143;
+  --cp-sidebar-width: 232px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--cp-page-bg);
+  color: var(--cp-ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+/* --- Sidebar: plain dark panel, no blur/glass, text nav with a solid accent block on the active item --- */
+.app-sidebar {
+  width: var(--cp-sidebar-width);
+  background-color: var(--cp-sidebar-bg);
+  color: var(--cp-sidebar-text);
+}
+
+.sidebar-brand {
+  color: #fff;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.brand-subtitle {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.sidebar-link {
+  color: var(--cp-sidebar-text);
+  text-align: left;
+  border-radius: 6px;
+  margin-bottom: 0.2rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.sidebar-link i {
+  font-size: 0.95rem;
+  width: 1.1rem;
+  text-align: center;
+}
+
+.sidebar-link:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--cp-sidebar-text-active);
+}
+
+.sidebar-link:disabled {
+  color: rgba(255, 255, 255, 0.25);
+  cursor: not-allowed;
+}
+
+/* Active state reads as a tinted panel with a flush left accent bar, not a solid
+   fill block - stays visually distinct on load even with zero live data. */
+.sidebar-link-active {
+  background-color: rgba(47, 158, 143, 0.14) !important;
+  color: var(--cp-accent) !important;
+  font-weight: 600;
+  border-left: 4px solid var(--cp-accent);
+  padding-left: calc(0.75rem - 4px);
+}
+
+.sidebar-link-active i {
+  color: var(--cp-accent);
+}
+
+/* Nav badge: same rounded-pill/tabular-nums language as the severity badges in the
+   alert feed and zone grid tables, just re-tinted for the dark sidebar. */
+.sidebar-badge {
+  margin-left: auto;
+  padding: 0.1rem 0.5rem;
+  border-radius: 50rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.4;
+  background-color: #c23b3b;
+  color: #fff;
+}
+
+.sidebar-link-active .sidebar-badge {
+  background-color: var(--cp-accent);
+  color: #fff;
+}
+
+.sidebar-footnote {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.app-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Header: plain white bar, page title left, meta text right --- */
+.app-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--cp-ink);
+}
+
+.app-content {
+  flex: 1;
+}
+
+/* --- KPI summary cards --- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  border: 1px solid #eef0f3;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.kpi-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.kpi-icon-blue { background: #e8f0fe; color: #3364d6; }
+.kpi-icon-green { background: #e6f7f1; color: var(--cp-accent); }
+.kpi-icon-amber { background: #fdf3e2; color: #b8720f; }
+.kpi-icon-red { background: #fce9e9; color: #c23b3b; }
+
+.kpi-value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--cp-ink);
+  line-height: 1.15;
+}
+
+.kpi-label {
+  font-size: 0.78rem;
+  color: var(--cp-muted);
+}
+
+/* --- Plain white cards, normal shadow, no tint/blur/gradient --- */
+.card {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  color: var(--cp-ink);
+}
+
+.card-title,
+.panel-heading {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--cp-ink);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.text-muted {
+  color: var(--cp-muted) !important;
+}
+
+td.num, th, .badge, .occupancy-note, .sidebar-footnote, .header-meta {
+  font-variant-numeric: tabular-nums;
+}
+
+.zone-detail > .section {
+  scroll-margin-top: 1rem;
+}
+
+.table {
+  color: var(--cp-ink);
+}
+
+.table thead th {
+  color: var(--cp-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border-bottom-color: #eef0f3;
+}
+
+.zone-row-btn {
+  color: var(--cp-ink);
+  font-weight: 600;
+}
+
+.zone-row-btn:hover {
+  color: var(--cp-accent);
+}
+
+.alert-ack-btn {
+  color: var(--cp-ink);
+  border-color: #d7dbe0;
+}
+
+.alert-ack-btn:hover {
+  background-color: #f5f6f8;
+  color: var(--cp-ink);
+  border-color: #d7dbe0;
+}
+
+.alert-acknowledged {
+  opacity: 0.5;
+}

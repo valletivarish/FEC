@@ -1,0 +1,88 @@
+name: binsight-ci
+
+on:
+  push:
+    paths:
+      - '14-binsight-waste-routing/**'
+  pull_request:
+    paths:
+      - '14-binsight-waste-routing/**'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: 14-binsight-waste-routing
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Lint (checkstyle)
+        run: mvn install -N -q && mvn -pl sensor-emitters,collection-fog,backend,infra,integration-test checkstyle:check
+      - name: Unit test all Java modules
+        run: mvn install -DskipTests -q && mvn -pl sensor-emitters,collection-fog,backend test
+      - name: Start local AWS emulator
+        run: docker compose -f ../docker-compose.yml up -d
+      - name: Wait for emulator health
+        run: |
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:4566/_localstack/health > /dev/null && break
+            sleep 2
+          done
+      - name: Package backend (produces the jar infra references)
+        run: mvn -pl backend package -DskipTests
+      - name: Precreate the relay-test queue and capture its deterministic URL
+        run: |
+          echo "BINSIGHT_TARGET_QUEUE_URL=http://localhost:4566/000000000000/binsight-it-relay-queue" >> $GITHUB_ENV
+      - name: Integration test
+        working-directory: 14-binsight-waste-routing
+        run: mvn -pl integration-test test
+        env:
+          AWS_ENDPOINT_URL: http://localhost:4566
+          AWS_REGION: eu-west-1
+          AWS_DEFAULT_REGION: eu-west-1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          BINSIGHT_CLUSTER_TABLE: binsight-cluster-verdicts-table
+          BINSIGHT_FIRE_RISK_TABLE: binsight-fire-risk-table
+          BINSIGHT_WORK_LIST_TABLE: binsight-work-list-table
+      - name: CDK synth (validates infra)
+        working-directory: 14-binsight-waste-routing/infra
+        run: npx --yes aws-cdk@2 synth
+      - name: Dashboard Playwright tests
+        working-directory: 14-binsight-waste-routing/dashboard
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+          npm run test:e2e
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: binsight-prod
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Deploy to AWS
+        working-directory: 14-binsight-waste-routing
+        run: |
+          mvn install -DskipTests -q
+          mvn -pl backend package -DskipTests
+          cd infra && npx --yes aws-cdk@2 deploy --require-approval never
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-west-1

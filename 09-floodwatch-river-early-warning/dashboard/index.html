@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FloodWatch</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="./src/styles/floodwatch-theme.css" rel="stylesheet">
+</head>
+<body>
+  <div class="app-shell d-flex">
+    <aside class="app-sidebar d-flex flex-column flex-shrink-0 p-3">
+      <a href="#" class="sidebar-brand d-flex flex-column mb-4 text-decoration-none">
+        <span class="brand-name">FloodWatch</span>
+        <span class="brand-subtitle">River Early Warning</span>
+      </a>
+      <nav class="nav flex-column mb-auto">
+        <a class="sidebar-link sidebar-link-active" href="#reach-overview"><span class="sidebar-link-icon"><i class="bi bi-water"></i></span> Reach Overview</a>
+        <a class="sidebar-link" href="#water-quality"><span class="sidebar-link-icon"><i class="bi bi-droplet-half"></i></span> Water Quality</a>
+        <a class="sidebar-link" href="#meteo-watch"><span class="sidebar-link-icon"><i class="bi bi-cloud-rain-heavy"></i></span> Meteo Watch</a>
+        <a class="sidebar-link" href="#escalation-log"><span class="sidebar-link-icon"><i class="bi bi-list-columns-reverse"></i></span> Escalation Log<span id="escalationNavBadge" class="sidebar-link-badge d-none"></span></a>
+      </nav>
+      <p class="sidebar-footnote small mb-0">Three reaches monitored across HydroFogNode, QualityFogNode and MeteoFogNode.</p>
+    </aside>
+
+    <main class="app-main flex-grow-1">
+      <header class="app-header d-flex align-items-center justify-content-between px-4 py-3">
+        <div class="d-flex align-items-center gap-3">
+          <h1 class="page-title mb-0">River Early Warning</h1>
+          <span class="header-reach-pill">3 reaches</span>
+        </div>
+        <span class="header-meta text-muted small">10 sensor types &middot; 3 fog nodes</span>
+      </header>
+      <div class="app-content p-4">
+        <div id="backendNotice" class="alert alert-secondary d-none" role="alert">
+          No live data &mdash; start the local stack to see readings
+        </div>
+
+        <div id="emergencyBanner" class="alert d-none d-flex align-items-center gap-2" role="alert"></div>
+
+        <div id="kpiRow"></div>
+
+        <section id="stageBoard" class="stage-board" aria-label="Reach stage summary">
+          <div class="stage-board-panel">
+            <div>
+              <span class="stage-board-label">Worst Stage</span>
+              <span id="stageBoardWord" class="stage-board-word">--</span>
+            </div>
+            <div class="stage-board-metrics">
+              <div class="stage-board-metric">
+                <span class="stage-board-metric-label">Rate of Rise</span>
+                <span id="stageBoardRate" class="stage-board-metric-value">--</span>
+              </div>
+              <div class="stage-board-metric">
+                <span class="stage-board-metric-label" title="Composite Water Quality Index &mdash; average CWQI across all reaches, scored 0-100 where higher is better">Water Quality Index <span class="stage-board-metric-abbr">(CWQI)</span></span>
+                <span id="stageBoardWqi" class="stage-board-metric-value">--</span>
+                <span class="stage-board-metric-hint">0-100, higher is better</span>
+              </div>
+            </div>
+            <span class="stage-board-streams-label" title="Whichever data category is currently the most severe contributor to the worst stage above">Leading risk category</span>
+            <div id="stageBoardTicks" class="stage-board-streams">
+              <div class="stage-board-tick" data-stream="hydro" title="River level &amp; rate-of-rise readings">
+                <div class="stage-board-tick-mark"></div>
+                <span class="stage-board-tick-label">Hydro</span>
+              </div>
+              <div class="stage-board-tick" data-stream="quality" title="Water quality readings (CWQI, contamination)">
+                <div class="stage-board-tick-mark"></div>
+                <span class="stage-board-tick-label">Quality</span>
+              </div>
+              <div class="stage-board-tick" data-stream="meteo" title="Rainfall &amp; pressure pre-storm signals">
+                <div class="stage-board-tick-mark"></div>
+                <span class="stage-board-tick-label">Meteo</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="reach-overview" class="mb-4">
+          <h2 class="section-heading mb-3">Reach Overview</h2>
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle" id="reachOverviewTable">
+                  <thead>
+                    <tr>
+                      <th scope="col">Reach</th>
+                      <th scope="col">River Level (m)</th>
+                      <th scope="col">Stage</th>
+                      <th scope="col">Rate of Rise (m/sample)</th>
+                      <th scope="col">Flow Rate Slope (m3/s/sample)</th>
+                      <th scope="col">Blockage</th>
+                    </tr>
+                  </thead>
+                  <tbody id="reachOverviewBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="water-quality" class="mb-4">
+          <h2 class="section-heading mb-3">Water Quality</h2>
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle" id="waterQualityTable">
+                  <thead>
+                    <tr>
+                      <th scope="col">Reach</th>
+                      <th scope="col">CWQI</th>
+                      <th scope="col">Band</th>
+                      <th scope="col">Contamination</th>
+                    </tr>
+                  </thead>
+                  <tbody id="waterQualityBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="meteo-watch" class="mb-4">
+          <h2 class="section-heading mb-3">Meteo Watch</h2>
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle" id="meteoWatchTable">
+                  <thead>
+                    <tr>
+                      <th scope="col">Reach</th>
+                      <th scope="col">Pressure Slope (hPa/sample)</th>
+                      <th scope="col">Pre-Storm Signal</th>
+                      <th scope="col">Pre-Warn Escalation</th>
+                    </tr>
+                  </thead>
+                  <tbody id="meteoWatchBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="escalation-log" class="mb-4">
+          <h2 class="section-heading mb-3">Escalation Log</h2>
+          <div class="list-group" id="escalationLogList"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GridPulse Switchboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="./src/styles/gridpulse-theme.css" />
+</head>
+<body>
+  <div class="console-shell">
+    <aside class="console-rail" data-testid="switchboard">
+      <div class="console-rail-brand">
+        <span class="console-rail-title">GridPulse</span>
+        <span class="console-rail-subtitle">EV Hub &amp; Transformer</span>
+      </div>
+
+      <div class="console-rail-filter">
+        <i class="bi bi-search console-rail-filter-icon"></i>
+        <input
+          type="search"
+          class="console-rail-filter-input"
+          id="switchboard-view-filter"
+          placeholder="Filter views..."
+          aria-label="Filter views"
+          data-testid="switchboard-view-filter"
+        />
+      </div>
+
+      <ul class="nav flex-column console-rail-nav" id="switchboard-tab-list" role="tablist" data-testid="switchboard-tabs">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="tab-bays-btn" data-bs-toggle="tab" data-bs-target="#tab-bays" type="button" role="tab" aria-controls="tab-bays" aria-selected="true" data-testid="tab-btn-bays">
+            <i class="bi bi-ev-station"></i> Charger Bays
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="tab-transformer-btn" data-bs-toggle="tab" data-bs-target="#tab-transformer" type="button" role="tab" aria-controls="tab-transformer" aria-selected="false" data-testid="tab-btn-transformer">
+            <i class="bi bi-thermometer-half"></i> Transformer
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="tab-der-btn" data-bs-toggle="tab" data-bs-target="#tab-der" type="button" role="tab" aria-controls="tab-der" aria-selected="false" data-testid="tab-btn-der">
+            <i class="bi bi-sun"></i> DER
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="tab-curtailment-btn" data-bs-toggle="tab" data-bs-target="#tab-curtailment" type="button" role="tab" aria-controls="tab-curtailment" aria-selected="false" data-testid="tab-btn-curtailment">
+            <i class="bi bi-clock-history"></i> Curtailment Log
+          </button>
+        </li>
+      </ul>
+
+      <p class="console-rail-footnote mb-0">Live hub telemetry, polled every 5s.</p>
+    </aside>
+
+    <div class="console-main">
+      <header class="status-plaque-strip" data-testid="hub-status-line" id="hub-status-line">
+        <h1 class="page-title">Hub Switchboard</h1>
+      </header>
+
+      <main class="console-viewport">
+        <div id="hub-kpi-row" data-testid="hub-kpi-row"></div>
+
+        <div class="tab-content switchboard-tab-content" id="switchboard-tab-content" data-testid="switchboard-tab-content">
+          <div class="tab-pane fade show active" id="tab-bays" role="tabpanel" aria-labelledby="tab-bays-btn" tabindex="0">
+            <h2 class="panel-title">Charger Bays</h2>
+            <div id="bay-roster" data-testid="bay-roster"></div>
+          </div>
+
+          <div class="tab-pane fade" id="tab-transformer" role="tabpanel" aria-labelledby="tab-transformer-btn" tabindex="0">
+            <h2 class="panel-title">Transformer</h2>
+            <div id="transformer-status" data-testid="transformer-status"></div>
+          </div>
+
+          <div class="tab-pane fade" id="tab-der" role="tabpanel" aria-labelledby="tab-der-btn" tabindex="0">
+            <h2 class="panel-title">Distributed Energy Resources</h2>
+            <div id="der-status" data-testid="der-status"></div>
+          </div>
+
+          <div class="tab-pane fade" id="tab-curtailment" role="tabpanel" aria-labelledby="tab-curtailment-btn" tabindex="0">
+            <h2 class="panel-title">Curtailment Log</h2>
+            <div id="curtailment-log" data-testid="curtailment-log"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

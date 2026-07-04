@@ -1,0 +1,341 @@
+/* BinSight: plain, conventional ops-dashboard look. Dark sidebar, white content,
+   icon+number KPI cards, clean white data cards. One accent color (municipal amber)
+   marks the active nav item and highlights - nothing else is themed. */
+:root {
+  --bs-sidebar-bg: #1d1610;
+  --bs-sidebar-text: rgba(255, 255, 255, 0.72);
+  --bs-sidebar-text-active: #ffffff;
+  --bs-accent: #c07a2b;
+  --bs-page-bg: #f5f6f8;
+  --bs-ink: #1a1d29;
+  --bs-muted: #6b7280;
+  --bs-primary: var(--bs-accent);
+  --bs-primary-rgb: 192, 122, 43;
+  --bs-sidebar-width: 232px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--bs-page-bg);
+  color: var(--bs-ink);
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+/* --- Sidebar: plain dark panel, no blur/glass, text nav with a solid accent block on the active item --- */
+.app-sidebar {
+  width: var(--bs-sidebar-width);
+  background-color: var(--bs-sidebar-bg);
+  color: var(--bs-sidebar-text);
+}
+
+.sidebar-brand {
+  color: #fff;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.brand-subtitle {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* --- Nav grid: 2x2 icon-tile grid, a distinct shape from a single-column list --- */
+.sidebar-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+}
+
+.sidebar-link {
+  color: var(--bs-sidebar-text);
+  text-align: center;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.04);
+  padding: 0.7rem 0.4rem;
+  font-size: 0.74rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  line-height: 1.2;
+}
+
+.sidebar-link i {
+  font-size: 1.05rem;
+  width: 1.9rem;
+  height: 1.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.sidebar-link-label {
+  font-weight: 500;
+}
+
+.sidebar-link:hover {
+  background-color: rgba(255, 255, 255, 0.09);
+  color: var(--bs-sidebar-text-active);
+}
+
+.sidebar-link-active {
+  background-color: var(--bs-accent) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.sidebar-link-active i {
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
+.sidebar-footnote {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.app-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Header: plain white bar, page title left, meta text right --- */
+.app-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--bs-ink);
+}
+
+.header-breadcrumb {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--bs-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.header-meta {
+  font-variant-numeric: tabular-nums;
+}
+
+.app-content {
+  flex: 1;
+}
+
+/* --- Section headings: plain, no uppercase bracket motif --- */
+.section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--bs-ink);
+}
+
+/* --- KPI summary cards: one hero card (Bins Due) plus a row of smaller stats beside it --- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.2fr) repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-rows: repeat(2, auto);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  border: 1px solid #eef0f3;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.kpi-card-hero {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.75rem 1.75rem;
+}
+
+.kpi-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.kpi-card-hero .kpi-icon {
+  width: 56px;
+  height: 56px;
+  font-size: 1.5rem;
+}
+
+.kpi-icon-amber { background: #fdf3e2; color: var(--bs-accent); }
+.kpi-icon-red { background: #fce9e9; color: #c23b3b; }
+.kpi-icon-slate { background: #eef1f6; color: #4b5563; }
+.kpi-icon-green { background: #e6f7f1; color: #2f9e8f; }
+
+.kpi-value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--bs-ink);
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-card-hero .kpi-value {
+  font-size: 3rem;
+}
+
+.kpi-label {
+  font-size: 0.78rem;
+  color: var(--bs-muted);
+}
+
+.kpi-card-hero .kpi-label {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 767px) {
+  .kpi-row {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-card-hero {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
+
+/* --- Plain white cards, normal shadow, no clip-path/scanline/glow --- */
+.card,
+.hud-panel {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  color: var(--bs-ink);
+}
+
+.card-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--bs-ink);
+}
+
+.text-muted,
+.text-body-secondary {
+  color: var(--bs-muted) !important;
+}
+
+/* --- Bin risk grid: plain white tiles, a coloured left rule marks the state --- */
+.bin-risk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.risk-tile {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-left: 4px solid #d7dbe0;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-height: 96px;
+}
+
+.risk-tile-normal { border-left-color: #2f9e8f; }
+.risk-tile-watch { border-left-color: var(--bs-accent); }
+.risk-tile-critical { border-left-color: #c23b3b; }
+
+/* data-integrity flag rides on top of the risk colour: a subtle dashed outline */
+.risk-tile-flagged {
+  outline: 1px dashed #b0b6bf;
+  outline-offset: -1px;
+}
+
+.risk-tile-id {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--bs-ink);
+}
+
+.risk-tile-sub {
+  font-size: 0.8rem;
+  color: var(--bs-muted);
+}
+
+/* --- Readouts and table numerals: tabular, normal weight, no LED styling --- */
+.readout-value {
+  font-variant-numeric: tabular-nums;
+  color: var(--bs-ink);
+}
+
+.table {
+  color: var(--bs-ink);
+  margin-bottom: 0;
+}
+
+.table thead th {
+  color: var(--bs-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border-bottom-color: #eef0f3;
+}
+
+.table td {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Fleet map: plain framed canvas --- */
+.fleet-canvas {
+  background-color: #ffffff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  max-width: 100%;
+  height: auto;
+}
+
+.badge {
+  font-weight: 600;
+  letter-spacing: normal;
+}

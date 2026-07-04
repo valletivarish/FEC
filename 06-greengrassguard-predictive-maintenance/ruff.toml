@@ -1,0 +1,5 @@
+# Generous line length for pandas/numpy-heavy fog logic; E/F catch real bugs, not style nits.
+line-length = 120
+
+[lint]
+select = ["E", "F"]

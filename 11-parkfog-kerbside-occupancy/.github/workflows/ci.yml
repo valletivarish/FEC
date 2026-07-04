@@ -1,0 +1,97 @@
+name: parkfog-ci
+
+on:
+  push:
+    paths:
+      - '11-parkfog-kerbside-occupancy/**'
+  pull_request:
+    paths:
+      - '11-parkfog-kerbside-occupancy/**'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: 11-parkfog-kerbside-occupancy
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install lint tooling
+        run: npm install
+      - name: Unit test sensors
+        working-directory: 11-parkfog-kerbside-occupancy/sensors
+        run: |
+          npm install
+          npm run lint
+          npm test
+      - name: Unit test fog
+        working-directory: 11-parkfog-kerbside-occupancy/fog
+        run: |
+          npm install
+          npm run lint
+          npm test
+      - name: Unit test backend
+        working-directory: 11-parkfog-kerbside-occupancy/backend
+        run: |
+          npm install
+          npm run lint
+          npm test
+      - name: Start local AWS emulator
+        run: docker compose -f ../docker-compose.yml up -d
+      - name: Wait for emulator health
+        run: |
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:4566/_localstack/health > /dev/null && break
+            sleep 2
+          done
+      - name: Integration test
+        working-directory: 11-parkfog-kerbside-occupancy/integration-test
+        run: |
+          npm install
+          npm run lint
+          npx jest
+        env:
+          AWS_ENDPOINT_URL: http://localhost:4566
+          AWS_REGION: eu-west-1
+          AWS_DEFAULT_REGION: eu-west-1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          PARKFOG_EVENTS_TABLE: parkfog-events-table
+      - name: CDK synth (validates infra)
+        working-directory: 11-parkfog-kerbside-occupancy/infra
+        run: |
+          npm install
+          npx tsc --noEmit
+          npx --yes aws-cdk@2 synth
+      - name: Dashboard Playwright tests
+        working-directory: 11-parkfog-kerbside-occupancy/dashboard
+        run: |
+          npm install
+          npm run lint
+          npx playwright install --with-deps chromium
+          npm run test:e2e
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: parkfog-production
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Deploy to AWS
+        working-directory: 11-parkfog-kerbside-occupancy/infra
+        run: |
+          npm install
+          npx --yes aws-cdk@2 deploy --require-approval never
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-west-1

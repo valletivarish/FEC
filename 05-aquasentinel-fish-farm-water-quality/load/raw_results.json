@@ -1,0 +1,118 @@
+[
+  {
+    "concurrent_ponds": 5,
+    "total_requests": 30,
+    "wall_time_s": 0.711,
+    "readings_path": {
+      "count": 15,
+      "mean_ms": 119.8,
+      "p50_ms": 6.4,
+      "p95_ms": 407.2,
+      "max_ms": 407.2
+    },
+    "alerts_path": {
+      "count": 15,
+      "mean_ms": 43.2,
+      "p50_ms": 5.4,
+      "p95_ms": 291.8,
+      "max_ms": 291.8
+    },
+    "readings_queue_depth_snapshot": {
+      "queue": "aquasentinel-readings-queue",
+      "ApproximateNumberOfMessages": "5",
+      "ApproximateNumberOfMessagesNotVisible": "0"
+    },
+    "alerts_queue_depth_snapshot": {
+      "queue": "aquasentinel-alerts-queue",
+      "ApproximateNumberOfMessages": "6",
+      "ApproximateNumberOfMessagesNotVisible": "0"
+    }
+  },
+  {
+    "concurrent_ponds": 10,
+    "total_requests": 60,
+    "wall_time_s": 0.829,
+    "readings_path": {
+      "count": 30,
+      "mean_ms": 96.5,
+      "p50_ms": 6.5,
+      "p95_ms": 622.7,
+      "max_ms": 723.6
+    },
+    "alerts_path": {
+      "count": 30,
+      "mean_ms": 65.8,
+      "p50_ms": 5.9,
+      "p95_ms": 416.6,
+      "max_ms": 730.3
+    },
+    "readings_queue_depth_snapshot": {
+      "queue": "aquasentinel-readings-queue",
+      "ApproximateNumberOfMessages": "35",
+      "ApproximateNumberOfMessagesNotVisible": "0"
+    },
+    "alerts_queue_depth_snapshot": {
+      "queue": "aquasentinel-alerts-queue",
+      "ApproximateNumberOfMessages": "36",
+      "ApproximateNumberOfMessagesNotVisible": "0"
+    }
+  },
+  {
+    "concurrent_ponds": 20,
+    "total_requests": 120,
+    "wall_time_s": 1.411,
+    "readings_path": {
+      "count": 60,
+      "mean_ms": 225.4,
+      "p50_ms": 7.8,
+      "p95_ms": 1282.7,
+      "max_ms": 1345.4
+    },
+    "alerts_path": {
+      "count": 60,
+      "mean_ms": 46.8,
+      "p50_ms": 6.5,
+      "p95_ms": 538.4,
+      "max_ms": 699.0
+    },
+    "readings_queue_depth_snapshot": {
+      "queue": "aquasentinel-readings-queue",
+      "ApproximateNumberOfMessages": "75",
+      "ApproximateNumberOfMessagesNotVisible": "0"
+    },
+    "alerts_queue_depth_snapshot": {
+      "queue": "aquasentinel-alerts-queue",
+      "ApproximateNumberOfMessages": "76",
+      "ApproximateNumberOfMessagesNotVisible": "0"
+    }
+  },
+  {
+    "concurrent_ponds": 40,
+    "total_requests": 240,
+    "wall_time_s": 2.658,
+    "readings_path": {
+      "count": 120,
+      "mean_ms": 456.4,
+      "p50_ms": 11.5,
+      "p95_ms": 2323.3,
+      "max_ms": 2595.2
+    },
+    "alerts_path": {
+      "count": 120,
+      "mean_ms": 86.3,
+      "p50_ms": 8.7,
+      "p95_ms": 34.6,
+      "max_ms": 2555.1
+    },
+    "readings_queue_depth_snapshot": {
+      "queue": "aquasentinel-readings-queue",
+      "ApproximateNumberOfMessages": "165",
+      "ApproximateNumberOfMessagesNotVisible": "0"
+    },
+    "alerts_queue_depth_snapshot": {
+      "queue": "aquasentinel-alerts-queue",
+      "ApproximateNumberOfMessages": "166",
+      "ApproximateNumberOfMessagesNotVisible": "0"
+    }
+  }
+]

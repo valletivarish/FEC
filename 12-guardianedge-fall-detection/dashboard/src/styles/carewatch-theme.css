@@ -1,0 +1,353 @@
+/* CareWatch Console — plain, conventional care-ops dashboard. Dark sidebar, white content,
+   icon+number KPI cards, plain white list cards. One accent color (warm teal) marks the
+   active nav item and status highlights. Normal admin-dashboard type scale throughout —
+   matching every sibling project exactly, no oversized/editorial sizing anywhere. */
+:root {
+  --cw-sidebar-bg: #1e1b23;
+  --cw-sidebar-text: rgba(255, 255, 255, 0.72);
+  --cw-sidebar-text-active: #ffffff;
+  --cw-accent: #2f8a8a;
+  --cw-page-bg: #f5f6f8;
+  --cw-ink: #1a1d29;
+  --cw-muted: #6b7280;
+  --bs-primary: var(--cw-accent);
+  --bs-primary-rgb: 47, 138, 138;
+  --cw-sidebar-width: 236px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--cw-page-bg);
+  color: var(--cw-ink);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+/* --- Sidebar: plain dark panel, text nav with a solid accent block on the active item --- */
+.app-sidebar {
+  width: var(--cw-sidebar-width);
+  background-color: var(--cw-sidebar-bg);
+  color: var(--cw-sidebar-text);
+}
+
+.sidebar-brand {
+  color: #fff;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #fff;
+}
+
+.brand-subtitle {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Each nav item is its own floating tile: a distinct lighter panel color, rounded
+   corners, a real shadow, and a margin gap to the tiles above/below so the sidebar
+   background shows through between them — not a continuous list. */
+.sidebar-link {
+  color: var(--cw-sidebar-text);
+  text-align: left;
+  border-radius: 12px;
+  margin-bottom: 0.6rem;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  text-decoration: none;
+  border: none;
+  background-color: #2a2e3d;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  width: 100%;
+}
+
+.sidebar-link:last-child {
+  margin-bottom: 0;
+}
+
+.sidebar-link-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.sidebar-link-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--cw-sidebar-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sidebar-link i {
+  font-size: 1.2rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sidebar-link:hover {
+  background-color: #343849;
+  color: var(--cw-sidebar-text-active);
+}
+
+.sidebar-link-active {
+  background-color: var(--cw-accent) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.sidebar-link-active .sidebar-link-icon {
+  background-color: #fff;
+  color: var(--cw-accent);
+}
+
+.sidebar-footnote {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* --- Live unacknowledged-fall count on the nav item, same red as the CRITICAL risk pill --- */
+.sidebar-badge {
+  margin-left: 0.35rem;
+  background-color: #fce9e9;
+  color: #c23b3b;
+  font-weight: 700;
+  font-size: 0.72rem;
+  line-height: 1;
+  border-radius: 999px;
+  padding: 0.3em 0.55em;
+  min-width: 1.2rem;
+  text-align: center;
+}
+
+.app-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Header: plain white bar, page title left, meta text right --- */
+.app-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--cw-ink);
+}
+
+.header-meta-pill {
+  color: var(--cw-muted);
+  background-color: #eef0f3;
+  border-radius: 999px;
+  padding: 0.4em 0.9em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.app-content {
+  flex: 1;
+}
+
+.section-heading {
+  font-weight: 700;
+  font-size: 1rem !important;
+  color: var(--cw-ink);
+  text-transform: none;
+  letter-spacing: normal;
+  margin-bottom: 0.75rem;
+}
+
+/* --- KPI summary cards --- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  border: 1px solid #eef0f3;
+  border-top: 3px solid var(--kpi-stripe-color, #d7dbe0);
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.kpi-card-blue { --kpi-stripe-color: #3364d6; }
+.kpi-card-teal { --kpi-stripe-color: var(--cw-accent); }
+.kpi-card-amber { --kpi-stripe-color: #b8720f; }
+.kpi-card-red { --kpi-stripe-color: #c23b3b; }
+
+.kpi-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.kpi-icon-blue { background: #e8f0fe; color: #3364d6; }
+.kpi-icon-teal { background: #e3f2f2; color: var(--cw-accent); }
+.kpi-icon-amber { background: #fdf3e2; color: #b8720f; }
+.kpi-icon-red { background: #fce9e9; color: #c23b3b; }
+
+.kpi-value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--cw-ink);
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-label {
+  font-size: 0.78rem;
+  color: var(--cw-muted);
+}
+
+/* --- Plain white list cards, normal shadow, no bevel/tint/gradient --- */
+.list-group {
+  gap: 0;
+}
+
+.list-group-item {
+  background-color: #fff;
+  color: var(--cw-ink);
+  border: 1px solid #eef0f3;
+  border-radius: 0;
+  padding: 1.1rem 1.35rem;
+  font-size: 15px;
+}
+
+.list-group-item:first-child {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.list-group-item:last-child {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.list-group-item + .list-group-item {
+  border-top: none;
+}
+
+.list-group.shadow-sm {
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06) !important;
+  border-radius: 12px;
+}
+
+.list-group-item.text-muted {
+  color: var(--cw-muted) !important;
+}
+
+.list-group-item[data-acknowledged="true"] {
+  opacity: 0.55;
+}
+
+.fw-semibold {
+  color: var(--cw-ink);
+}
+
+.text-muted {
+  color: var(--cw-muted) !important;
+}
+
+/* --- Status pills: plain Bootstrap-style soft pills, one per severity --- */
+.badge {
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: normal;
+  text-transform: none;
+  border-radius: 999px;
+  padding: 0.4em 0.8em;
+}
+
+.text-bg-success {
+  background-color: #e6f5ef !important;
+  color: #1f7a5a !important;
+}
+
+.text-bg-warning {
+  background-color: #fdf3e2 !important;
+  color: #b8720f !important;
+}
+
+.risk-critical {
+  background-color: #fce9e9 !important;
+  color: #c23b3b !important;
+}
+
+.text-bg-light.border {
+  background-color: #f5f6f8 !important;
+  color: var(--cw-muted) !important;
+  border-color: #e5e7eb !important;
+  font-weight: 500;
+}
+
+/* --- HRV sparkline: plain accent trace on a light strip under the reading --- */
+.hrv-sparkline-trace {
+  margin-top: 0.4rem;
+  width: 168px;
+}
+
+.hrv-sparkline {
+  display: block;
+}
+
+.hrv-sparkline polyline {
+  stroke: var(--cw-accent) !important;
+}
+
+/* --- Acknowledge: plain outline button, no toggle-switch styling --- */
+.ack-button {
+  border: 1px solid #d7dbe0;
+  background: #fff;
+  color: var(--cw-ink);
+  border-radius: 8px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ack-button:hover:not(:disabled) {
+  background: #f5f6f8;
+  border-color: #c7ccd3;
+}
+
+.ack-button:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.ack-button.is-acked {
+  color: var(--cw-accent);
+  border-color: var(--cw-accent);
+}

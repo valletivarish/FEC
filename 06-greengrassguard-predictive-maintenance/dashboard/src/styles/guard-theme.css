@@ -1,0 +1,332 @@
+/* GreengrassGuard: plain, conventional ops-dashboard look. Warm charcoal sidebar (workshop/
+   diagnostic-bench feel, not the portfolio-default neutral near-black), white content,
+   icon+number KPI cards, clean white data cards. One accent color (industrial orange) marks
+   the active nav item and status highlights - nothing else is themed. */
+:root {
+  --gg-sidebar-bg: #1c1917;
+  --gg-sidebar-text: rgba(255, 255, 255, 0.72);
+  --gg-sidebar-text-active: #ffffff;
+  --gg-accent: #d9702a;
+  --gg-page-bg: #f5f6f8;
+  --gg-ink: #1a1d29;
+  --gg-muted: #6b7280;
+  --bs-primary: var(--gg-accent);
+  --bs-primary-rgb: 217, 112, 42;
+  --gg-sidebar-width: 232px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--gg-page-bg);
+  color: var(--gg-ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+/* --- Sidebar: plain dark panel, no blur/glass, text nav with a solid accent block on the active item --- */
+.app-sidebar {
+  width: var(--gg-sidebar-width);
+  background-color: var(--gg-sidebar-bg);
+  color: var(--gg-sidebar-text);
+}
+
+.sidebar-brand {
+  color: #fff;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.brand-subtitle {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* --- Sidebar nav tiles: stacked icon-square cards, not inline rows --- */
+#sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-link {
+  color: var(--gg-sidebar-text);
+  text-align: center;
+  border-radius: 10px;
+  margin-bottom: 0;
+  padding: 0.65rem 0.5rem;
+  font-size: 0.72rem;
+  line-height: 1.2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: none;
+  border: none;
+  width: 100%;
+  text-decoration: none;
+}
+
+.sidebar-link i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-bottom: 0.4rem;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.08);
+  font-size: 1.35rem;
+  text-align: center;
+}
+
+.sidebar-link:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--gg-sidebar-text-active);
+}
+
+.sidebar-link-active {
+  background-color: var(--gg-accent) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.sidebar-link-active i {
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
+.sidebar-footnote {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.app-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Header: plain white bar, page title + live status chip left, meta text pushed right --- */
+.app-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  gap: 0.75rem;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gg-ink);
+}
+
+/* Monospace diagnostic-style status chip, derived from the same fault aggregate as the
+   KPI strip below — not a separate reading. */
+.status-chip {
+  font-family: 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  border: 1px solid transparent;
+}
+
+.status-chip[data-state='nominal'] {
+  color: #2f9e6f;
+  background-color: #eaf6f0;
+  border-color: #cfead9;
+}
+
+.status-chip[data-state='fault'] {
+  color: #c23b3b;
+  background-color: #fdecec;
+  border-color: #f6cfcf;
+}
+
+.header-meta {
+  color: var(--gg-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.app-content {
+  flex: 1;
+}
+
+/* --- KPI stat strip: one continuous diagnostic-readout bar, stat groups divided by hairlines,
+   no boxed cards — reads like an oscilloscope/bench-meter panel rather than a dashboard grid. */
+.kpi-strip {
+  display: flex;
+  align-items: stretch;
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+
+.kpi-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.9rem 1.35rem;
+  flex: 1 1 0;
+  min-width: 168px;
+  border-right: 1px solid #eef0f3;
+}
+
+.kpi-stat:last-child {
+  border-right: none;
+}
+
+.kpi-stat-icon {
+  font-size: 1rem;
+  color: var(--gg-muted);
+  flex-shrink: 0;
+  width: 1.4rem;
+  text-align: center;
+}
+
+.kpi-stat-danger .kpi-stat-icon { color: #c23b3b; }
+.kpi-stat-warning .kpi-stat-icon { color: #b8720f; }
+
+.kpi-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gg-ink);
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  font-family: 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
+}
+
+.kpi-stat-danger .kpi-value { color: #c23b3b; }
+.kpi-stat-warning .kpi-value { color: #b8720f; }
+
+.kpi-label {
+  font-size: 0.72rem;
+  color: var(--gg-muted);
+  white-space: nowrap;
+}
+
+/* --- Section labels above each card --- */
+.section-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--gg-muted);
+  margin-bottom: 0.75rem;
+}
+
+/* --- Plain white cards, normal shadow, no tint/blur/gradient --- */
+.card {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  color: var(--gg-ink);
+}
+
+.card-body {
+  padding: 1.25rem 1.5rem;
+}
+
+.card-title,
+.panel-heading {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--gg-ink);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.card-subtitle {
+  font-weight: 500;
+}
+
+.text-body-secondary,
+.text-muted {
+  color: var(--gg-muted) !important;
+}
+
+td, .badge, .header-meta, [data-testid="ticker-item-timestamp"] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Normal Bootstrap tables --- */
+.table {
+  color: var(--gg-ink);
+}
+
+.table thead th {
+  color: var(--gg-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border-bottom-color: #eef0f3;
+}
+
+.table td {
+  border-color: #eef0f3;
+}
+
+/* --- Health / anomaly bars: plain Bootstrap progress, severity color, no segmenting --- */
+.progress {
+  background-color: #eef0f3;
+  border-radius: 6px;
+}
+
+.progress-bar.bg-danger { background-color: #c23b3b !important; }
+.progress-bar.bg-warning { background-color: #d99a2b !important; }
+.progress-bar.bg-success { background-color: #2f9e6f !important; }
+.progress-bar.bg-secondary { background-color: #98a2b3 !important; }
+
+/* --- Badges: standard Bootstrap pills, plain severity colors --- */
+.badge.text-bg-danger { background-color: #c23b3b !important; color: #fff !important; }
+.badge.text-bg-warning { background-color: #d99a2b !important; color: #201d16 !important; }
+.badge.text-bg-success { background-color: #2f9e6f !important; color: #fff !important; }
+.badge.text-bg-secondary { background-color: #98a2b3 !important; color: #fff !important; }
+.badge.text-bg-light { background-color: #eef0f3 !important; color: #4b5563 !important; }
+
+.alert-secondary {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  color: var(--gg-ink);
+}
+
+/* --- Fault ticker: plain scrollable list-group, most recent on top --- */
+.ticker-scroll .list-group {
+  max-height: 22rem;
+  overflow-y: auto;
+}
+
+.ticker-scroll .list-group-item {
+  border-color: #eef0f3;
+}
+
+.ticker-scroll .list-group-item[data-event-type="vibe_fault"] {
+  border-left: 3px solid #c23b3b;
+}
+
+.ticker-scroll .list-group-item[data-event-type="thermal_event"],
+.ticker-scroll .list-group-item[data-event-type="hydraulic_event"] {
+  border-left: 3px solid #d99a2b;
+}
+
+.ticker-scroll .list-group-item-danger {
+  --bs-list-group-bg: #fdecec;
+  --bs-list-group-color: var(--gg-ink);
+}

@@ -1,0 +1,6 @@
+entityId: depot-01
+entityType: depot
+metrics:
+  - name: weighbridge-tonnage
+    sampleIntervalSeconds: 15
+    dispatchIntervalSeconds: 15

@@ -1,0 +1,20 @@
+{
+  "name": "officeiq-integration-test",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "jest --runInBand",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.658.0",
+    "@aws-sdk/lib-dynamodb": "^3.658.0",
+    "@aws-sdk/client-sqs": "^3.658.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "eslint": "^10.6.0",
+    "@eslint/js": "^10.0.1",
+    "globals": "^17.7.0"
+  }
+}

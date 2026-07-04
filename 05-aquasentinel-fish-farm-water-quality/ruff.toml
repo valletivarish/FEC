@@ -1,0 +1,6 @@
+# pycodestyle errors + pyflakes only — catches real bugs (unused imports/vars,
+# undefined names) without imposing a style rewrite on existing code.
+line-length = 120
+
+[lint]
+select = ["E", "F"]

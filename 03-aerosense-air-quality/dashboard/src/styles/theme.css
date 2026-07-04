@@ -1,0 +1,413 @@
+/* AeroSense: plain, conventional admin-dashboard look. Dark sidebar, white content,
+   icon+number KPI cards, clean white data cards. One accent (teal) marks the active
+   nav item and highlights - nothing else is themed. */
+:root {
+  --as-sidebar-bg: #141a1e;
+  --as-sidebar-text: rgba(255, 255, 255, 0.72);
+  --as-sidebar-text-active: #ffffff;
+  --as-accent: #2f9e8f;
+  --as-page-bg: #f5f6f8;
+  --as-ink: #1a1d29;
+  --as-muted: #6b7280;
+  --bs-primary: var(--as-accent);
+  --bs-primary-rgb: 47, 158, 143;
+  --as-sidebar-width: 72px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--as-page-bg);
+  color: var(--as-ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+/* --- Sidebar: narrow icon-only rail, tooltips on hover replace the old text labels --- */
+.app-sidebar {
+  width: var(--as-sidebar-width);
+  background-color: var(--as-sidebar-bg);
+  color: var(--as-sidebar-text);
+}
+
+.sidebar-brand {
+  color: #fff;
+  justify-content: center;
+}
+
+.brand-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Icon-only nav button: square icon tile, label kept for a11y only via .visually-hidden */
+.sidebar-link {
+  color: var(--as-sidebar-text);
+  border-radius: 10px;
+  margin-bottom: 0.2rem;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-link i {
+  font-size: 1.05rem;
+  width: auto;
+}
+
+.sidebar-link:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--as-sidebar-text-active);
+}
+
+.sidebar-link:disabled {
+  color: rgba(255, 255, 255, 0.25);
+  cursor: not-allowed;
+}
+
+.sidebar-link-active {
+  background-color: var(--as-accent) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+/* Info affordance replaces the old footnote sentence - same message, delivered via tooltip */
+.sidebar-info {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.sidebar-info:hover {
+  color: rgba(255, 255, 255, 0.75);
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+/* CSS-only tooltip: dark label popping out to the right of any rail item carrying data-tooltip */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--as-ink);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.35rem 0.6rem;
+  border-radius: 5px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+  z-index: 20;
+}
+
+[data-tooltip]:hover::after,
+[data-tooltip]:focus-visible::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+.app-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Header: plain white bar, title stacked above meta text, both left-aligned --- */
+.app-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--as-ink);
+}
+
+.header-meta {
+  margin-top: 0.2rem;
+}
+
+.app-content {
+  flex: 1;
+}
+
+/* --- KPI summary cards --- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Vertical card: icon centered on top, big number below, label under that - all center-aligned */
+.kpi-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  border: 1px solid #eef0f3;
+  padding: 1.25rem 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.4rem;
+}
+
+.kpi-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+  margin-bottom: 0.15rem;
+}
+
+.kpi-icon-blue { background: #e8f0fe; color: #3364d6; }
+.kpi-icon-green { background: #e6f7f1; color: var(--as-accent); }
+.kpi-icon-amber { background: #fdf3e2; color: #b8720f; }
+.kpi-icon-red { background: #fce9e9; color: #c23b3b; }
+
+.kpi-value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--as-ink);
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-label {
+  font-size: 0.78rem;
+  color: var(--as-muted);
+}
+
+/* --- Plain white cards, normal shadow, no tint/blur/gradient --- */
+.card {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  color: var(--as-ink);
+}
+
+.card-header {
+  background-color: transparent;
+  border-bottom: 1px solid #eef0f3;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--as-ink);
+}
+
+.card-footer {
+  background-color: transparent;
+  border-top: 1px solid #eef0f3;
+}
+
+.card-title,
+.panel-heading,
+.toolbar__title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--as-ink);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.text-muted {
+  color: var(--as-muted) !important;
+}
+
+/* Primary button follows the single accent; outline button stays neutral grey. */
+.btn-primary {
+  --bs-btn-bg: var(--as-accent);
+  --bs-btn-border-color: var(--as-accent);
+  --bs-btn-hover-bg: #29897c;
+  --bs-btn-hover-border-color: #29897c;
+  --bs-btn-active-bg: #29897c;
+  --bs-btn-active-border-color: #29897c;
+}
+
+.btn-outline-secondary {
+  --bs-btn-color: var(--as-ink);
+  --bs-btn-border-color: #d7dbe0;
+  --bs-btn-hover-bg: #f5f6f8;
+  --bs-btn-hover-color: var(--as-ink);
+  --bs-btn-hover-border-color: #d7dbe0;
+}
+
+/* --- Zone tiles: plain white cards, accent left edge shows the worst live band --- */
+.zone-tile {
+  cursor: pointer;
+  border-left: 4px solid #d7dbe0;
+  transition: box-shadow 0.15s ease;
+}
+
+.zone-tile:hover,
+.zone-tile:focus-visible {
+  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.1);
+  outline: none;
+}
+
+.zone-tile__title {
+  color: var(--as-ink);
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.zone-tile__metric-value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--as-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.zone-tile__metric-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--as-muted);
+  margin-top: 0.15rem;
+}
+
+.zone-tile:has(.text-bg-success) { border-left-color: var(--as-accent); }
+.zone-tile:has(.text-bg-warning) { border-left-color: #d99a2b; }
+.zone-tile:has(.text-bg-danger) { border-left-color: #c23b3b; }
+
+/* --- Tables: normal Bootstrap look, muted uppercase headers --- */
+.table {
+  color: var(--as-ink);
+}
+
+.table thead th {
+  color: var(--as-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border-bottom-color: #eef0f3;
+}
+
+td.num,
+.band-gauge__value {
+  font-variant-numeric: tabular-nums;
+}
+
+.sparkline__line {
+  stroke: var(--as-accent);
+}
+
+.sparkline__flat {
+  stroke: #c3c8cf;
+  stroke-width: 1;
+}
+
+.config-form__sensor {
+  font-size: 0.85rem;
+}
+
+/* --- Band gauge: plain value + a small horizontal tick rail, accent for the lit band --- */
+.band-gauge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.band-gauge__value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--as-ink);
+}
+
+.band-gauge__unit {
+  font-size: 0.75rem;
+  color: var(--as-muted);
+}
+
+.tick-rail {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 18px;
+  padding: 0 2px;
+  cursor: default;
+}
+
+.tick-rail__tick {
+  width: 3px;
+  height: 60%;
+  background-color: #d7dbe0;
+  border-radius: 1px;
+  transition: height 0.1s ease;
+}
+
+.tick-rail__tick--lit {
+  height: 100%;
+  background-color: var(--tick-color, var(--as-accent));
+}
+
+.tick-rail__tick--past {
+  height: 80%;
+  background-color: #aeb4bd;
+}
+
+.tick-rail__tooltip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--as-ink);
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 3px 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s ease;
+  z-index: 5;
+}
+
+.tick-rail:hover .tick-rail__tooltip,
+.tick-rail:focus-visible .tick-rail__tooltip {
+  opacity: 1;
+}

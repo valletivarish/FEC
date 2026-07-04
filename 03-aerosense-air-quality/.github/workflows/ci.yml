@@ -1,0 +1,83 @@
+name: aerosense-ci
+
+on:
+  push:
+    paths:
+      - '03-aerosense-air-quality/**'
+  pull_request:
+    paths:
+      - '03-aerosense-air-quality/**'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: 03-aerosense-air-quality
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install module dependencies
+        run: |
+          pip install -r sensors/requirements.txt
+          pip install -r fog/requirements.txt
+          pip install -r backend/requirements.txt
+          pip install -r integration-test/requirements.txt
+      - name: Lint (ruff)
+        run: ruff check .
+      - name: Unit test (sensors, fog, backend)
+        run: python -m pytest sensors fog backend -q
+      - name: Start local AWS emulator + MQTT broker
+        working-directory: .
+        run: docker compose up -d
+      - name: Wait for emulator health
+        run: |
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:4566/_localstack/health > /dev/null && break
+            sleep 2
+          done
+      - name: Integration test
+        working-directory: 03-aerosense-air-quality/integration-test
+        run: python -m pytest -q
+        env:
+          AWS_ENDPOINT_URL: http://localhost:4566
+          AWS_REGION: eu-west-1
+          AWS_DEFAULT_REGION: eu-west-1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          AEROSENSE_ADVISORY_TABLE: AeroSenseAdvisoryEvents
+      - name: CDK synth (validates infra)
+        working-directory: 03-aerosense-air-quality/infra
+        run: |
+          pip install -r requirements.txt
+          npx --yes aws-cdk@2 synth
+      - name: Dashboard Playwright tests
+        working-directory: 03-aerosense-air-quality/dashboard
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+          npm run test:e2e
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: aerosense-production
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Deploy to AWS
+        working-directory: 03-aerosense-air-quality/infra
+        run: |
+          pip install -r requirements.txt
+          npx --yes aws-cdk@2 deploy --require-approval never
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-west-1

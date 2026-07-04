@@ -1,0 +1,281 @@
+/* GreenGrid: plain, conventional ops-dashboard look. Slate-green dark sidebar, white
+   content, watermark-icon KPI cards, clean white data cards. One accent color (green)
+   marks the active nav item and status highlights - nothing else is themed. */
+:root {
+  --gg-sidebar-bg: #161d1a;
+  --gg-sidebar-text: rgba(255, 255, 255, 0.72);
+  --gg-sidebar-text-active: #ffffff;
+  --gg-accent: #4f7a52;
+  --gg-page-bg: #f5f6f8;
+  --gg-ink: #1a1d29;
+  --gg-muted: #6b7280;
+  --bs-primary: var(--gg-accent);
+  --bs-primary-rgb: 79, 122, 82;
+  --gg-sidebar-width: 232px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--gg-page-bg);
+  color: var(--gg-ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+/* --- Sidebar: plain dark panel, no blur/glass, text nav with a solid accent block on the active item --- */
+.app-sidebar {
+  width: var(--gg-sidebar-width);
+  background-color: var(--gg-sidebar-bg);
+  color: var(--gg-sidebar-text);
+}
+
+.sidebar-brand {
+  color: #fff;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.brand-subtitle {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Groups the flat nav into labeled sections (Overview / Watch Layers / Log) so the
+   sidebar reflects the three-fog-station watch-layer architecture, not just a link list.
+   Each group is its own tinted, bordered card in the sidebar - a structural cue that
+   holds regardless of live-data state, not just a text label above a flat list. */
+.nav-group {
+  background-color: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 0.6rem 0.5rem;
+}
+
+.nav-group + .nav-group {
+  margin-top: 0.7rem;
+}
+
+.nav-group-label {
+  display: block;
+  padding-left: 0.25rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.66rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.36);
+}
+
+.nav-group .sidebar-link:last-child {
+  margin-bottom: 0;
+}
+
+.sidebar-link {
+  color: var(--gg-sidebar-text);
+  text-align: left;
+  border-radius: 6px;
+  margin-bottom: 0.2rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: 0;
+  width: 100%;
+  text-decoration: none;
+}
+
+.sidebar-link i {
+  font-size: 0.95rem;
+  width: 1.1rem;
+  text-align: center;
+}
+
+.sidebar-link:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--gg-sidebar-text-active);
+}
+
+.sidebar-link-active {
+  background-color: var(--gg-accent) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.sidebar-footnote {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.app-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Header: plain white bar, page title left, station-count pill right --- */
+.app-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gg-ink);
+}
+
+.header-station-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--gg-accent);
+  background: #e7f1e8;
+  border: 1px solid #d3e3d4;
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+}
+
+.app-content {
+  flex: 1;
+}
+
+.app-content > section > h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gg-ink);
+}
+
+/* --- KPI summary cards --- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  border: 1px solid #eef0f3;
+  padding: 1.1rem 1.25rem;
+  overflow: hidden;
+  min-height: 96px;
+  display: flex;
+  align-items: center;
+}
+
+/* Icon rendered oversized and near-transparent, filling the card as a background
+   watermark - the number/label sit on top of it in full contrast. */
+.kpi-icon {
+  position: absolute;
+  top: 50%;
+  right: -0.25rem;
+  transform: translateY(-50%);
+  font-size: 4.75rem;
+  line-height: 1;
+  opacity: 0.09;
+  pointer-events: none;
+}
+
+.kpi-icon-green { color: var(--gg-accent); }
+.kpi-icon-blue { color: #3364d6; }
+.kpi-icon-amber { color: #b8720f; }
+.kpi-icon-red { color: #c23b3b; }
+
+.kpi-card-body {
+  position: relative;
+  z-index: 1;
+}
+
+.kpi-value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--gg-ink);
+  line-height: 1.15;
+}
+
+.kpi-label {
+  font-size: 0.78rem;
+  color: var(--gg-muted);
+}
+
+/* --- Plain white cards, normal shadow, no tint/blur/gradient --- */
+.card {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  color: var(--gg-ink);
+}
+
+.card-header {
+  background-color: #fff;
+  border-bottom: 1px solid #eef0f3;
+}
+
+.card-title,
+.card-subtitle {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--gg-ink);
+}
+
+.card-subtitle {
+  font-weight: 500;
+  font-size: 0.82rem;
+}
+
+.list-group-item {
+  background-color: #fff;
+  border-color: #eef0f3;
+}
+
+.text-muted,
+.text-secondary {
+  color: var(--gg-muted) !important;
+}
+
+/* --- Plain Bootstrap tables --- */
+.table {
+  color: var(--gg-ink);
+}
+
+.table thead th {
+  color: var(--gg-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border-bottom-color: #eef0f3;
+}
+
+.table > :not(caption) > * > * {
+  border-color: #eef0f3;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: #fafbfc;
+}
+
+/* Station overview cards keep their id-based hook but drop the themed accents:
+   plain white card, no left rule, no per-station edge color. */
+.station-field-report {
+  position: relative;
+}

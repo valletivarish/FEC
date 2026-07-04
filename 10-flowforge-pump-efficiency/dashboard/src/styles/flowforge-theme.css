@@ -1,0 +1,321 @@
+/* FlowForge: plain, conventional admin-dashboard look. Copper-toned dark sidebar, white
+   content, number-first KPI cards with a small corner icon badge, clean white data cards.
+   One accent color (copper) marks the active nav item and highlights - nothing else is themed. */
+:root {
+  --ff-sidebar-bg: #1a1613;
+  --ff-sidebar-text: rgba(255, 255, 255, 0.72);
+  --ff-sidebar-text-active: #ffffff;
+  --ff-accent: #c98a3b;
+  --ff-page-bg: #f5f6f8;
+  --ff-ink: #1a1d29;
+  --ff-muted: #6b7280;
+  --bs-primary: var(--ff-accent);
+  --bs-primary-rgb: 201, 138, 59;
+  --ff-sidebar-width: 72px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--ff-page-bg);
+  color: var(--ff-ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+/* --- Sidebar: narrow icon rail. Text labels live in title/aria attrs and a visually-hidden
+   span, not on screen - only the icon tile and its active-state accent fill are visible. --- */
+.app-sidebar {
+  width: var(--ff-sidebar-width);
+  background-color: var(--ff-sidebar-bg);
+  color: var(--ff-sidebar-text);
+  align-items: center;
+}
+
+.sidebar-brand {
+  color: #fff;
+  width: 100%;
+}
+
+.brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+
+.sidebar-link {
+  color: var(--ff-sidebar-text);
+  border-radius: 8px;
+  margin-bottom: 0.35rem;
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+}
+
+.sidebar-link i {
+  font-size: 1.05rem;
+}
+
+.sidebar-link:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--ff-sidebar-text-active);
+}
+
+.sidebar-link-active {
+  background-color: var(--ff-accent) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.sidebar-footnote-icon {
+  color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 28px;
+  cursor: default;
+}
+
+.sidebar-footnote-icon:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.app-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Header: plain white bar, page title left, meta text right --- */
+.app-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ff-ink);
+}
+
+/* Header meta: row of small rounded stat pills instead of middot-separated text */
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.header-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #f5f6f8;
+  border: 1px solid #eef0f3;
+  color: var(--ff-muted);
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.header-meta-pill-live {
+  background: #f7ecdd;
+  border-color: #f0ddc0;
+  color: #8a5a12;
+  font-weight: 600;
+}
+
+.ff-live-dot {
+  color: var(--ff-accent);
+}
+
+.ff-live-dot-offline {
+  color: var(--ff-muted);
+}
+
+.app-content {
+  flex: 1;
+}
+
+/* Acquisition meta strip reports real dispatch staleness (see acqBar.js). Plain muted
+   text row under the header, not a themed instrument band. */
+.ff-acq-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+  color: var(--ff-muted);
+  margin-bottom: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.ff-acq-sep {
+  color: #d0d4da;
+}
+
+.ff-acq-bar.ff-acq-degraded #acq-signal-state,
+.ff-acq-bar.ff-acq-degraded #acq-window-state {
+  color: #c23b3b;
+  font-weight: 600;
+}
+
+/* --- KPI summary cards --- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Number-first card: big value dominates, icon is a small corner badge, not a left square */
+.kpi-card {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  border: 1px solid #eef0f3;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.kpi-icon {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.kpi-icon-copper { background: #f7ecdd; color: var(--ff-accent); }
+.kpi-icon-blue { background: #e8f0fe; color: #3364d6; }
+.kpi-icon-green { background: #e6f7f1; color: #2f9e8f; }
+.kpi-icon-amber { background: #fdf3e2; color: #b8720f; }
+.kpi-icon-red { background: #fce9e9; color: #c23b3b; }
+
+.kpi-value {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--ff-ink);
+  line-height: 1.1;
+  padding-right: 1.75rem;
+}
+
+.kpi-label {
+  font-size: 0.78rem;
+  color: var(--ff-muted);
+}
+
+/* --- Plain white cards, normal shadow, no tint/blur/gradient --- */
+.card,
+.readout-panel {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  color: var(--ff-ink);
+}
+
+.card-title,
+.readout-panel .card-title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ff-ink);
+  text-transform: none;
+  letter-spacing: normal;
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.text-muted {
+  color: var(--ff-muted) !important;
+}
+
+/* --- Plain Bootstrap tables, light theme --- */
+.readout-panel .table {
+  color: var(--ff-ink);
+  --bs-table-bg: #fff;
+  --bs-table-color: var(--ff-ink);
+  --bs-table-hover-bg: #f5f6f8;
+  --bs-table-hover-color: var(--ff-ink);
+  --bs-table-border-color: #eef0f3;
+}
+
+.readout-panel thead th,
+.table thead th {
+  color: var(--ff-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border-bottom: 1px solid #eef0f3 !important;
+}
+
+.readout-value {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Status pills: plain Bootstrap contextual colors --- */
+.badge {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: normal;
+}
+
+.badge.text-bg-success {
+  background-color: #e6f7f1 !important;
+  color: #1f7a68 !important;
+}
+
+.badge.text-bg-warning {
+  background-color: #fdf3e2 !important;
+  color: #b8720f !important;
+}
+
+.badge.text-bg-danger {
+  background-color: #fce9e9 !important;
+  color: #c23b3b !important;
+}
+
+.badge.text-bg-secondary {
+  background-color: #eef0f3 !important;
+  color: var(--ff-muted) !important;
+}
+
+.alert-warning {
+  background-color: #fdf3e2;
+  border: 1px solid #f4d9a8;
+  color: #8a5a12;
+}

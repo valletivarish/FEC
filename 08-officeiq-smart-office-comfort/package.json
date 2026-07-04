@@ -1,0 +1,11 @@
+{
+  "name": "officeiq-lint-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Holds the shared ESLint flat config's own deps — workspaces install/test independently via --prefix",
+  "devDependencies": {
+    "eslint": "^10.6.0",
+    "@eslint/js": "^10.0.1",
+    "globals": "^17.7.0"
+  }
+}

@@ -1,0 +1,435 @@
+/* FloodWatch: plain, conventional ops-dashboard look. Dark sidebar, white content,
+   icon+number KPI cards, clean white data cards. One accent color (steel-teal) marks the
+   active nav item and highlights. Stage colors (green/amber/red) are reserved for real
+   alert levels only, never decorative. */
+:root {
+  --fw-sidebar-bg: #121a1f;
+  --fw-sidebar-text: rgba(255, 255, 255, 0.72);
+  --fw-sidebar-text-active: #ffffff;
+  --fw-accent: #2d7d9a;
+  --fw-page-bg: #f5f6f8;
+  --fw-ink: #1a1d29;
+  --fw-muted: #6b7280;
+  --bs-primary: var(--fw-accent);
+  --bs-primary-rgb: 45, 125, 154;
+  --fw-sidebar-width: 232px;
+  --stage-green: #3f9e57;
+  --stage-amber: #c98a12;
+  --stage-red: #c23b3b;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--fw-page-bg);
+  color: var(--fw-ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+/* --- Sidebar: plain dark panel, text nav with a solid accent block on the active item --- */
+.app-sidebar {
+  width: var(--fw-sidebar-width);
+  background-color: var(--fw-sidebar-bg);
+  color: var(--fw-sidebar-text);
+}
+
+.sidebar-brand {
+  color: #fff;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.brand-subtitle {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.sidebar-link {
+  color: var(--fw-sidebar-text);
+  text-align: left;
+  border-radius: 6px;
+  margin-bottom: 0.55rem;
+  padding: 0.4rem 0.75rem 0.4rem 0.4rem;
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  text-decoration: none;
+}
+
+.sidebar-link:last-child {
+  margin-bottom: 0;
+}
+
+/* Circular avatar-style icon button - always renders as a distinct filled/outlined
+   circle regardless of live data state, unlike the badge which only shows on count > 0. */
+.sidebar-link-icon {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sidebar-link-icon i {
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.sidebar-link:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--fw-sidebar-text-active);
+}
+
+.sidebar-link:hover .sidebar-link-icon {
+  background-color: rgba(255, 255, 255, 0.14);
+}
+
+.sidebar-link-active {
+  background-color: var(--fw-accent) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.sidebar-link-active .sidebar-link-icon {
+  background-color: #fff;
+  color: var(--fw-accent);
+}
+
+/* Live escalation count on the nav item - reuses the same stage-red used for danger
+   badges/borders elsewhere, so it reads as "active alert count" not decoration. */
+.sidebar-link-badge {
+  margin-left: auto;
+  background-color: var(--stage-red);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.28rem 0.5rem;
+  border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+}
+
+.sidebar-footnote {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.app-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Below the sidebar's width the shell stacks: sidebar becomes a top strip and the content
+   area takes the full page width instead of being squeezed beside a fixed rail. */
+@media (max-width: 640px) {
+  .app-shell {
+    flex-direction: column;
+  }
+  .app-sidebar {
+    width: 100%;
+  }
+  .app-sidebar .nav {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  .sidebar-footnote {
+    display: none;
+  }
+}
+
+/* --- Header: plain white bar, page title left, meta text right --- */
+.app-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--fw-ink);
+}
+
+/* Reach count called out as a pill next to the title; other counts stay plain text. */
+.header-reach-pill {
+  background-color: var(--fw-accent);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.app-content {
+  flex: 1;
+}
+
+/* --- KPI summary cards: horizontally scrollable strip of portrait cards --- */
+.kpi-row {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.25rem;
+}
+
+.kpi-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  border: 1px solid #eef0f3;
+  padding: 1.25rem 1rem;
+  width: 128px;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.6rem;
+}
+
+.kpi-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.kpi-icon-teal { background: #e4f1f5; color: var(--fw-accent); }
+.kpi-icon-blue { background: #e8f0fe; color: #3364d6; }
+.kpi-icon-amber { background: #fdf3e2; color: #b8720f; }
+.kpi-icon-red { background: #fce9e9; color: #c23b3b; }
+.kpi-icon-slate { background: #eef0f3; color: #4b5563; }
+
+.kpi-value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--fw-ink);
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-label {
+  font-size: 0.78rem;
+  color: var(--fw-muted);
+}
+
+/* --- Plain white cards, normal shadow, no tint/border-accent/gradient --- */
+.card {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  color: var(--fw-ink);
+}
+
+.section-heading {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--fw-ink);
+}
+
+.text-muted {
+  color: var(--fw-muted) !important;
+}
+
+.table {
+  color: var(--fw-ink);
+}
+
+.table thead th {
+  color: var(--fw-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border-bottom-color: #eef0f3;
+}
+
+.reach-id {
+  font-weight: 600;
+  color: var(--fw-ink);
+}
+
+td, th {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Stage/status badges keep Bootstrap's pill shape; only the exact hues are set to the
+   project's stage palette so they read as deliberate alert levels. */
+.text-bg-success { background-color: var(--stage-green) !important; }
+.text-bg-warning { background-color: var(--stage-amber) !important; color: #fff !important; }
+.text-bg-danger { background-color: var(--stage-red) !important; }
+
+.alert-danger {
+  background-color: #fce9e9;
+  border-color: var(--stage-red);
+  color: #7f2222;
+}
+
+.alert-warning {
+  background-color: #fdf3e2;
+  border-color: var(--stage-amber);
+  color: #7a5606;
+}
+
+.list-group-item {
+  background-color: #fff;
+  color: var(--fw-ink);
+}
+
+.escalation-log-item:hover {
+  background-color: #f5f6f8;
+}
+
+/* Left-edge severity accent on log entries. */
+.escalation-log-item {
+  border-left-width: 4px;
+}
+
+.escalation-log-item.severity-accent-danger { border-left-color: var(--stage-red); }
+.escalation-log-item.severity-accent-warning { border-left-color: var(--stage-amber); }
+.escalation-log-item.severity-accent-success { border-left-color: var(--stage-green); }
+.escalation-log-item.severity-accent-secondary { border-left-color: #d1d5db; }
+
+.river-sparkline {
+  color: var(--fw-accent);
+  flex-shrink: 0;
+}
+
+/* --- Stage summary strip: one plain white card holding the worst current stage and the
+   two headline figures. No metal-plate/gauge styling, just a card like the rest. --- */
+.stage-board {
+  margin-bottom: 1.5rem;
+}
+
+.stage-board-panel {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem 2.5rem;
+}
+
+.stage-board-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fw-muted);
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+.stage-board-word {
+  font-weight: 700;
+  font-size: 1.55rem;
+  line-height: 1.2;
+}
+
+.stage-word-green { color: var(--stage-green); }
+.stage-word-amber { color: var(--stage-amber); }
+.stage-word-red { color: var(--stage-red); }
+.stage-word-unknown { color: var(--fw-muted); }
+
+.stage-board-metrics {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.stage-board-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.stage-board-metric-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fw-muted);
+}
+
+.stage-board-metric-value {
+  font-size: 1.15rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.stage-board-metric-abbr {
+  text-transform: none;
+  letter-spacing: normal;
+  color: #9aa1ad;
+}
+
+.stage-board-metric-hint {
+  font-size: 0.66rem;
+  color: #9aa1ad;
+}
+
+.stage-board-streams-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fw-muted);
+}
+
+.stage-board-streams {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.stage-board-tick {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.stage-board-tick-mark {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #d1d5db;
+  background-color: transparent;
+}
+
+.stage-board-tick-active .stage-board-tick-mark {
+  border-color: var(--fw-accent);
+  background-color: var(--fw-accent);
+}
+
+.stage-board-tick-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fw-muted);
+}

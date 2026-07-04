@@ -1,0 +1,32 @@
+residentId: resident-03
+metrics:
+  heartrate:
+    sampleIntervalSeconds: 2
+    dispatchIntervalSeconds: 1
+  spo2:
+    sampleIntervalSeconds: 1
+    dispatchIntervalSeconds: 1
+  resprate:
+    sampleIntervalSeconds: 2
+    dispatchIntervalSeconds: 2
+  skintemp:
+    sampleIntervalSeconds: 8
+    dispatchIntervalSeconds: 8
+  ecgrr:
+    sampleIntervalSeconds: 1
+    dispatchIntervalSeconds: 1
+  accelerometer:
+    sampleIntervalSeconds: 1
+    dispatchIntervalSeconds: 1
+  gyroscope:
+    sampleIntervalSeconds: 1
+    dispatchIntervalSeconds: 1
+  room-pir:
+    sampleIntervalSeconds: 3
+    dispatchIntervalSeconds: 3
+  room-ambienttemp:
+    sampleIntervalSeconds: 6
+    dispatchIntervalSeconds: 6
+  room-airquality:
+    sampleIntervalSeconds: 7
+    dispatchIntervalSeconds: 7

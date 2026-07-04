@@ -1,0 +1,12 @@
+{
+  "air-temperature": { "sampleFrequencyMs": 4000, "dispatchRateMs": 4000 },
+  "air-humidity": { "sampleFrequencyMs": 3000, "dispatchRateMs": 3000 },
+  "co2": { "sampleFrequencyMs": 5000, "dispatchRateMs": 5000 },
+  "par-light": { "sampleFrequencyMs": 5000, "dispatchRateMs": 5000 },
+  "substrate-moisture": { "sampleFrequencyMs": 8000, "dispatchRateMs": 8000 },
+  "substrate-ec": { "sampleFrequencyMs": 8000, "dispatchRateMs": 8000 },
+  "water-ph": { "sampleFrequencyMs": 8500, "dispatchRateMs": 8500 },
+  "water-temperature": { "sampleFrequencyMs": 8000, "dispatchRateMs": 8000 },
+  "vent-position": { "sampleFrequencyMs": 4000, "dispatchRateMs": 4000 },
+  "door-contact": { "sampleFrequencyMs": 4000, "dispatchRateMs": 4000 }
+}

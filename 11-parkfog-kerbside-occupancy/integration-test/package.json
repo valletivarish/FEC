@@ -1,0 +1,19 @@
+{
+  "name": "parkfog-integration-test",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "jest --runInBand",
+    "lint": "eslint --config ../eslint.config.js ."
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.658.0",
+    "@aws-sdk/client-sqs": "^3.1079.0",
+    "@aws-sdk/lib-dynamodb": "^3.658.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "eslint": "^9.9.0",
+    "@eslint/js": "^9.9.0"
+  }
+}

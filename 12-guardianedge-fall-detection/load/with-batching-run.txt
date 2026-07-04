@@ -1,0 +1,53 @@
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+=== GuardianEdge alert-queue burst load test (with-batching) ===
+timestamp:            2026-07-03T19:42:01.255636Z
+queue:                http://localhost:4566/000000000000/guardianedge-alert-queue.fifo
+ESM batching config:  batchSize=10, maxBatchingWindowSeconds=0
+eventCount:           50
+concurrentSenders:    50
+
+--- send phase ---
+wall clock:           18 ms
+send failures:        0
+
+--- drain phase (polling real DynamoDB EventHistoryTable) ---
+elapsedSec=0, confirmed=0/50
+elapsedSec=0, confirmed=0/50
+elapsedSec=0, confirmed=10/50
+elapsedSec=0, confirmed=10/50
+elapsedSec=0, confirmed=10/50
+elapsedSec=0, confirmed=10/50
+elapsedSec=1, confirmed=10/50
+elapsedSec=1, confirmed=10/50
+elapsedSec=1, confirmed=20/50
+elapsedSec=1, confirmed=20/50
+elapsedSec=1, confirmed=20/50
+elapsedSec=1, confirmed=20/50
+elapsedSec=2, confirmed=20/50
+elapsedSec=2, confirmed=20/50
+elapsedSec=2, confirmed=27/50
+elapsedSec=2, confirmed=30/50
+elapsedSec=2, confirmed=30/50
+elapsedSec=2, confirmed=30/50
+elapsedSec=3, confirmed=30/50
+elapsedSec=3, confirmed=30/50
+elapsedSec=3, confirmed=30/50
+elapsedSec=3, confirmed=40/50
+elapsedSec=3, confirmed=40/50
+elapsedSec=3, confirmed=40/50
+elapsedSec=3, confirmed=40/50
+elapsedSec=3, confirmed=40/50
+elapsedSec=4, confirmed=40/50
+elapsedSec=4, confirmed=40/50
+elapsedSec=4, confirmed=43/50
+elapsedSec=4, confirmed=50/50
+
+--- summary ---
+confirmed writes:     50/50
+unconfirmed (timeout):0
+end-to-end latency p50:  2410 ms
+end-to-end latency p95:  4510 ms
+end-to-end latency max:  4514 ms
+end-to-end latency min:  391 ms

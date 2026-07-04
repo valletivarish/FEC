@@ -1,0 +1,31 @@
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+=== BinSight fire-risk burst load test ===
+timestamp:            2026-07-04T06:46:44.796913Z
+queue:                http://localhost:4566/000000000000/binsight-fire-risk-queue
+FireRiskIngestHandler reserved concurrency: 2
+messageCount:         150
+concurrentSenders:    15
+
+--- send phase ---
+wall clock:           43 ms
+send failures:        0
+send latency p50:     2 ms
+send latency p95:     18 ms
+send latency max:     19 ms
+effective send rate:  3488.4 msg/s
+
+--- drain phase (polling real SQS GetQueueAttributes) ---
+elapsedSec, approxVisible, approxNotVisible, approxAgeOfOldestSec
+0, 150, 0, 0
+2, 110, 0, 0
+4, 70, 0, 0
+6, 30, 0, 0
+8, 0, 0, 0
+queue drained (0 visible, 0 in-flight) at elapsedSec=8
+
+--- summary ---
+max observed backlog (visible+inflight): 150
+max observed ApproximateAgeOfOldestMessage (sec): 0
+approx time until queue drained to zero (sec): 8

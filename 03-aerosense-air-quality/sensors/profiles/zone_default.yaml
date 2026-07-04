@@ -1,0 +1,73 @@
+# Generic classroom/office zone profile with balanced sampling cadences.
+zone_id: zone-default
+sensors:
+  co2:
+    frequency_s: 15
+    dispatch_rate: on_change
+    min: 400
+    max: 3000
+    model: random_walk
+    step: 40
+  pm25:
+    frequency_s: 20
+    dispatch_rate: on_change
+    min: 0
+    max: 250
+    model: random_walk
+    step: 4
+  pm10:
+    frequency_s: 20
+    dispatch_rate: on_change
+    min: 0
+    max: 350
+    model: random_walk
+    step: 6
+  tvoc:
+    frequency_s: 25
+    dispatch_rate: on_change
+    min: 0
+    max: 2000
+    model: random_walk
+    step: 30
+  hcho:
+    frequency_s: 30
+    dispatch_rate: on_change
+    min: 0
+    max: 500
+    model: random_walk
+    step: 8
+  temperature:
+    frequency_s: 30
+    dispatch_rate: 60
+    min: 14
+    max: 32
+    model: random_walk
+    step: 0.3
+  humidity:
+    frequency_s: 30
+    dispatch_rate: 60
+    min: 15
+    max: 85
+    model: random_walk
+    step: 1.5
+  occupancy_pir:
+    frequency_s: 2
+    dispatch_rate: on_change
+    min: 0
+    max: 1
+    model: flip
+    flip_probability: 0.06
+  co:
+    frequency_s: 20
+    dispatch_rate: on_change
+    min: 0
+    max: 50
+    model: random_walk
+    step: 0.6
+  no2:
+    frequency_s: 20
+    dispatch_rate: on_change
+    min: 0
+    max: 200
+    model: random_walk
+    step: 3

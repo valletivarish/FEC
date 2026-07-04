@@ -1,0 +1,65 @@
+{
+  "run_started_utc": "2026-07-03T19:12:20Z",
+  "run_finished_utc": "2026-07-03T19:14:22Z",
+  "fleet_size": 20,
+  "baseline_queue": {
+    "visible": 0,
+    "in_flight": 0,
+    "delayed": 0
+  },
+  "baseline_ingest_fn_concurrency_config": {
+    "reserved_concurrent_executions": 20,
+    "state": "Active",
+    "last_update_status": "Successful"
+  },
+  "normal_stage": {
+    "stage": "NORMAL (baseline dispatch rate)",
+    "target_interval_s_per_vessel": 2.0,
+    "target_fleet_rate_events_per_sec": 10.0,
+    "wall_elapsed_s": 61.77,
+    "events_submitted": 585,
+    "errors": 0,
+    "achieved_rate_events_per_sec": 9.47,
+    "latency_ms": {
+      "min": 4.34,
+      "p50": 12.36,
+      "p95": 71.77,
+      "max": 6086.22
+    },
+    "queue_after_stage": {
+      "visible": 0,
+      "in_flight": 0,
+      "delayed": 0
+    },
+    "ingest_fn_concurrency_config": {
+      "reserved_concurrent_executions": 20,
+      "state": "Active",
+      "last_update_status": "Successful"
+    }
+  },
+  "ramped_stage": {
+    "stage": "RAMPED (~2x dispatch rate)",
+    "target_interval_s_per_vessel": 1.0,
+    "target_fleet_rate_events_per_sec": 20.0,
+    "wall_elapsed_s": 60.93,
+    "events_submitted": 1149,
+    "errors": 0,
+    "achieved_rate_events_per_sec": 18.86,
+    "latency_ms": {
+      "min": 3.6,
+      "p50": 8.12,
+      "p95": 19.04,
+      "max": 5200.47
+    },
+    "queue_after_stage": {
+      "visible": 534,
+      "in_flight": 0,
+      "delayed": 0
+    },
+    "ingest_fn_concurrency_config": {
+      "reserved_concurrent_executions": 20,
+      "state": "Active",
+      "last_update_status": "Successful"
+    }
+  }
+}

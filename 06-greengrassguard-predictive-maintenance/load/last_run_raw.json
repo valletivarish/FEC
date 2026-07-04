@@ -1,0 +1,389 @@
+{
+  "num_assets": 20,
+  "burst_duration_s": 68.17,
+  "requests_sent": 140,
+  "successes": 140,
+  "failures": 0,
+  "effective_rate_req_s": 2.05,
+  "latency_p50_ms": 8713.6,
+  "latency_p95_ms": 9897.9,
+  "latency_p99_ms": 10427.7,
+  "queue_depth_before": {
+    "ApproximateNumberOfMessages": "0"
+  },
+  "queue_depth_after": {
+    "ApproximateNumberOfMessages": "0"
+  },
+  "queue_depth_samples": [
+    {
+      "t": 118807.044079416,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118808.049847291,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118809.054052333,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118810.057735833,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118811.060252,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118812.063311,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118813.067151291,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118814.070133166,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118815.074264916,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118816.076631958,
+      "visible": 13,
+      "in_flight": 0
+    },
+    {
+      "t": 118817.080524916,
+      "visible": 5,
+      "in_flight": 0
+    },
+    {
+      "t": 118818.0875815,
+      "visible": 4,
+      "in_flight": 0
+    },
+    {
+      "t": 118819.092083083,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118820.0962735,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118821.100416166,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118822.103097291,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118823.10569425,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118824.108328583,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118825.112659541,
+      "visible": 6,
+      "in_flight": 0
+    },
+    {
+      "t": 118826.148587875,
+      "visible": 4,
+      "in_flight": 0
+    },
+    {
+      "t": 118827.1515735,
+      "visible": 4,
+      "in_flight": 0
+    },
+    {
+      "t": 118828.157854625,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118829.16145,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118830.165509041,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118831.16967225,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118832.177486916,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118833.184321375,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118834.18758525,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118835.190621041,
+      "visible": 8,
+      "in_flight": 0
+    },
+    {
+      "t": 118836.194066625,
+      "visible": 2,
+      "in_flight": 0
+    },
+    {
+      "t": 118837.198174583,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118838.209764666,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118839.212236416,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118840.215508416,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118841.218398208,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118842.221421708,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118843.223526208,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118844.226791416,
+      "visible": 13,
+      "in_flight": 0
+    },
+    {
+      "t": 118845.232614791,
+      "visible": 6,
+      "in_flight": 0
+    },
+    {
+      "t": 118846.235484583,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118847.239745416,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118848.242817416,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118849.257888625,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118850.261538375,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118851.266954083,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118852.272907583,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118853.277133041,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118854.283553625,
+      "visible": 14,
+      "in_flight": 0
+    },
+    {
+      "t": 118855.28760575,
+      "visible": 6,
+      "in_flight": 0
+    },
+    {
+      "t": 118856.291738541,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118857.29534775,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118858.297737916,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118859.300593166,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118860.307131916,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118861.310189916,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118862.316995833,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118863.322907875,
+      "visible": 3,
+      "in_flight": 0
+    },
+    {
+      "t": 118864.329576166,
+      "visible": 5,
+      "in_flight": 0
+    },
+    {
+      "t": 118865.33254325,
+      "visible": 7,
+      "in_flight": 0
+    },
+    {
+      "t": 118866.339578791,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118867.344203208,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118868.352388291,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118869.358187583,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118870.3641775,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118871.369021791,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118872.374954958,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118873.38364025,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118874.386483791,
+      "visible": 14,
+      "in_flight": 0
+    },
+    {
+      "t": 118875.393589541,
+      "visible": 6,
+      "in_flight": 0
+    },
+    {
+      "t": 118876.397394666,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118877.404143125,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118878.409213875,
+      "visible": 0,
+      "in_flight": 0
+    },
+    {
+      "t": 118879.417076916,
+      "visible": 0,
+      "in_flight": 0
+    }
+  ],
+  "max_visible_depth_during_burst": 14,
+  "max_in_flight_during_burst": 0,
+  "messages_stored_before": 1,
+  "messages_stored_after": 141,
+  "messages_stored_delta": 140
+}

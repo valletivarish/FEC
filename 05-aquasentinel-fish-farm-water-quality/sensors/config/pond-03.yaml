@@ -1,0 +1,43 @@
+# AquaSentinel sensor timing config for pond-03.
+pond_id: pond-03
+sensors:
+  dissolved-oxygen:
+    unit: mg/L
+    sample_interval_s: 10
+    dispatch_interval_s: 10
+  water-temperature:
+    unit: degC
+    sample_interval_s: 30
+    dispatch_interval_s: 30
+  ph:
+    unit: pH
+    sample_interval_s: 30
+    dispatch_interval_s: 30
+  salinity:
+    unit: ppt
+    sample_interval_s: 60
+    dispatch_interval_s: 60
+  turbidity:
+    unit: NTU
+    sample_interval_s: 30
+    dispatch_interval_s: 30
+  ammonia-nh3-total:
+    unit: mg/L
+    sample_interval_s: 60
+    dispatch_interval_s: 60
+  nitrite-no2:
+    unit: mg/L
+    sample_interval_s: 60
+    dispatch_interval_s: 60
+  orp:
+    unit: mV
+    sample_interval_s: 30
+    dispatch_interval_s: 30
+  water-level:
+    unit: cm
+    sample_interval_s: 60
+    dispatch_interval_s: 60
+  feeder-load-cell:
+    unit: g/cycle
+    sample_interval_s: 300
+    dispatch_interval_s: 300

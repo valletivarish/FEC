@@ -1,0 +1,38 @@
+# Per-topic sampling/dispatch cadence, shared across all zones.
+# dispatchRateMs must be >= sampleFrequencyMs (validated by configLoader.js).
+sensors:
+  electricity:
+    sampleFrequencyMs: 5000
+    dispatchRateMs: 60000
+  water-flow:
+    sampleFrequencyMs: 5000
+    dispatchRateMs: 60000
+  temperature:
+    sampleFrequencyMs: 10000
+    dispatchRateMs: 30000
+  humidity:
+    sampleFrequencyMs: 10000
+    dispatchRateMs: 30000
+  light-lux:
+    sampleFrequencyMs: 10000
+    dispatchRateMs: 30000
+  co2:
+    sampleFrequencyMs: 10000
+    dispatchRateMs: 30000
+  door-contact:
+    sampleFrequencyMs: 1000
+    dispatchRateMs: 5000
+  motion:
+    sampleFrequencyMs: 1000
+    dispatchRateMs: 5000
+  sound-level:
+    sampleFrequencyMs: 5000
+    dispatchRateMs: 15000
+  hvac-duct-pressure:
+    sampleFrequencyMs: 5000
+    dispatchRateMs: 15000
+
+zones:
+  - zone-a
+  - zone-b
+  - zone-c

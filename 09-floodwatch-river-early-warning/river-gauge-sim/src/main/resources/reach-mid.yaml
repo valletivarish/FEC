@@ -1,0 +1,33 @@
+reachId: reach-mid
+mqttBrokerUrl: tcp://localhost:1883
+sensors:
+  river-level:
+    sampleIntervalSeconds: 5
+    dispatchIntervalSeconds: 5
+  flow-rate:
+    sampleIntervalSeconds: 5
+    dispatchIntervalSeconds: 10
+  rainfall:
+    sampleIntervalSeconds: 10
+    dispatchIntervalSeconds: 10
+  barometric-pressure:
+    sampleIntervalSeconds: 10
+    dispatchIntervalSeconds: 20
+  water-temperature:
+    sampleIntervalSeconds: 20
+    dispatchIntervalSeconds: 20
+  turbidity:
+    sampleIntervalSeconds: 20
+    dispatchIntervalSeconds: 20
+  dissolved-oxygen:
+    sampleIntervalSeconds: 20
+    dispatchIntervalSeconds: 40
+  ph:
+    sampleIntervalSeconds: 20
+    dispatchIntervalSeconds: 40
+  conductivity:
+    sampleIntervalSeconds: 20
+    dispatchIntervalSeconds: 40
+  soil-saturation:
+    sampleIntervalSeconds: 30
+    dispatchIntervalSeconds: 30

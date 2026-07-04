@@ -1,0 +1,82 @@
+name: chainfrost-pipeline
+
+on:
+  push:
+    paths:
+      - '01-chainfrost-cold-chain/**'
+  pull_request:
+    paths:
+      - '01-chainfrost-cold-chain/**'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: 01-chainfrost-cold-chain
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Lint (checkstyle)
+        run: mvn -q -pl reefer-sim,fog-nodes,backend,infra checkstyle:check
+      - name: Unit test
+        run: mvn -q -pl reefer-sim,fog-nodes,backend test
+      - name: Start local AWS emulator + MQTT broker
+        run: docker compose up -d
+      - name: Wait for emulator health
+        run: |
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:4566/_localstack/health > /dev/null && break
+            sleep 2
+          done
+      - name: Integration test
+        run: mvn -q -pl integration-test -am test
+        env:
+          DYNAMODB_ENDPOINT_OVERRIDE: http://localhost:4566
+          AWS_REGION: us-east-1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          CHAINFROST_ZONE_TEMP_TABLE: ChainFrostZoneTemperatureSeries
+          CHAINFROST_SHIPMENTS_TABLE: ChainFrostShipments
+          CHAINFROST_FAULTS_TABLE: ChainFrostFaultEvents
+      - name: Package backend + synth infra
+        run: |
+          mvn -q -pl backend package
+          mvn -q -pl infra -am compile exec:java -Dexec.mainClass=edu.msc.chainfrost.infra.ChainFrostApp
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Dashboard Playwright tests
+        working-directory: 01-chainfrost-cold-chain/dashboard
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+          npm run test:e2e
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: chainfrost-production
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Deploy to AWS
+        run: |
+          mvn -q -pl backend package
+          mvn -q -pl infra -am compile exec:java -Dexec.mainClass=edu.msc.chainfrost.infra.ChainFrostApp
+          npx --yes aws-cdk@2 deploy --app "mvn -q -pl infra -am compile exec:java -Dexec.mainClass=edu.msc.chainfrost.infra.ChainFrostApp" --require-approval never
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-west-1

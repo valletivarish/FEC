@@ -1,0 +1,388 @@
+/* GridPulse: plain, conventional ops-dashboard look. Dark sidebar, white content,
+   icon+number KPI cards, clean white data cards. One accent color (amber) marks the
+   active nav item and status highlights - nothing else is themed. */
+:root {
+  --gp-sidebar-bg: #1c150e;
+  --gp-sidebar-text: rgba(255, 255, 255, 0.72);
+  --gp-sidebar-text-active: #ffffff;
+  --gp-accent: #c98a3b;
+  --gp-accent-soft: #f7eddf;
+  --gp-accent-ink: #8a5a1a;
+  --gp-page-bg: #f5f6f8;
+  --gp-ink: #1a1d29;
+  --gp-muted: #6b7280;
+  --bs-primary: var(--gp-accent);
+  --bs-primary-rgb: 201, 138, 59;
+  --bs-body-bg: var(--gp-page-bg);
+  --bs-body-color: var(--gp-ink);
+  --gp-sidebar-width: 232px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--gp-page-bg);
+  color: var(--gp-ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+}
+
+/* --- shell layout --- */
+.console-shell {
+  display: flex;
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+/* --- Sidebar: plain dark panel, no blur/glass, text nav with a solid accent block on the active item --- */
+.console-rail {
+  display: flex;
+  flex-direction: column;
+  width: var(--gp-sidebar-width);
+  flex: 0 0 var(--gp-sidebar-width);
+  background-color: var(--gp-sidebar-bg);
+  color: var(--gp-sidebar-text);
+  padding: 1rem 0.75rem;
+}
+
+.console-rail-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.25rem 0.5rem 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.console-rail-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.console-rail-subtitle {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* --- Filter/search field: bordered, dark, sits between brand and nav tablist --- */
+.console-rail-filter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 0 0.25rem 0.85rem;
+}
+
+.console-rail-filter-icon {
+  position: absolute;
+  left: 0.7rem;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+}
+
+.console-rail-filter-input {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 7px;
+  padding: 0.45rem 0.65rem 0.45rem 2rem;
+  font-size: 0.8rem;
+  color: var(--gp-sidebar-text-active);
+}
+
+.console-rail-filter-input::placeholder {
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.console-rail-filter-input:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--gp-accent);
+  box-shadow: 0 0 0 3px rgba(201, 138, 59, 0.25);
+}
+
+.console-rail-filter-input::-webkit-search-cancel-button {
+  filter: invert(1) brightness(2);
+  opacity: 0.6;
+}
+
+.console-rail-nav {
+  flex: 1 1 auto;
+  gap: 0.2rem;
+}
+
+.console-rail-nav .nav-link {
+  color: var(--gp-sidebar-text);
+  text-align: left;
+  border-radius: 6px;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: none;
+}
+
+.console-rail-nav .nav-link i {
+  font-size: 0.95rem;
+  width: 1.1rem;
+  text-align: center;
+}
+
+.console-rail-nav .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--gp-sidebar-text-active);
+}
+
+.console-rail-nav .nav-link.active {
+  background-color: var(--gp-accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.console-rail-footnote {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.72rem;
+  padding: 0 0.5rem;
+}
+
+.console-main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* --- Header: plain white bar, page title left, meta text right --- */
+.status-plaque-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.5rem;
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gp-ink);
+  margin: 0;
+}
+
+.status-plaque {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-plaque-value {
+  font-size: 0.82rem;
+  color: var(--gp-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.status-plaque-caption {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gp-muted);
+}
+
+.status-plaque-pill {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: var(--gp-accent-ink);
+  background-color: var(--gp-accent-soft);
+  border: 1px solid rgba(201, 138, 59, 0.35);
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+  white-space: nowrap;
+}
+
+.console-viewport {
+  flex: 1 1 auto;
+  padding: 1.5rem;
+}
+
+/* --- KPI summary cards: compact instrument-panel density, tighter than the shared card default --- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  border: 1px solid #eef0f3;
+  padding: 0.6rem 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.kpi-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.88rem;
+  flex-shrink: 0;
+}
+
+.kpi-icon-amber { background: var(--gp-accent-soft); color: var(--gp-accent-ink); }
+.kpi-icon-blue { background: #e8f0fe; color: #3364d6; }
+.kpi-icon-green { background: #e6f7f1; color: #2f9e8f; }
+.kpi-icon-red { background: #fce9e9; color: #c23b3b; }
+.kpi-icon-slate { background: #eef0f3; color: #4a5568; }
+
+.kpi-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--gp-ink);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-label {
+  font-size: 0.68rem;
+  color: var(--gp-muted);
+}
+
+/* --- Plain white cards, normal shadow, no tint/blur/gradient --- */
+.panel-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--gp-ink);
+  text-transform: none;
+  letter-spacing: normal;
+  margin-bottom: 0.9rem;
+}
+
+.switchboard-tab-content {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  color: var(--gp-ink);
+}
+
+/* --- normal Bootstrap tables --- */
+.table {
+  color: var(--gp-ink);
+  margin-bottom: 0;
+}
+
+.table thead th {
+  color: var(--gp-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border-bottom-color: #eef0f3;
+}
+
+.table > :not(caption) > * > * {
+  color: var(--gp-ink);
+  border-bottom-color: #eef0f3;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: #fafbfc;
+  color: var(--gp-ink);
+}
+
+.table-hover > tbody > tr:hover > * {
+  background-color: #f5f6f8;
+  color: var(--gp-ink);
+}
+
+.text-body-secondary {
+  color: var(--gp-muted) !important;
+}
+
+td.num, th, .badge, .status-plaque-value {
+  font-variant-numeric: tabular-nums;
+}
+
+.text-danger {
+  color: #c23b3b !important;
+}
+
+/* --- badges: plain Bootstrap pills, one accent for the warning tone --- */
+.badge {
+  font-weight: 600;
+  font-size: 0.72rem;
+}
+
+.text-bg-success { background-color: #2f9e8f !important; color: #fff !important; }
+.text-bg-warning { background-color: var(--gp-accent) !important; color: #fff !important; }
+.text-bg-danger { background-color: #c23b3b !important; color: #fff !important; }
+.text-bg-info { background-color: #e8f0fe !important; color: #3364d6 !important; }
+.text-bg-secondary { background-color: #e5e7eb !important; color: #4a5568 !important; }
+
+/* --- responsive: sidebar collapses to a top bar on narrow viewports --- */
+@media (max-width: 767px) {
+  .console-shell {
+    flex-direction: column;
+  }
+
+  .console-rail {
+    width: 100%;
+    flex: 0 0 auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .console-rail-brand {
+    padding: 0;
+    margin-bottom: 0;
+    flex: 0 0 auto;
+  }
+
+  .console-rail-filter {
+    margin: 0;
+    flex: 1 1 160px;
+    max-width: 220px;
+    order: 2;
+  }
+
+  .console-rail-nav {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    flex: 1 1 auto;
+  }
+
+  .console-rail-footnote {
+    display: none;
+  }
+
+  .status-plaque-strip {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .kpi-row {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+}

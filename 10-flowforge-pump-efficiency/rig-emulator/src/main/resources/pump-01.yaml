@@ -1,0 +1,33 @@
+pumpId: pump-01
+mqttBrokerUrl: tcp://localhost:1883
+sensors:
+  - metric: vibration
+    sampleIntervalSeconds: 2
+    dispatchIntervalSeconds: 2
+  - metric: motor-current
+    sampleIntervalSeconds: 2
+    dispatchIntervalSeconds: 2
+  - metric: inlet-pressure
+    sampleIntervalSeconds: 5
+    dispatchIntervalSeconds: 5
+  - metric: outlet-pressure
+    sampleIntervalSeconds: 5
+    dispatchIntervalSeconds: 5
+  - metric: flow-rate
+    sampleIntervalSeconds: 5
+    dispatchIntervalSeconds: 5
+  - metric: bearing-temp
+    sampleIntervalSeconds: 5
+    dispatchIntervalSeconds: 5
+  - metric: rpm
+    sampleIntervalSeconds: 5
+    dispatchIntervalSeconds: 5
+  - metric: power-draw
+    sampleIntervalSeconds: 5
+    dispatchIntervalSeconds: 5
+  - metric: seal-leak
+    sampleIntervalSeconds: 10
+    dispatchIntervalSeconds: 10
+  - metric: turbidity
+    sampleIntervalSeconds: 10
+    dispatchIntervalSeconds: 10

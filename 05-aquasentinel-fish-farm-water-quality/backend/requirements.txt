@@ -1,0 +1,4 @@
+boto3>=1.34
+pytest>=8.0
+moto[dynamodb]>=5.2  # dev-only: mocks AWS for backend unit tests
+ruff>=0.6  # dev-only: lint

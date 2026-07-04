@@ -1,0 +1,354 @@
+/* OfficeIQ: plain, conventional admin-dashboard look. Dark sidebar, white content,
+   icon+number KPI cards, clean white data cards. One accent color (indigo) marks the
+   active nav item and highlights - nothing else is themed. */
+:root {
+  --oiq-sidebar-bg: #161625;
+  --oiq-sidebar-text: rgba(255, 255, 255, 0.72);
+  --oiq-sidebar-text-active: #ffffff;
+  --oiq-accent: #4b5cc4;
+  --oiq-page-bg: #f5f6f8;
+  --oiq-ink: #1a1d29;
+  --oiq-muted: #6b7280;
+  --bs-primary: var(--oiq-accent);
+  --bs-primary-rgb: 75, 92, 196;
+  --oiq-sidebar-width: 232px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--oiq-page-bg);
+  color: var(--oiq-ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.officeiq-shell {
+  display: flex;
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+/* --- Sidebar: plain dark panel, no blur/glass, text nav with a solid accent block on the active item --- */
+.officeiq-rail {
+  width: var(--oiq-sidebar-width);
+  flex-shrink: 0;
+  background-color: var(--oiq-sidebar-bg);
+  color: var(--oiq-sidebar-text);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0.75rem;
+}
+
+.officeiq-rail-brand {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.officeiq-rail-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.officeiq-rail-subtitle {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.officeiq-rail-nav {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Each row is its own floating card: a solid slate tone measured at 3.4:1 contrast
+   against the sidebar background (not a low-alpha wash, which cannot clear 3:1 against
+   a near-black base), plus a visible border so the card boundary reads at a glance. */
+.officeiq-rail-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  color: var(--oiq-sidebar-text);
+  cursor: default;
+  background-color: #666a85;
+  border: 1px solid #9094ac;
+  margin-bottom: 0.55rem;
+}
+
+.officeiq-rail-link:last-child {
+  margin-bottom: 0;
+}
+
+.officeiq-rail-link i {
+  font-size: 0.95rem;
+  width: 1.1rem;
+  text-align: center;
+}
+
+/* Trailing chevron: pinned right so each row reads as a drill-down menu entry, not a plain button */
+.officeiq-rail-link-chevron {
+  margin-left: auto;
+  width: auto;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.officeiq-rail-link.active {
+  background-color: var(--oiq-accent);
+  border-color: var(--oiq-accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.officeiq-rail-link.active .officeiq-rail-link-chevron {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.officeiq-main-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* --- Header: plain white bar, page title left, meta text right --- */
+.officeiq-topbar {
+  padding: 0.85rem 1.5rem;
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.officeiq-topbar-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--oiq-ink);
+}
+
+.officeiq-topbar-sub {
+  font-size: 0.82rem;
+  color: var(--oiq-muted);
+}
+
+/* --- KPI summary cards --- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  border: 1px solid #eef0f3;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.kpi-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.kpi-icon-indigo { background: #ecedfa; color: var(--oiq-accent); }
+.kpi-icon-blue { background: #e8f0fe; color: #3364d6; }
+.kpi-icon-green { background: #e6f7f1; color: #2f9e8f; }
+.kpi-icon-amber { background: #fdf3e2; color: #b8720f; }
+.kpi-icon-red { background: #fce9e9; color: #c23b3b; }
+
+.kpi-value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--oiq-ink);
+  line-height: 1.15;
+}
+
+.kpi-label {
+  font-size: 0.78rem;
+  color: var(--oiq-muted);
+}
+
+/* Thin gauge bar under a KPI value, only rendered when a real proportion backs it
+   (e.g. running/desired workers) — never shown for plain counts with no denominator. */
+.kpi-gauge-track {
+  margin-top: 0.5rem;
+  width: 100%;
+  height: 5px;
+  border-radius: 3px;
+  background-color: #eef0f3;
+  overflow: hidden;
+}
+
+.kpi-gauge-fill {
+  height: 100%;
+  border-radius: 3px;
+  background-color: var(--oiq-accent);
+}
+
+/* --- Zone switcher pills --- */
+#zone-pill-nav .nav-link {
+  color: var(--oiq-ink);
+  border: 1px solid #d7dbe0;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+#zone-pill-nav .nav-link.active {
+  background-color: var(--oiq-accent);
+  border-color: var(--oiq-accent);
+  color: #fff;
+}
+
+.breadcrumb {
+  margin-bottom: 0;
+  font-size: 0.85rem;
+}
+
+.breadcrumb-item.active {
+  color: var(--oiq-ink);
+  font-weight: 600;
+}
+
+/* --- Plain white cards, normal shadow, no tint/blur/gradient --- */
+.card {
+  background-color: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  color: var(--oiq-ink);
+}
+
+.card-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--oiq-ink);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--oiq-ink);
+}
+
+.text-muted {
+  color: var(--oiq-muted) !important;
+}
+
+.table {
+  color: var(--oiq-ink);
+}
+
+.table thead th {
+  color: var(--oiq-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border-bottom-color: #eef0f3;
+}
+
+td, th, .badge {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Status/verdict colors follow the one-job-per-color rule. */
+.text-bg-success {
+  background-color: #2f9e8f !important;
+  color: #fff !important;
+}
+
+.text-bg-warning {
+  background-color: #b8720f !important;
+  color: #fff !important;
+}
+
+.text-bg-danger {
+  background-color: #c23b3b !important;
+  color: #fff !important;
+}
+
+.text-bg-secondary {
+  background-color: #6b7280 !important;
+  color: #fff !important;
+}
+
+/* Scaling fleet: plain worker-slot chips, one per desired task; filled when actually running. */
+.officeiq-fleet-row {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.officeiq-fleet-cell {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid #d7dbe0;
+  background-color: #f5f6f8;
+}
+
+.officeiq-fleet-cell.is-running {
+  background-color: var(--oiq-accent);
+  border-color: var(--oiq-accent);
+}
+
+.officeiq-fleet-count {
+  font-size: 0.85rem;
+  color: var(--oiq-muted);
+}
+
+@media (max-width: 767.98px) {
+  .officeiq-shell {
+    flex-direction: column;
+  }
+
+  .officeiq-rail {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+  }
+
+  .officeiq-rail-brand {
+    margin-bottom: 0;
+  }
+
+  .officeiq-rail-nav {
+    flex-direction: row;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+  }
+
+  .officeiq-rail-link {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.8rem;
+    margin-bottom: 0;
+  }
+
+  .officeiq-rail-link-chevron {
+    display: none;
+  }
+}

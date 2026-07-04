@@ -1,0 +1,9 @@
+{
+  "name": "gridpulse-ev-transformer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Root manifest only for shared lint tooling — sensors/fog/backend/dashboard stay independently installable via --prefix",
+  "devDependencies": {
+    "eslint": "^9.17.0"
+  }
+}
