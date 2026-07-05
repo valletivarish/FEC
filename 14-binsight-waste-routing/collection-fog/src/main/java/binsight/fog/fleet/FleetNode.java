@@ -30,6 +30,8 @@ public class FleetNode {
 
     private final Map<String, double[]> lastRecordedTruckPosition = new HashMap<>(); // truckId -> {lat, lon, headingDeg}
     private final Map<String, Integer> truckTickCounters = new HashMap<>();
+    private final Map<String, Double> latestHopperFillPct = new HashMap<>();
+    private final Map<String, Double> latestFuelLevelPct = new HashMap<>();
 
     private double latestWeighbridgeTonnage = 0.0;
     private long mostRecentReadingTimestampMillis = 0L;
@@ -53,7 +55,11 @@ public class FleetNode {
                 touchTimestamp(reading);
                 break;
             case "hopper-fill":
+                latestHopperFillPct.put(reading.getEntityId(), reading.numericValue());
+                touchTimestamp(reading);
+                break;
             case "fuel-level":
+                latestFuelLevelPct.put(reading.getEntityId(), reading.numericValue());
                 touchTimestamp(reading);
                 break;
             case "weighbridge-tonnage":
@@ -186,9 +192,44 @@ public class FleetNode {
         event.put("latestWeighbridgeTonnage", latestWeighbridgeTonnage);
         event.put("timestamp", dispatchTimestamp);
 
+        // truck-gps/hopper-fill/fuel-level are otherwise consumed only for internal
+        // decimation/priority state and never reach the backend on their own — folding the
+        // latest values onto the work-list event (already dispatched every 10 ticks) is what
+        // lets the dashboard's fleet-readout panel show genuine data for these 3 sensor types.
+        Map<String, Object> fleetTelemetry = latestFleetTelemetry();
+        if (fleetTelemetry != null) {
+            event.put("fleetTelemetry", fleetTelemetry);
+        }
+
         List<Map<String, Object>> events = new ArrayList<>();
         events.add(event);
         return events;
+    }
+
+    // Single-truck depot in this project's scope, but keyed defensively by truckId anyway --
+    // picks whichever truck has a recorded GPS fix (falls back to hopper/fuel-only truck ids
+    // so those two readings still surface even before a first GPS fix arrives).
+    private Map<String, Object> latestFleetTelemetry() {
+        String truckId = lastRecordedTruckPosition.keySet().stream().findFirst()
+                .orElseGet(() -> latestHopperFillPct.keySet().stream().findFirst()
+                        .orElseGet(() -> latestFuelLevelPct.keySet().stream().findFirst().orElse(null)));
+        if (truckId == null) {
+            return null;
+        }
+
+        Map<String, Object> telemetry = new HashMap<>();
+        telemetry.put("truckId", truckId);
+        double[] position = lastRecordedTruckPosition.get(truckId);
+        if (position != null) {
+            Map<String, Object> lastPosition = new HashMap<>();
+            lastPosition.put("lat", position[0]);
+            lastPosition.put("lon", position[1]);
+            lastPosition.put("truckId", truckId);
+            telemetry.put("lastRecordedPosition", lastPosition);
+        }
+        telemetry.put("hopperFillPct", latestHopperFillPct.get(truckId));
+        telemetry.put("fuelLevelPct", latestFuelLevelPct.get(truckId));
+        return telemetry;
     }
 
     private String nearestTruck(double[] binLocation) {

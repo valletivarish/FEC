@@ -34,9 +34,13 @@ exports.handler = async (event) => {
 
   const bayItems = readingItems.filter((item) => item.type === 'bay_setpoint');
   const derItems = readingItems.filter((item) => item.type === 'der_mode' || item.type === 'der_summary');
+  const feederItems = readingItems.filter((item) => item.type === 'feeder_status');
 
   const bays = latestPerBay(bayItems);
   const latestDer = derItems.reduce((latest, item) => (
+    !latest || item.timestamp > latest.timestamp ? item : latest
+  ), null);
+  const latestFeeder = feederItems.reduce((latest, item) => (
     !latest || item.timestamp > latest.timestamp ? item : latest
   ), null);
 
@@ -55,6 +59,7 @@ exports.handler = async (event) => {
       hubId,
       bays,
       der: latestDer,
+      feeder: latestFeeder,
       curtailment: latestCurtailment,
     }),
   };

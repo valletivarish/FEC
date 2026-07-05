@@ -99,6 +99,25 @@ describe('ingestHubTelemetry handler', () => {
     expect(calls[1].args[0].input.TableName).toBe('GridPulseHubSensorReadings');
   });
 
+  test('routes feeder_status event to readings table', async () => {
+    ddbMock.on(PutCommand).resolves({});
+    const event = {
+      type: 'feeder_status',
+      hubId: 'hub-01',
+      status: 'warning',
+      voltage: 239,
+      frequency: 50,
+      timestamp: '2026-07-02T10:05:00.000Z',
+    };
+
+    await handler({ Records: [kinesisRecord(event)] });
+
+    const calls = ddbMock.commandCalls(PutCommand);
+    expect(calls).toHaveLength(1);
+    expect(calls[0].args[0].input.TableName).toBe('GridPulseHubSensorReadings');
+    expect(calls[0].args[0].input.Item['metricType#timestamp']).toBe('feeder_status#2026-07-02T10:05:00.000Z');
+  });
+
   test('routes curtailment_event to curtailment table', async () => {
     ddbMock.on(PutCommand).resolves({});
     const event = {

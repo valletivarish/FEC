@@ -52,6 +52,14 @@ const MOCK_EVENTS = [
     timestamp: '2026-07-03T09:06:00.000Z',
   },
   {
+    type: 'camera_discrepancy_event',
+    zoneId: 'zone-01',
+    cameraFreeCount: 4,
+    fusedFreeCount: 1,
+    occlusionPercent: 8,
+    timestamp: '2026-07-03T09:06:30.000Z',
+  },
+  {
     type: 'tariff_changed',
     entityId: 'zone-01',
     previousTariff: 2.0,
@@ -124,6 +132,10 @@ test.describe('ParkFog dashboard — functional', () => {
 
     const evFaultRow = page.locator('#kerb-conditions-body tr', { hasText: 'bay-06' });
     await expect(evFaultRow.locator('.badge.text-bg-danger', { hasText: 'fault' })).toBeVisible();
+
+    const cameraRow = page.locator('#kerb-conditions-body tr', { hasText: 'camera discrepancy' });
+    await expect(cameraRow.locator('.badge.text-bg-warning', { hasText: 'mismatch' })).toBeVisible();
+    await expect(cameraRow).toContainText('camera 4 free vs fused 1 free');
   });
 
   test('renders a chronological event log, most recent first', async ({ page }) => {

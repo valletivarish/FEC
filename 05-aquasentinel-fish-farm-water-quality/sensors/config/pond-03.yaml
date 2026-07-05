@@ -15,7 +15,7 @@ sensors:
     dispatch_interval_s: 30
   salinity:
     unit: ppt
-    sample_interval_s: 60
+    sample_interval_s: 30
     dispatch_interval_s: 60
   turbidity:
     unit: NTU
@@ -35,7 +35,7 @@ sensors:
     dispatch_interval_s: 30
   water-level:
     unit: cm
-    sample_interval_s: 60
+    sample_interval_s: 30
     dispatch_interval_s: 60
   feeder-load-cell:
     unit: g/cycle

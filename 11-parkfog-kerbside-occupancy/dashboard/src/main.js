@@ -16,7 +16,7 @@ function splitEventsByType(events) {
     (e) => e.type === 'overstay_event' || e.type === 'zone_pressure_event'
   );
   const kerbConditionEvents = events.filter(
-    (e) => e.type === 'flood_risk_event' || e.type === 'ev_fault_event'
+    (e) => e.type === 'flood_risk_event' || e.type === 'ev_fault_event' || e.type === 'camera_discrepancy_event'
   );
   return { bayEvents, overstayPressureEvents, kerbConditionEvents };
 }

@@ -93,6 +93,7 @@
                       <th scope="col">Rate of Rise (m/sample)</th>
                       <th scope="col">Flow Rate Slope (m3/s/sample)</th>
                       <th scope="col">Blockage</th>
+                      <th scope="col">Soil Saturation</th>
                     </tr>
                   </thead>
                   <tbody id="reachOverviewBody"></tbody>
@@ -153,6 +154,11 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Set before main.js loads to point this static dashboard at a real deployed API
+    // instead of the localhost default - no build step, so this is plain global config.
+    // window.FLOODWATCH_API_BASE_URL = "https://<api-id>.execute-api.<region>.amazonaws.com";
+  </script>
   <script type="module" src="./src/main.js"></script>
 </body>
 </html>

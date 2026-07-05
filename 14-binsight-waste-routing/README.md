@@ -17,7 +17,9 @@ scalable AWS backend with a live admin-style operations dashboard.
   (median-smoothed, weighted fire-risk score, immediate unbatched dispatch while CRITICAL),
   FleetNode (GPS geofence decimation, and — the cross-node node — builds a ranked due-for-collection
   work-list by consuming BinClusterNode's and BinSafetyNode's own dispatched events, not raw sensor
-  data, plus nearest-neighbour truck assignment). Dispatches to the backend over HTTP via a
+  data, plus nearest-neighbour truck assignment; the latest truck-gps/hopper-fill/fuel-level values
+  ride along on this same work-list event as `fleetTelemetry`, since those 3 raw sensor types have
+  no dispatch path of their own). Dispatches to the backend over HTTP via a
   `BinSightEventDispatcher` with a CRITICAL-only 3-attempt fixed-backoff retry.
 - **Backend** (`backend/` + `infra/`): API Gateway → SQS → Lambda → DynamoDB, split across 3
   independently-scalable queues (cluster verdicts, fire risk, work lists) so a fire-risk alert

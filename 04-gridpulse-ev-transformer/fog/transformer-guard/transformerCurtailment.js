@@ -7,6 +7,32 @@ const RUNGS = [
   { rung: 3, label: 'trip', ceilingAmps: 0 },
 ];
 
+// UK LV statutory tolerance is +10%/-6% of 230V; "warning" starts one step inside the hard limit
+// so an operator sees drift before a feeder actually breaches its statutory band.
+const VOLTAGE_NOMINAL = 230;
+const VOLTAGE_WARN_BAND = 8;
+const VOLTAGE_CRITICAL_BAND = 15;
+
+// grid frequency deviations this small only matter cumulatively; 0.1Hz/0.3Hz bands mirror
+// typical UK grid-code alert/action thresholds around the 50Hz statutory target.
+const FREQUENCY_NOMINAL = 50;
+const FREQUENCY_WARN_BAND = 0.1;
+const FREQUENCY_CRITICAL_BAND = 0.3;
+
+// classifies one feeder reading against its own tolerance band; shared by voltage and frequency
+function classifyDeviation(value, nominal, warnBand, criticalBand) {
+  const deviation = Math.abs(value - nominal);
+  if (deviation >= criticalBand) return 'critical';
+  if (deviation >= warnBand) return 'warning';
+  return 'nominal';
+}
+
+// worse-of the two individual bands, since either one alone can indicate a feeder problem
+function worseStatus(a, b) {
+  const order = { nominal: 0, warning: 1, critical: 2 };
+  return order[a] >= order[b] ? a : b;
+}
+
 // Highest rung whose threshold the reading meets or exceeds; rung 0 is the default floor.
 function rungForLoad(loadAmps) {
   if (loadAmps >= 390) return 3;
@@ -29,6 +55,9 @@ class TransformerGuardAgent {
     this.latestLoadAmps = null;
     this.latestTempC = null;
     this.lowerRungStreak = 0;
+    this.latestVoltage = null;
+    this.latestFrequency = null;
+    this.feederStatus = null;
   }
 
   latestEvSocByBay() {
@@ -66,8 +95,44 @@ class TransformerGuardAgent {
     }
   }
 
+  // feeder power quality shares this agent's "grid health at the hub" scope but is independent
+  // of the load/temp curtailment ladder — a voltage/frequency excursion doesn't change bay setpoints.
+  onFeederReading(metric, value, hubId, timestamp) {
+    if (metric === 'feeder/voltage') {
+      this.latestVoltage = value;
+    } else if (metric === 'feeder/frequency') {
+      this.latestFrequency = value;
+    } else {
+      return [];
+    }
+
+    const voltageStatus = this.latestVoltage === null
+      ? 'nominal'
+      : classifyDeviation(this.latestVoltage, VOLTAGE_NOMINAL, VOLTAGE_WARN_BAND, VOLTAGE_CRITICAL_BAND);
+    const frequencyStatus = this.latestFrequency === null
+      ? 'nominal'
+      : classifyDeviation(this.latestFrequency, FREQUENCY_NOMINAL, FREQUENCY_WARN_BAND, FREQUENCY_CRITICAL_BAND);
+    const combinedStatus = worseStatus(voltageStatus, frequencyStatus);
+
+    if (combinedStatus === this.feederStatus) return [];
+    this.feederStatus = combinedStatus;
+
+    return [{
+      type: 'feeder_status',
+      hubId,
+      status: combinedStatus,
+      voltage: this.latestVoltage,
+      frequency: this.latestFrequency,
+      timestamp,
+    }];
+  }
+
   onReading(reading) {
     const { hubId, metric, value, timestamp } = reading;
+    if (metric === 'feeder/voltage' || metric === 'feeder/frequency') {
+      return this.onFeederReading(metric, value, hubId, timestamp);
+    }
+
     if (metric === 'transformer/load-amps') {
       this.latestLoadAmps = value;
     } else if (metric === 'transformer/winding-temp') {

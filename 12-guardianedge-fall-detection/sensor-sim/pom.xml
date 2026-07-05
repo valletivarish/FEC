@@ -72,6 +72,31 @@
           </archive>
         </configuration>
       </plugin>
+      <!-- Needed because this rig has runtime deps (Paho, Jackson, SnakeYAML, SLF4J):
+           `java -jar` only works if they're bundled, same as fog-runtime's own jar-with-dependencies. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.7.1</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>com.guardianedge.sensorsim.SensorRigLauncher</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <!-- version/config inherited from parent pluginManagement -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

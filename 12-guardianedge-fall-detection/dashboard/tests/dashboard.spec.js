@@ -76,6 +76,22 @@ test.describe('CareWatch Console — functional', () => {
     expect(vitalsBox.y).toBeGreaterThan(rosterBox.y);
   });
 
+  test('sidebar collapses to a compact top bar below the mobile breakpoint', async ({ page }) => {
+    await mockCareWatchApi(page);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+
+    const sidebar = page.locator('.app-sidebar');
+    const sidebarBox = await sidebar.boundingBox();
+    // Desktop's sidebar is a full-height (min-height: 100vh) column; below the breakpoint it
+    // becomes a compact horizontal bar, freeing vertical space for content to flow beneath it.
+    expect(sidebarBox.width).toBeCloseTo(390, 0);
+    expect(sidebarBox.height).toBeLessThan(300);
+
+    // Nav icons stay reachable; the text labels are the part that collapses (see carewatch-theme.css).
+    await expect(page.locator('.sidebar-link-icon').first()).toBeVisible();
+  });
+
   test('renders the full UI shell with an explanatory empty state when there is no live backend', async ({ page }) => {
     await page.route('**/residents', async (route) => {
       await route.fulfill({ status: 500, contentType: 'application/json', body: JSON.stringify({}) });

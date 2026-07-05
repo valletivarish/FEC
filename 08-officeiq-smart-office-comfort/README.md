@@ -39,7 +39,7 @@ Then, from this folder:
 npm install --prefix sensors && npm install --prefix fog && npm install --prefix backend
 cd infra && npm install && npx --yes aws-cdk@2 deploy --require-approval never && cd ..
 MQTT_BROKER_URL=mqtt://localhost:1883 npm run start --prefix sensors &
-OFFICEIQ_API_BASE_URL=<deployed-api-url> MQTT_BROKER_URL=mqtt://localhost:1883 node fog/index.js &
+OFFICEIQ_API_BASE_URL=<deployed-api-url> OFFICEIQ_MQTT_URL=mqtt://localhost:1883 node fog/index.js &
 ```
 
 The worker itself (`backend/worker/ingestWorker.js`) runs as a plain Node process locally (same
@@ -71,7 +71,7 @@ Real AWS deployment uses the same CDK app with no code changes — the AWS SDK r
 `AWS_ENDPOINT_URL` from the environment natively; omitting it targets real AWS. Deploy is gated
 behind manual approval in GitHub Actions (`officeiq-production` environment).
 
-**Status**: 89 unit tests pass (37 sensors, 41 fog, 11 backend), 5 integration tests prove the real
+**Status**: 105 unit tests pass (37 sensors, 50 fog, 18 backend), 5 integration tests prove the real
 OccupancyFog/ComfortFog/UsageFog logic and the worker's `processMessage` write path against
 floci's DynamoDB, plus the `POST /events` relay Lambda landing a message on floci's real SQS event
 queue, `cdk synth`/`tsc` produce a valid template including the ECS cluster, Fargate task/service,

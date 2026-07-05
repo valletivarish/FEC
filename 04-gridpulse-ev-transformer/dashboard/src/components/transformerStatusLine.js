@@ -19,6 +19,18 @@ export class TransformerStatusLine {
                 <th scope="row" class="text-body-secondary fw-normal" title="Curtailment ladder position: normal, advisory, curtail (reduced charging) or trip (charging stopped) to protect the transformer">Curtailment Level</th>
                 <td data-field="rung">—</td>
               </tr>
+              <tr>
+                <th scope="row" class="text-body-secondary fw-normal">Feeder Voltage</th>
+                <td data-field="feeder-voltage">—</td>
+              </tr>
+              <tr>
+                <th scope="row" class="text-body-secondary fw-normal">Feeder Frequency</th>
+                <td data-field="feeder-frequency">—</td>
+              </tr>
+              <tr>
+                <th scope="row" class="text-body-secondary fw-normal" title="Feeder power-quality classification: nominal, warning (drifting outside the tolerance band) or critical">Feeder Status</th>
+                <td data-field="feeder-status">—</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -26,10 +38,15 @@ export class TransformerStatusLine {
     `;
   }
 
-  update({ windingTemp, loadAmps, rung, rungLabel } = {}) {
+  update({
+    windingTemp, loadAmps, rung, rungLabel, feederVoltage, feederFrequency, feederStatus,
+  } = {}) {
     const tempEl = this.container.querySelector('[data-field="winding-temp"]');
     const loadEl = this.container.querySelector('[data-field="load-amps"]');
     const rungEl = this.container.querySelector('[data-field="rung"]');
+    const voltageEl = this.container.querySelector('[data-field="feeder-voltage"]');
+    const frequencyEl = this.container.querySelector('[data-field="feeder-frequency"]');
+    const feederStatusEl = this.container.querySelector('[data-field="feeder-status"]');
 
     tempEl.textContent = formatNumber(windingTemp, ' °C');
     tempEl.className = isWarm(windingTemp) ? 'text-danger fw-semibold' : '';
@@ -41,6 +58,12 @@ export class TransformerStatusLine {
     rungEl.innerHTML = rungLabel !== undefined || rung !== undefined
       ? `<span class="badge rounded-pill ${badgeClass(rung)}">${label}</span>`
       : '—';
+
+    voltageEl.textContent = formatNumber(feederVoltage, ' V');
+    frequencyEl.textContent = formatNumber(feederFrequency, ' Hz');
+    feederStatusEl.innerHTML = feederStatus
+      ? `<span class="badge rounded-pill ${feederBadgeClass(feederStatus)}">${feederStatus}</span>`
+      : '—';
   }
 }
 
@@ -48,6 +71,13 @@ function badgeClass(rung) {
   if (rung === 2 || rung === 3) return 'text-bg-danger';
   if (rung === 1) return 'text-bg-warning';
   if (rung === 0) return 'text-bg-success';
+  return 'text-bg-secondary';
+}
+
+function feederBadgeClass(status) {
+  if (status === 'critical') return 'text-bg-danger';
+  if (status === 'warning') return 'text-bg-warning';
+  if (status === 'nominal') return 'text-bg-success';
   return 'text-bg-secondary';
 }
 

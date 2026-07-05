@@ -262,7 +262,18 @@ class SensorToFogToBackendIT {
         assertTrue(events.stream().anyMatch(e -> "TELEMATICS_SHOCK".equals(e.eventType())),
                 "a shock above threshold should dispatch a TELEMATICS_SHOCK event");
 
-        assertDoesNotThrow(() -> replayThroughBackend(events));
+        replayThroughBackend(events);
+
+        // Exercises the real fog-node payload key ("gForce") through the real DynamoWriter,
+        // so a future key-name mismatch between the two fails here instead of persisting silently.
+        String shipmentId = ShipmentIds.forTruckNow(TRUCK_ID);
+        GetItemRequest shipmentLookup = GetItemRequest.builder()
+                .tableName(SHIPMENTS_TABLE)
+                .key(Map.of("shipmentId", AttributeValue.fromS(shipmentId)))
+                .build();
+        Map<String, AttributeValue> shipmentItem = dynamoDbClient.getItem(shipmentLookup).item();
+        assertTrue(shipmentItem.containsKey("lastShock"), "harsh shock event should have persisted lastShock on the shipment row");
+        assertTrue(Math.abs(9.5 - Double.parseDouble(shipmentItem.get("lastShock").n())) < 0.001);
     }
 
     @Test

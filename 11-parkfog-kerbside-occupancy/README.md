@@ -11,12 +11,15 @@ dashboard.
   meter payment, EV charge state, disabled-bay badge scan, barrier entry count, kerb flood level,
   approach inbound count, camera free-space count), each independently configurable for sample and
   dispatch cadence via `sensors/config/zone-01.sensors.json`.
-- **Fog nodes** (`fog/`): BaySensingFog (weighted magnetometer/infrared/camera sensor-fusion vote
-  with a 3-reading hysteresis band, flags disabled-bay violations), AccessPaymentFog (reconciles
-  purchased minutes against occupancy, ANPR-exempts genuine permit holders, tracks zone entry
-  pressure as an EWMA over barrier-entry/approach-inbound counts), KerbConditionsFog (4-tier
-  flood-band classification with debounced confirmation, folds a stuck EV charger fault into the
-  same advisory). Dispatches to the backend over HTTP.
+- **Fog nodes** (`fog/`): BaySensingFog (weighted magnetometer/infrared sensor-fusion vote with a
+  3-reading hysteresis band, flags disabled-bay violations, and separately cross-validates the
+  zone's camera free-space count against its own fused-available tally — a genuine reconciliation
+  between two independent occupancy signals, debounced and skipped on heavily occluded frames,
+  dispatching `camera_discrepancy_event` on a real multi-bay mismatch), AccessPaymentFog
+  (reconciles purchased minutes against occupancy, ANPR-exempts genuine permit holders, tracks
+  zone entry pressure as an EWMA over barrier-entry/approach-inbound counts), KerbConditionsFog
+  (4-tier flood-band classification with debounced confirmation, folds a stuck EV charger fault
+  into the same advisory). Dispatches to the backend over HTTP.
 - **Backend** (`backend/` + `infra/`): API Gateway → SQS → Lambda → DynamoDB. Scales via SQS
   load-leveling and Lambda concurrency. A separate `computeZonePricing` Lambda runs on its own
   EventBridge schedule (every 2 minutes) rather than in the ingestion path, so pricing computation
@@ -65,6 +68,14 @@ Then, from this folder:
 
 ```
 cd infra && npm install && npx --yes aws-cdk@2 deploy --require-approval never && cd ..
+```
+
+The deploy prints a `ParkFogApiUrl` output — export it (and the sensor rig's broker URL) before
+starting the sensor and fog processes, since neither has a usable default for these:
+
+```
+export MQTT_BROKER_URL=mqtt://localhost:1883
+export PARKFOG_API_BASE_URL=<ParkFogApiUrl from the cdk deploy output, no trailing slash>
 cd sensors && npm install && npm start &
 cd fog && npm install && npm start &
 ```
@@ -121,8 +132,9 @@ config reads `AWS_ENDPOINT_URL`/`AWS_REGION` from the environment natively; omit
 real AWS. Deploy is gated behind manual approval in GitHub Actions (`parkfog-production`
 environment).
 
-**Status**: 91 unit tests pass (22 sensors, 46 fog, 23 backend — including the `computeZonePricing`
-demand→tariff formula and change-detection logic), 6 integration tests prove the real
+**Status**: 98 unit tests pass (22 sensors, 51 fog — including the BaySensingFog camera/fused-vote
+reconciliation — 25 backend, including the `computeZonePricing` demand→tariff formula and
+change-detection logic), 6 integration tests prove the real
 BaySensingFog/AccessPaymentFog/KerbConditionsFog logic and the `ingestBayEvents` Lambda handler
 against floci's DynamoDB, `cdk synth` produces a valid template, dashboard passes 18 Playwright
 tests (functional + visual, across desktop and mobile viewports). `computeZonePricing` was also

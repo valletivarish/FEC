@@ -1,4 +1,5 @@
-// Splits flood_risk_event (per-zone) and ev_fault_event (per-bay) into one conditions table.
+// Splits flood_risk_event (per-zone), ev_fault_event (per-bay), and camera_discrepancy_event
+// (per-zone, camera vs fused-vote mismatch) into one conditions table.
 function floodBandBadgeClass(band) {
   if (band === 'clear') return 'text-bg-success';
   if (band === 'caution') return 'text-bg-warning';
@@ -30,6 +31,14 @@ export function renderKerbConditionsTable(tbodyEl, events) {
         <td>EV charger fault</td>
         <td><span class="badge rounded-pill text-bg-danger">fault</span></td>
         <td>15 consecutive fault readings</td>
+        <td>${event.timestamp}</td>
+      `;
+    } else if (event.type === 'camera_discrepancy_event') {
+      row.innerHTML = `
+        <td>${event.zoneId}</td>
+        <td>camera discrepancy</td>
+        <td><span class="badge rounded-pill text-bg-warning">mismatch</span></td>
+        <td>camera ${event.cameraFreeCount} free vs fused ${event.fusedFreeCount} free (occlusion ${event.occlusionPercent}%)</td>
         <td>${event.timestamp}</td>
       `;
     } else {

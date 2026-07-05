@@ -22,7 +22,7 @@ triaged diagnosis verdicts into a scalable AWS backend with a live dashboard.
 - **Backend** (`backend/` + `infra/`): API Gateway → SQS → Lambda → DynamoDB. Scales via SQS
   load-leveling and Lambda concurrency.
 - **Dashboard** (`dashboard/`): Bootstrap 5 — navbar, tables, cards, and semantic badges, themed
-  with a muted indigo/violet accent.
+  with an industrial-orange accent on a dark workshop-style sidebar.
 
 ## Local development
 

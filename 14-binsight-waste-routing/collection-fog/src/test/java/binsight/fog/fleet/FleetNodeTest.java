@@ -347,6 +347,48 @@ class FleetNodeTest {
         assertEquals(7.5, (Double) events.get(0).get("latestWeighbridgeTonnage"), 1e-9);
     }
 
+    // truck-gps/hopper-fill/fuel-level otherwise only update internal decimation/priority
+    // state and never reach the backend on their own -- this proves they ride along on the
+    // work-list event instead, so the dashboard's fleet-readout panel has real data to show.
+    @Test
+    void dispatchCadence_includesFleetTelemetry_hopperFuelAndPosition() {
+        long now = Instant.parse(T0).toEpochMilli();
+        FleetNode node = new FleetNode(binLocations(), freshCollectionTimestamps(now));
+
+        node.onReading(gpsReading("truck-01", 53.3498, -6.2603, 90, T0)); // tick1
+        node.onReading(numericReading("truck-01", "truck", "hopper-fill", 42.0, T0)); // tick2
+        for (int i = 0; i < 7; i++) {
+            node.onReading(numericReading("truck-01", "truck", "fuel-level", 88.0, T0)); // ticks3-9
+        }
+        List<Map<String, Object>> events = node.onReading(numericReading("truck-01", "truck", "fuel-level", 88.0, T0)); // tick10
+
+        Map<String, Object> telemetry = (Map<String, Object>) events.get(0).get("fleetTelemetry");
+        assertEquals("truck-01", telemetry.get("truckId"));
+        assertEquals(42.0, (Double) telemetry.get("hopperFillPct"), 1e-9);
+        assertEquals(88.0, (Double) telemetry.get("fuelLevelPct"), 1e-9);
+
+        Map<String, Object> position = (Map<String, Object>) telemetry.get("lastRecordedPosition");
+        assertEquals(53.3498, (Double) position.get("lat"), 1e-9);
+        assertEquals(-6.2603, (Double) position.get("lon"), 1e-9);
+    }
+
+    @Test
+    void fleetTelemetry_absent_whenNoTruckDataRecordedYet() {
+        long now = Instant.parse(T0).toEpochMilli();
+        FleetNode node = new FleetNode(binLocations(), freshCollectionTimestamps(now));
+
+        // bin-only ticks (weighbridge-tonnage touches no truck map), unlike dispatchAfterFill's
+        // truck-01 fuel-level filler ticks, so fleetTelemetry genuinely has nothing to report.
+        node.onReading(numericReading("bin-01", "bin", "fill-level", 85, T0)); // tick1
+        for (int i = 0; i < 8; i++) {
+            node.onReading(numericReading("depot-01", "depot", "weighbridge-tonnage", 5.0, T0)); // ticks2-9
+        }
+        List<Map<String, Object>> events = node.onReading(
+                numericReading("depot-01", "depot", "weighbridge-tonnage", 5.0, T0)); // tick10
+
+        assertTrue(!events.get(0).containsKey("fleetTelemetry"));
+    }
+
     // helper: fills bin-01 fill-level then drives 8 more ticks (total 9), returns tick-10 dispatch
     private List<Map<String, Object>> dispatchAfterFill(FleetNode node, String binId, double fillPct) {
         node.onReading(numericReading(binId, "bin", "fill-level", fillPct, T0)); // tick1

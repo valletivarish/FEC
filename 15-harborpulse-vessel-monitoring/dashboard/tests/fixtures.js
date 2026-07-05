@@ -3,16 +3,22 @@ export const POPULATED_FLEET_SUMMARY = {
     {
       vesselId: 'vessel-01',
       alarmActive: true,
+      level: 210.5,
+      slope: 14.2,
       timestamp: '2026-07-02T09:15:00Z',
     },
     {
       vesselId: 'vessel-02',
       alarmActive: false,
+      level: 32.0,
+      slope: -1.5,
       timestamp: '2026-07-02T08:50:00Z',
     },
     {
       vesselId: 'vessel-03',
       alarmActive: false,
+      level: 28.4,
+      slope: 0.3,
       timestamp: '2026-07-01T22:10:00Z',
     },
   ],

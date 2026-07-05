@@ -47,6 +47,7 @@ function renderLaneBody(container, status) {
         <div class="info-row d-flex gap-2 py-1"><span class="info-row__label text-muted">Humidity</span><span class="info-row__value font-monospace">${formatPercent(status.humidityPct)}</span></div>
         <div class="info-row d-flex gap-2 py-1"><span class="info-row__label text-muted">Compressor Current</span><span class="info-row__value font-monospace">${formatAmps(status.compressorCurrentA)}</span></div>
         <div class="info-row d-flex gap-2 py-1"><span class="info-row__label text-muted">Setpoint</span><span class="info-row__value font-monospace">${formatTemp(status.setpointC)}</span></div>
+        <div class="info-row d-flex gap-2 py-1"><span class="info-row__label text-muted">Last Shock Reading</span><span class="info-row__value font-monospace">${formatGForce(status.lastShock)}</span></div>
         <div class="info-row d-flex gap-2 py-1 align-items-center"><span class="info-row__label text-muted">Status</span></div>
       </div>
     </div>
@@ -120,6 +121,10 @@ function formatPercent(value) {
 
 function formatAmps(value) {
   return typeof value === "number" ? `${value.toFixed(1)}A` : "--A";
+}
+
+function formatGForce(value) {
+  return typeof value === "number" ? `${value.toFixed(1)}g` : "--g";
 }
 
 function escapeHtml(value) {

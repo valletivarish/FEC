@@ -351,3 +351,61 @@ body {
   color: var(--cw-accent);
   border-color: var(--cw-accent);
 }
+
+/* --- Mobile breakpoint: the fixed-width sidebar rail doesn't fit alongside content below
+   this width, so it collapses to a horizontal top bar and nav items lay out in a row
+   instead of a stacked column; content below flows full-width. --- */
+@media (max-width: 700px) {
+  .app-shell {
+    flex-direction: column;
+  }
+
+  .app-sidebar {
+    width: 100%;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 0.75rem 1rem !important;
+  }
+
+  .sidebar-brand {
+    margin-bottom: 0 !important;
+    margin-right: 1rem;
+  }
+
+  #sidebar-nav {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    margin-bottom: 0 !important;
+    gap: 0.5rem;
+  }
+
+  .sidebar-link {
+    width: auto;
+    margin-bottom: 0;
+    padding: 0.5rem;
+  }
+
+  /* Icon rail only at this width: label text would force wrapping/overflow in a horizontal bar.
+     font-size:0 (not display:none) so the unacknowledged-fall-count badge nested inside the
+     label stays visible - it resets its own font-size below. */
+  .sidebar-link-label {
+    font-size: 0;
+  }
+
+  .sidebar-badge {
+    font-size: 0.72rem;
+  }
+
+  .sidebar-footnote {
+    display: none;
+  }
+
+  .app-content {
+    padding: 1rem !important;
+  }
+
+  .kpi-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}

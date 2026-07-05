@@ -81,13 +81,15 @@ export const POPULATED_DEPOT_STATUS = {
     ],
     latestWeighbridgeTonnage: 7.42,
     timestamp: "2026-07-02T09:12:00.000Z",
+    // matches FleetNode.latestFleetTelemetry()'s real shape: hopper-fill/fuel-level/truck-gps
+    // ride along on the work-list event rather than being dispatched as their own event type.
+    fleetTelemetry: {
+      truckId: "truck-01",
+      lastRecordedPosition: { lat: 53.351, lon: -6.255, truckId: "truck-01" },
+      hopperFillPct: 63.5,
+      fuelLevelPct: 81.2,
+    },
   },
-  // hopper-fill/fuel-level/truck GPS aren't part of the documented QueryDepotStatusHandler
-  // response shape — modelled here as optional extras a real backend could add without
-  // breaking the contract, so the dashboard has something concrete to render/test against.
-  truckHopperFillPct: 63.5,
-  truckFuelLevelPct: 81.2,
-  truckLastRecordedPosition: { lat: 53.351, lon: -6.255, truckId: "truck-01" },
 };
 
 export const EMPTY_DEPOT_STATUS = {

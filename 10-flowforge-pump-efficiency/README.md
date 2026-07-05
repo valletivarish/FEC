@@ -78,8 +78,8 @@ builder reads `AWS_ENDPOINT_URL`/`AWS_REGION` from the environment natively; omi
 real AWS. Deploy is gated behind manual approval in GitHub Actions (`flowforge-production`
 environment).
 
-**Status**: Checkstyle (custom ruleset, `checkstyle.xml`) passes clean on all 5 modules. 64 unit
-tests pass (25 sensors, 32 fog, 7 backend), 5 integration tests prove the real
+**Status**: Checkstyle (custom ruleset, `checkstyle.xml`) passes clean on all 5 modules. 73 unit
+tests pass (25 sensors, 41 fog, 7 backend), 5 integration tests prove the real
 HealthNode/HydraulicsNode/IntegrityNode logic and the Lambda handler against floci's DynamoDB,
 plus the insight-relay Lambda's HTTP-to-SQS path against floci's SQS, `cdk synth` produces a valid
 template, dashboard passes 20 Playwright tests (functional + visual, across desktop and mobile

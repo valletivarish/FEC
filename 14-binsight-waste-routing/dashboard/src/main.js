@@ -25,20 +25,20 @@ function clearEmptyShellMessage() {
   document.getElementById("bin-risk-grid-status").innerHTML = "";
 }
 
-// truck position/hopper/fuel are not part of the documented /depot/status shape (cluster
-// verdicts, fire-risk events, work-list only) — read them defensively if a backend ever
-// includes them, otherwise the readouts honestly show "no data" rather than fabricating a value.
+// truck-gps/hopper-fill/fuel-level ride along on FleetNode's work-list event as
+// `fleetTelemetry` (see collection-fog's FleetNode.latestFleetTelemetry) rather than as their
+// own dispatched event type, so they show up here without a new backend route/table.
 function deriveFleetReadout(depotStatus) {
-  const workList = depotStatus.latestWorkList;
+  const telemetry = depotStatus.latestWorkList?.fleetTelemetry;
   return {
-    hopperFillPct: depotStatus.truckHopperFillPct ?? workList?.hopperFillPct ?? null,
-    fuelLevelPct: depotStatus.truckFuelLevelPct ?? workList?.fuelLevelPct ?? null,
-    weighbridgeTonnage: workList?.latestWeighbridgeTonnage ?? null,
+    hopperFillPct: telemetry?.hopperFillPct ?? null,
+    fuelLevelPct: telemetry?.fuelLevelPct ?? null,
+    weighbridgeTonnage: depotStatus.latestWorkList?.latestWeighbridgeTonnage ?? null,
   };
 }
 
 function deriveTruckPosition(depotStatus) {
-  const pos = depotStatus.truckLastRecordedPosition;
+  const pos = depotStatus.latestWorkList?.fleetTelemetry?.lastRecordedPosition;
   if (!pos) return null;
   return { lat: pos.lat, lon: pos.lon, truckId: pos.truckId ?? KNOWN_TRUCK_IDS[0] };
 }

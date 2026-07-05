@@ -43,7 +43,7 @@ mvn -f sensor-sim/pom.xml install -DskipTests
 mvn -f fog-runtime/pom.xml install -DskipTests
 mvn -f backend/pom.xml package -DskipTests
 cd infra && npx --yes aws-cdk@2 deploy --require-approval never && cd ..
-MQTT_BROKER_URL=tcp://localhost:1883 java -jar sensor-sim/target/sensor-sim-1.0.0.jar &
+MQTT_BROKER_URL=tcp://localhost:1883 java -jar sensor-sim/target/sensor-sim-1.0.0-jar-with-dependencies.jar &
 java -jar fog-runtime/target/fog-runtime-1.0.0.jar
 ```
 
@@ -78,7 +78,7 @@ builder reads `AWS_ENDPOINT_URL`/`AWS_REGION` from the environment natively; omi
 real AWS. Deploy is gated behind manual approval in GitHub Actions (`guardianedge-prod`
 environment).
 
-**Status**: 69 unit tests pass (20 sensor-sim, 34 fog-runtime, 15 backend), 6 integration tests
+**Status**: 77 unit tests pass (20 sensor-sim, 42 fog-runtime, 15 backend), 6 integration tests
 prove the real VitalsFogNode/FallFogNode/PresenceFogNode logic and all 3 Lambda handlers
 (ingest, alert-processor via the derived risk-state upsert, and the resident-query/acknowledge
 read API) against floci's DynamoDB — including a scripted free-fall sequence that dispatches

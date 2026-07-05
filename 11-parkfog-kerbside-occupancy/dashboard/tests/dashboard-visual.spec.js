@@ -76,6 +76,14 @@ const STABLE_MOCK_EVENTS = [
     timestamp: '2026-07-03T09:09:00.000Z',
   },
   {
+    type: 'camera_discrepancy_event',
+    zoneId: 'zone-01',
+    cameraFreeCount: 3,
+    fusedFreeCount: 1,
+    occlusionPercent: 8,
+    timestamp: '2026-07-03T09:09:20.000Z',
+  },
+  {
     type: 'tariff_changed',
     entityId: 'zone-01',
     previousTariff: 2.0,

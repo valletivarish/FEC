@@ -41,6 +41,7 @@ function buildReachOverviewRows(statusesByReach) {
       rateOfRise: hydro ? hydro.rateOfRise : null,
       flowRateSlope: hydro ? hydro.flowRateSlope : null,
       blockageSuspected: hydro ? hydro.blockageSuspected : false,
+      soilSaturationAmplified: hydro ? hydro.soilSaturationAmplified : false,
     };
   });
 }

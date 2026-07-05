@@ -13,8 +13,9 @@ into a scalable AWS backend with a live "bench-row" dashboard.
   door-contact), each independently configurable for sample and dispatch cadence via per-zone
   JSON config, published over MQTT.
 - **Fog nodes** (`fog/`): ClimateFogNode (Tetens-equation VPD, a derived vent-position setpoint
-  published on a >5pp change or heartbeat, and a true trapezoidal-integration Daily Light
-  Integral tracker with a once-per-day shortfall flag), FertigationFogNode (rolling-window OLS
+  published on a >5pp change or heartbeat, a true trapezoidal-integration Daily Light
+  Integral tracker with a once-per-day shortfall flag, and a CO2 enrichment-band classifier that
+  dispatches a `co2_event` on each severity transition), FertigationFogNode (rolling-window OLS
   drift slope plus absolute-range breach classification for EC/pH, with a suggested dose
   direction; water-temperature gets its own out-of-band severity transition and flags EC readings
   with `temperatureCompensationNeeded` since EC probes' automatic temperature compensation is only
@@ -80,14 +81,14 @@ real AWS. Deploy is gated behind manual approval in GitHub Actions
 (`greenhouseguard-production` environment).
 
 **Status**: ESLint (`eslint:recommended`, flat config shared across all 5 workspaces) passes clean
-with no disabled rules. 80 unit tests pass (20 sensors, 51 fog, 9 backend), 6 integration tests prove the real
+with no disabled rules. 99 unit tests pass (20 sensors, 64 fog, 15 backend), 6 integration tests prove the real
 ClimateFogNode/FertigationFogNode/EnclosureFogNode logic — including the cross-node closed loop,
 where a live `setpoint_command` from ClimateFogNode is handed to EnclosureFogNode in-process
 exactly as the runtime wiring does, and a stalled vent is correctly detected, persisted, and
 acknowledged — against floci's DynamoDB, plus one proving `relayIngestEvent` actually lands a
 message on a real floci SQS queue (closing the gap where only in-process Lambda calls, never the
 HTTP/API-Gateway/SQS path, had been exercised). `cdk synth` produces a valid template, dashboard
-passes 14 Playwright tests (functional + visual, across desktop and mobile viewports), with the
+passes 18 Playwright tests (functional + visual, across desktop and mobile viewports), with the
 populated-data visual snapshots inspected by hand before accepting them as baselines.
 
 One generation-pipeline mistake caught and fixed before verification: the parallel build handed

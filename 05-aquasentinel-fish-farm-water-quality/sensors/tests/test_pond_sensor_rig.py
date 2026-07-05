@@ -41,6 +41,15 @@ def test_intervals_are_independent_per_sensor():
     assert do_settings["dispatch_interval_s"] != feeder_settings["dispatch_interval_s"]
 
 
+def test_sample_and_dispatch_interval_are_independent_within_one_sensor():
+    # salinity is sampled every 30s locally but only dispatched every 60s -- this is the
+    # sample-vs-dispatch decoupling PondSensorRig implements, not just cross-sensor variation.
+    config = load_pond_config(CONFIG_PATH)
+    salinity_settings = config["sensors"]["salinity"]
+    assert salinity_settings["sample_interval_s"] != salinity_settings["dispatch_interval_s"]
+    assert salinity_settings["sample_interval_s"] < salinity_settings["dispatch_interval_s"]
+
+
 def test_rig_loads_config_and_exposes_pond_id():
     rig = PondSensorRig(CONFIG_PATH, publish_callback=lambda reading: None)
     assert rig.pond_id == "pond-01"
@@ -71,3 +80,25 @@ def test_rig_published_reading_shape():
     assert "value" in reading
     assert "unit" in reading
     assert "timestamp" in reading
+
+
+def test_metric_loop_samples_faster_than_it_dispatches(tmp_path):
+    # A tiny synthetic config (0.05s sample, 0.2s dispatch) proves the runtime behaviour, not
+    # just the config values: over ~0.5s this should tick ~10 times but publish only ~2-3 times.
+    config_path = tmp_path / "pond-fast.yaml"
+    config_path.write_text(
+        "pond_id: pond-fast\n"
+        "sensors:\n"
+        "  salinity:\n"
+        "    unit: ppt\n"
+        "    sample_interval_s: 0.05\n"
+        "    dispatch_interval_s: 0.2\n"
+    )
+    published = []
+    rig = PondSensorRig(config_path, publish_callback=lambda reading: published.append(reading))
+    rig.start()
+    rig._stop_event.wait(0.5)
+    rig.stop()
+
+    # dispatched at least once but nowhere near the ~10 sample ticks that occurred in 0.5s
+    assert 1 <= len(published) <= 4

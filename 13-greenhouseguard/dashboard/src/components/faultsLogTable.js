@@ -13,6 +13,9 @@ function eventSummary(entry) {
   if (entry.type === 'dli_event') {
     return `DLI shortfall: ${entry.accumulatedDli.toFixed(1)} mol/m2 so far today`;
   }
+  if (entry.type === 'co2_event') {
+    return `CO2 ${entry.severity} at ${entry.co2Ppm} ppm`;
+  }
   return entry.type;
 }
 

@@ -301,3 +301,48 @@ td, th {
   border: 1px solid #eef0f3;
   border-radius: 12px;
 }
+
+/* --- Mobile: the fixed-width sidebar becomes a wrapping top bar so the shell never forces
+   horizontal scroll on a phone; the radar canvas drops to a fluid width for the same reason --- */
+@media (max-width: 768px) {
+  .app-shell {
+    flex-direction: column;
+  }
+
+  .app-sidebar {
+    width: 100%;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 0.75rem 1rem !important;
+  }
+
+  .sidebar-brand {
+    flex-direction: row !important;
+    align-items: baseline;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem !important;
+    width: 100%;
+  }
+
+  #sidebar-nav {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    margin-bottom: 0 !important;
+    gap: 0.4rem;
+  }
+
+  .sidebar-link {
+    margin: 0;
+  }
+
+  .sidebar-footnote {
+    display: none;
+  }
+
+  #fleet-radar-canvas {
+    width: 100%;
+    height: auto;
+    max-width: 360px;
+  }
+}

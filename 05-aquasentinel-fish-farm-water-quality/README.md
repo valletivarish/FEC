@@ -8,8 +8,9 @@ dispatch only alerts and correlated readings into a scalable AWS backend with a 
 
 - **Sensors** (`sensors/`): 10 sensor metrics per pond (dissolved oxygen, water temperature, pH,
   salinity, turbidity, ammonia, nitrite, ORP, water level, feeder load), each independently
-  configurable for sample and dispatch cadence via `sensors/config/pond-0N.yaml`, published over
-  MQTT.
+  configurable for sample and dispatch cadence via `sensors/config/pond-0N.yaml` — e.g. salinity
+  and water level sample every 30s but only dispatch every 60s, decoupling how often a value is
+  refreshed from how often it's worth spending a message on — published over MQTT.
 - **Fog nodes** (`fog/`): LifeSupportFog (temperature-compensated hypoxia staging with sensor-fault
   suppression), ToxicityFog (Emerson-equation un-ionised ammonia calculation with full provenance,
   plus an independent nitrite brown-blood-risk flag), OpsFog (multi-signal overfeeding inference).
@@ -65,7 +66,7 @@ Real AWS deployment uses the same CDK app with no code changes — the AWS SDK r
 `AWS_ENDPOINT_URL` from the environment natively; omitting it targets real AWS. Deploy is gated
 behind manual approval in GitHub Actions (`aquasentinel-production` environment).
 
-**Status**: 71 unit tests pass (10 sensors, 42 fog, 19 backend), 5 integration tests prove the real
+**Status**: 73 unit tests pass (12 sensors, 42 fog, 19 backend), 5 integration tests prove the real
 LifeSupportFog/ToxicityFog/OpsFog logic and both Lambda handlers against floci's DynamoDB, `cdk
 synth` produces a valid template, dashboard passes 22 Playwright tests (functional + visual, across
 desktop and mobile viewports). A prior round fixed `/status` to genuinely merge urgent toxicity
@@ -74,7 +75,12 @@ and Feed Correlation panels still read exclusively from `/alerts`, which the dis
 routes life_support/ops_feed_correlation events to — those panels rendered their empty state in
 real production regardless of sensor data. Fixed by sourcing both panels from the same `/status`
 response already fetched for the rest of the dashboard; verified live against floci with real fog
-logic, the real dispatcher's routing decision, and the real ingest/query Lambda handlers.
+logic, the real dispatcher's routing decision, and the real ingest/query Lambda handlers. A later
+audit found every shipped pond config set `sample_interval_s == dispatch_interval_s` for all 10
+sensors, so the sample-vs-dispatch decoupling `PondSensorRig` implements was never actually
+exercised by any config; fixed by making salinity and water-level sample every 30s but dispatch
+every 60s across all 4 ponds, with a new runtime test (`test_metric_loop_samples_faster_than_it_dispatches`)
+proving the decoupling genuinely holds, not just that the config values differ.
 
 **Load test**: `cdk deploy` run fresh against floci, then `load/ramp_load_test.py` ramped 5 -> 10
 -> 20 -> 40 concurrent simulated ponds (240 requests at peak) through the real deployed relay

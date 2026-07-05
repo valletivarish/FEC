@@ -92,8 +92,9 @@ async function mockStableApi(page) {
   await page.route('**/pumps/*/insights', async (route) => {
     const url = new URL(route.request().url());
     const pumpId = url.pathname.split('/').filter(Boolean).slice(-2, -1)[0];
-    const body = STABLE_INSIGHTS[pumpId] || [];
-    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+    const insights = STABLE_INSIGHTS[pumpId] || [];
+    // QueryApiHandler wraps the array as { pumpId, insights } - the mock must match that real shape.
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ pumpId, insights }) });
   });
 }
 

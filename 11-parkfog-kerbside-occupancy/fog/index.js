@@ -20,6 +20,7 @@ const BAY_SENSING_METRICS = new Set([
   'bay-magnetometer',
   'bay-infrared',
   'disabled-bay-badge-scan',
+  'camera-free-space-count',
 ]);
 const ACCESS_PAYMENT_METRICS = new Set([
   'meter-payment',

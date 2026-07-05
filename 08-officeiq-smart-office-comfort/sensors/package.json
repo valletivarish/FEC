@@ -2,9 +2,9 @@
   "name": "officeiq-sensors",
   "version": "1.0.0",
   "description": "OfficeIQ sensor rig: per-zone MQTT sensor simulation for smart-office occupancy and comfort",
-  "main": "sensors/index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node sensors/index.js",
+    "start": "node index.js",
     "test": "jest",
     "lint": "eslint ."
   },

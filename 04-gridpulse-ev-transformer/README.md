@@ -12,12 +12,15 @@ dispatch only setpoint changes and curtailment transitions into a scalable AWS b
   dispatch cadence via `sensors/config/hub-01.sensors.json`, published over MQTT.
 - **Fog agents** (`fog/`): ChargerBayAgent (per-bay CC-CV taper-curve setpoint), TransformerGuardAgent
   (4-rung curtailment ladder with 3-sample de-escalation hysteresis — applies its ceiling to every
-  bay agent **in-process, instantly**, and only tells the cloud about rung transitions), DerBalancerAgent
-  (solar/battery/tariff mode planner). Dispatches to the backend via Kinesis.
+  bay agent **in-process, instantly**, and only tells the cloud about rung transitions — plus feeder
+  voltage/frequency power-quality classification against UK LV tolerance bands, dispatched only on
+  a status change), DerBalancerAgent (solar/battery/tariff mode planner). Dispatches to the backend
+  via Kinesis.
 - **Backend** (`backend/` + `infra/`): Kinesis stream → Lambda → DynamoDB, plus an HTTP API for
   hub/bay status queries. Scales via Kinesis shard count and Lambda concurrency.
-- **Dashboard** (`dashboard/`): "Switchboard" — plain HTML tables, one restrained accent color per
-  status class, no gauges/gradients/glow.
+- **Dashboard** (`dashboard/`): "Switchboard" — a Bootstrap 5 ops-console (dark sidebar nav, tabbed
+  panels, plain white data cards/tables), one restrained accent color per status class, no
+  gauges/gradients/glow.
 
 ## Local development
 
@@ -77,7 +80,7 @@ Real AWS deployment uses the same CDK app with no code changes — the AWS SDK r
 `AWS_ENDPOINT_URL` from the environment natively; omitting it targets real AWS. Deploy is gated
 behind manual approval in GitHub Actions (`gridpulse-production` environment).
 
-**Status**: 67 unit tests pass (19 sensors, 37 fog, 11 backend), 4 integration tests prove the real
+**Status**: 88 unit tests pass (19 sensors, 50 fog, 19 backend), 4 integration tests prove the real
 ChargerBayAgent/TransformerGuardAgent logic and Lambda handler code against floci's DynamoDB,
 `cdk synth`/`tsc` produce a valid template, dashboard passes 24 Playwright tests (functional +
 visual, across desktop and mobile viewports).

@@ -43,11 +43,15 @@ export class SwitchboardApp {
     const transformer = summary.transformer || {};
     const curtailment = summary.curtailment || {};
 
+    const feeder = summary.feeder || {};
     this.transformerStatus.update({
       windingTemp: transformer.windingTemp,
       loadAmps: transformer.loadAmps,
       rung: curtailment.rung,
       rungLabel: curtailment.rungLabel,
+      feederVoltage: feeder.voltage,
+      feederFrequency: feeder.frequency,
+      feederStatus: feeder.status,
     });
 
     const der = summary.der || {};

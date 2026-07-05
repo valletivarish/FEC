@@ -119,8 +119,8 @@ class GreenGridStack(Stack):
         )
         ingest_queue.grant_send_messages(relay_fn)
 
-        # Backs the dashboard's Backend Status page: real DescribeTable + GetQueueAttributes
-        # checks plus the running message counters, no hardcoded status strings.
+        # Operational health endpoint (not surfaced in the dashboard UI): real DescribeTable +
+        # GetQueueAttributes checks plus the running message counters, no hardcoded status strings.
         status_fn = lambda_.Function(
             self,
             "StatusHandlerFn",

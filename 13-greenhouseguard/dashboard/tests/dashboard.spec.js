@@ -212,6 +212,42 @@ test.describe('GreenhouseGuard dashboard - populated data', () => {
   });
 });
 
+test.describe('GreenhouseGuard dashboard - co2_event in faults log', () => {
+  test('renders a CO2 severity transition in the faults log', async ({ page }) => {
+    await page.route('**/zones/*/status', async (route) => {
+      const url = route.request().url();
+      const zoneId = url.match(/zones\/([^/]+)\/status/)[1];
+      const fixture =
+        zoneId === 'zone-a'
+          ? {
+              zoneId,
+              latestCommand: null,
+              faults: [
+                {
+                  type: 'co2_event',
+                  eventTypeTimestamp: 'co2_event#2026-07-02T11:00:00.000Z',
+                  zoneId,
+                  co2Ppm: 1800,
+                  severity: 'WARNING',
+                  timestamp: '2026-07-02T11:00:00.000Z',
+                  acknowledged: false
+                }
+              ]
+            }
+          : { zoneId, latestCommand: null, faults: [] };
+      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(fixture) });
+    });
+    await page.goto('/');
+
+    const logTable = page.locator('#faults-log-container table');
+    const co2Row = logTable.locator('tbody tr', { hasText: 'co2 event' });
+    await expect(co2Row).toContainText('CO2 WARNING at 1800 ppm');
+
+    const activeFaultsCard = page.locator('.kpi-card').filter({ hasText: 'Active Faults' });
+    await expect(activeFaultsCard.locator('.kpi-value')).toHaveText('1');
+  });
+});
+
 test.describe('GreenhouseGuard dashboard - no backend', () => {
   test('renders full shell with explanatory empty state', async ({ page }) => {
     await page.route('**/zones/*/status', async (route) => {

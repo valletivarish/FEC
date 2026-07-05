@@ -15,7 +15,12 @@ and rollups (not raw telemetry) into a scalable AWS backend with a live dashboar
   after-hours correlation). Each dispatches processed events to the backend over HTTP.
 - **Backend** (`backend/` + `infra/`): API Gateway → SQS FIFO → Lambda → DynamoDB, dashboard
   hosted on S3+CloudFront. Scales via SQS load-leveling and Lambda concurrency.
-- **Dashboard** (`dashboard/`): "Floor Plan / Zone Grid" — vanilla JS, no build step.
+- **Dashboard** (`dashboard/`): "Control Room" — a zone-grid table plus per-zone comfort/energy/
+  security detail panels and an alert feed, vanilla JS ES modules, no build step. The zone list
+  (`dashboard/src/state.js`, building room codes like `A101`) is a separate mock building layout
+  from the sensor/fog layer's simulation zones (`config/sensors.campuspulse.yml`, `zone-a`/`zone-b`/
+  `zone-c`) — the backend is zone-agnostic (any `zoneId` string works against both), so this is a
+  deliberate decoupling, not a bug, but the two zone sets do not correspond 1:1.
 
 ## Local development
 
@@ -59,14 +64,13 @@ Real AWS deployment uses the same CDK app with no code changes — the AWS SDK r
 `AWS_ENDPOINT_URL` from the environment natively; omitting it targets real AWS. Deploy is gated
 behind manual approval in GitHub Actions (`campuspulse-production` environment).
 
-**Status**: 43 unit tests pass (10 sensors, 26 fog, 7 backend), 6 integration tests prove the real
+**Status**: 56 unit tests pass (10 sensors, 34 fog, 12 backend), 6 integration tests prove the real
 fog-security FSM, hvac-duct-pressure ingest, and Lambda handler code against floci's DynamoDB and
 real API Gateway/SQS routing, `cdk synth`/`tsc` produce a
-valid template, dashboard passes 18 Playwright tests (10 functional + 8 visual, across desktop and mobile
-viewports). One bug found and
-fixed during testing: the desktop "floor plan" tile layout used inline `grid-column`/`grid-row`
-that fought the mobile column-count media query — fixed via CSS custom properties reset at the
-640px breakpoint.
+valid template, dashboard passes 30 Playwright tests (9 functional + 6 visual, each across desktop
+and mobile viewport projects). Responsive behaviour comes from Bootstrap's grid/flex utilities and
+`.table-responsive` horizontal scroll rather than a custom breakpoint - covered by the "responsive
+layout" describe block in `campuspulse-dashboard.spec.js` and the mobile-viewport visual snapshots.
 
 **Load test** (`load/results.md`): the ingest-only stack (`infra/bin/ingestOnlyTestApp.ts`) was
 deployed to floci and load-tested by ramping 5 -> 40 concurrent virtual fog-node publishers

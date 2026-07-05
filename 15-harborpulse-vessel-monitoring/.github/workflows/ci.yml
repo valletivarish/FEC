@@ -51,11 +51,13 @@ jobs:
             curl -sf http://localhost:4566/_localstack/health > /dev/null && break
             sleep 2
           done
-      - name: Precreate the relay-test queue and capture its deterministic URL
+      - name: Set the relay-test queue's deterministic URL
         run: |
           echo "HARBORPULSE_TARGET_QUEUE_URL=http://localhost:4566/000000000000/harborpulse-it-relay-queue" >> $GITHUB_ENV
       - name: Integration test
         working-directory: 15-harborpulse-vessel-monitoring/integration-test
+        # the test suite's own `tables` fixture creates this queue on floci if it doesn't
+        # already exist -- see _ensure_queue in test_sensor_to_fog_to_backend.py
         run: |
           pip install -r requirements.txt
           python -m pytest -v
@@ -67,6 +69,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: test
           HARBORPULSE_TELEMETRY_TABLE: harborpulse-telemetry-table
           HARBORPULSE_ALARMS_TABLE: harborpulse-alarms-table
+          HARBORPULSE_TARGET_QUEUE_URL: http://localhost:4566/000000000000/harborpulse-it-relay-queue
       - name: CDK synth (validates infra)
         working-directory: 15-harborpulse-vessel-monitoring/infra
         run: |

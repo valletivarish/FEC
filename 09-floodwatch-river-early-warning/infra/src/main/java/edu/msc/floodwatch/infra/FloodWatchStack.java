@@ -3,6 +3,8 @@ package edu.msc.floodwatch.infra;
 import java.util.List;
 import java.util.Map;
 
+import software.amazon.awscdk.CfnOutput;
+import software.amazon.awscdk.CfnOutputProps;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.Stack;
@@ -170,6 +172,13 @@ public class FloodWatchStack extends Stack {
                         .allowOrigins(List.of("*"))
                         .allowMethods(List.of(CorsHttpMethod.GET))
                         .build())
+                .build());
+
+        // named output so fog nodes (FLOODWATCH_API_BASE_URL) and the dashboard
+        // (window.FLOODWATCH_API_BASE_URL) both have one authoritative place to read
+        // the real endpoint from after every deploy, local or real-AWS alike
+        new CfnOutput(this, "ApiEndpoint", CfnOutputProps.builder()
+                .value(api.getApiEndpoint())
                 .build());
 
         HttpLambdaIntegration statusIntegration =

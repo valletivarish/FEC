@@ -1,6 +1,8 @@
 import statistics
 
 WINDOW_SIZE = 20
+# Reduces bar*(m3/h) / A to a dimensionless ~0-1 efficiency proxy for this synthetic rig's
+# ranges, not a derived hydraulic-power constant — tuned so a healthy reading centers near 1.0.
 CONVERSION_CONSTANT = 12.0
 CAVITATION_CV_THRESHOLD = 0.15
 COMMISSIONING_BASELINE_BAR = 10.0

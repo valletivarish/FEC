@@ -36,7 +36,7 @@ export function renderReachOverviewTable(tbodyEl, reachRows) {
   tbodyEl.innerHTML = "";
 
   if (!reachRows || reachRows.length === 0) {
-    tbodyEl.innerHTML = `<tr><td colspan="6" class="text-center text-muted">No reach data available</td></tr>`;
+    tbodyEl.innerHTML = `<tr><td colspan="7" class="text-center text-muted">No reach data available</td></tr>`;
     return;
   }
 
@@ -45,6 +45,12 @@ export function renderReachOverviewTable(tbodyEl, reachRows) {
     const blockageBadge = row.blockageSuspected
       ? `<span class="badge rounded-pill text-bg-danger">Blockage?</span>`
       : `<span class="badge rounded-pill text-bg-secondary">Clear</span>`;
+    // soilSaturationAmplified is the fog node's own signal that thresholds were tightened
+    // for this reach - shown here, not fabricated from raw soil-saturation, since the
+    // amplification decision (not the raw %VWC reading) is what an operator needs to see.
+    const soilBadge = row.soilSaturationAmplified
+      ? `<span class="badge rounded-pill text-bg-warning">Amplified</span>`
+      : `<span class="badge rounded-pill text-bg-secondary">Normal</span>`;
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td class="reach-id">${row.reachId}</td>
@@ -56,6 +62,7 @@ export function renderReachOverviewTable(tbodyEl, reachRows) {
       <td>${row.rateOfRise != null ? row.rateOfRise.toFixed(3) : "--"}</td>
       <td>${row.flowRateSlope != null ? row.flowRateSlope.toFixed(2) : "--"}</td>
       <td>${blockageBadge}</td>
+      <td>${soilBadge}</td>
     `;
     tbodyEl.appendChild(tr);
   }

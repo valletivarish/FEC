@@ -18,6 +18,14 @@ function tempReading(value, timestamp) {
   return { hubId: HUB_ID, bayId: null, metric: 'transformer/winding-temp', value, unit: 'degC', timestamp };
 }
 
+function voltageReading(value, timestamp) {
+  return { hubId: HUB_ID, bayId: null, metric: 'feeder/voltage', value, unit: 'V', timestamp };
+}
+
+function frequencyReading(value, timestamp) {
+  return { hubId: HUB_ID, bayId: null, metric: 'feeder/frequency', value, unit: 'Hz', timestamp };
+}
+
 function ts(n) {
   return `2026-01-01T00:00:${String(n).padStart(2, '0')}.000Z`;
 }
@@ -136,5 +144,67 @@ describe('TransformerGuardAgent de-escalation hysteresis', () => {
     const events = guard.onReading(loadReading(100, ts(6))); // streak 3 -> de-escalate
     expect(events).toHaveLength(1);
     expect(guard.currentRung).toBe(0);
+  });
+});
+
+describe('TransformerGuardAgent feeder power-quality classification', () => {
+  test('nominal voltage and frequency produce a nominal status, dispatched once on first reading', () => {
+    const guard = new TransformerGuardAgent(buildBayAgents());
+    const events = guard.onReading(voltageReading(230, ts(0)));
+    expect(events).toHaveLength(1);
+    expect(events[0]).toMatchObject({ type: 'feeder_status', status: 'nominal', voltage: 230 });
+  });
+
+  test('voltage drifting into the warning band (>=8V from 230V) escalates feeder status', () => {
+    const guard = new TransformerGuardAgent(buildBayAgents());
+    guard.onReading(voltageReading(230, ts(0)));
+    const events = guard.onReading(voltageReading(239, ts(1)));
+    expect(events).toHaveLength(1);
+    expect(events[0].status).toBe('warning');
+  });
+
+  test('voltage breaching the critical band (>=15V from 230V) reports critical', () => {
+    const guard = new TransformerGuardAgent(buildBayAgents());
+    const events = guard.onReading(voltageReading(248, ts(0)));
+    expect(events[0].status).toBe('critical');
+  });
+
+  test('frequency drifting outside its tighter 0.1Hz/0.3Hz bands also drives feeder status', () => {
+    const guard = new TransformerGuardAgent(buildBayAgents());
+    guard.onReading(voltageReading(230, ts(0)));
+    const events = guard.onReading(frequencyReading(50.35, ts(1)));
+    expect(events[0].status).toBe('critical');
+  });
+
+  test('combined status is the worse of voltage and frequency', () => {
+    const guard = new TransformerGuardAgent(buildBayAgents());
+    guard.onReading(voltageReading(239, ts(0))); // warning
+    const events = guard.onReading(frequencyReading(50.35, ts(1))); // frequency critical, worse than voltage's warning
+    expect(events[0].status).toBe('critical');
+  });
+
+  test('a second reading that keeps the same worse-of status does not re-dispatch', () => {
+    const guard = new TransformerGuardAgent(buildBayAgents());
+    guard.onReading(voltageReading(248, ts(0))); // critical
+    const events = guard.onReading(frequencyReading(50, ts(1))); // nominal frequency, but combined stays critical
+    expect(events).toHaveLength(0);
+    expect(guard.feederStatus).toBe('critical');
+  });
+
+  test('does not re-dispatch feeder_status when the classification has not changed', () => {
+    const guard = new TransformerGuardAgent(buildBayAgents());
+    guard.onReading(voltageReading(230, ts(0)));
+    const events = guard.onReading(voltageReading(231, ts(1)));
+    expect(events).toHaveLength(0);
+  });
+
+  test('feeder readings never touch the load/temp curtailment ladder', () => {
+    const bayAgents = buildBayAgents();
+    const guard = new TransformerGuardAgent(bayAgents);
+    guard.onReading(voltageReading(248, ts(0))); // feeder critical
+    expect(guard.currentRung).toBe(0);
+    for (const bayId of BAY_IDS) {
+      expect(bayAgents.get(bayId).curtailmentCeiling.get(bayId)).toBeUndefined();
+    }
   });
 });

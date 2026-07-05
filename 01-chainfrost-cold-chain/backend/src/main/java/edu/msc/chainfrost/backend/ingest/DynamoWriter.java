@@ -125,7 +125,9 @@ public class DynamoWriter {
         appendIfPresent(updateExpression, values, "lastLat", "lat", event);
         appendIfPresent(updateExpression, values, "lastLon", "lon", event);
         appendIfPresent(updateExpression, values, "lastSpeed", "speed", event);
-        appendIfPresent(updateExpression, values, "lastShock", "shock", event);
+        // TelematicsFogNode.onShockReading dispatches the reading under "gForce", not "shock" -
+        // this key must match that payload exactly or every shock reading silently fails to persist.
+        appendIfPresent(updateExpression, values, "lastShock", "gForce", event);
 
         dynamoDbClient.updateItem(UpdateItemRequest.builder()
                 .tableName(shipmentsTable)

@@ -33,8 +33,8 @@ Then, from this folder:
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r sensors/requirements.txt -r fog/requirements.txt -r backend/requirements.txt
 cd infra && pip install -r requirements.txt && npx --yes aws-cdk@2 deploy --require-approval never && cd ..
-MQTT_BROKER_URL=mqtt://localhost:1883 python -m sensors.sensor_rig &
-MQTT_BROKER_URL=mqtt://localhost:1883 AEROSENSE_API_BASE_URL=<deployed-api-url> python -m fog.dispatcher &
+MQTT_BROKER_URL=mqtt://localhost:1883 python -m sensors.run_rig &
+cd fog && MQTT_BROKER_URL=mqtt://localhost:1883 API_BASE_URL=<deployed-api-url> python run_fog.py &
 ```
 
 Dashboard:

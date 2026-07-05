@@ -75,14 +75,15 @@ async function mockApi(page, insightsByPump = MOCK_INSIGHTS) {
   await page.route('**/pumps/*/insights', async (route) => {
     const url = new URL(route.request().url());
     const pumpId = url.pathname.split('/').filter(Boolean).slice(-2, -1)[0];
-    const body = insightsByPump[pumpId] || [];
-    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+    const insights = insightsByPump[pumpId] || [];
+    // QueryApiHandler wraps the array as { pumpId, insights } - the mock must match that real shape.
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ pumpId, insights }) });
   });
 }
 
 async function mockEmptyApi(page) {
   await page.route('**/pumps/*/insights', async (route) => {
-    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify([]) });
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ insights: [] }) });
   });
 }
 

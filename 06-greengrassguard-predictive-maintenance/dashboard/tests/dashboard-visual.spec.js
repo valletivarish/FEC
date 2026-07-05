@@ -63,10 +63,12 @@ async function mockGuardApi(page) {
     const url = route.request().url();
     const match = ASSET_IDS.find((id) => url.includes(id));
     const events = match ? EVENTS_BY_ASSET[match] : [];
+    // real query_handler responds with { diagnoses: [...] }, not { events: [...] }
+    // (see backend/functions/query_handler/handler.py) — mock must match that contract
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ events }),
+      body: JSON.stringify({ diagnoses: events }),
     });
   });
 }

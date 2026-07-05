@@ -101,8 +101,9 @@ class DynamoWriterTest {
 
     @Test
     void upsertShipmentPositionWritesAllTelematicsFieldsViaUpdateItem() {
+        // "gForce" (not "shock") is the exact payload key TelematicsFogNode.onShockReading dispatches with.
         FogEvent event = new FogEvent("truck-9", "truck-9-2026-07-02", "TELEMATICS_GPS", "INFO",
-                Map.of("lat", 53.35, "lon", -6.26, "speed", 88.4, "shock", 0.3),
+                Map.of("lat", 53.35, "lon", -6.26, "speed", 88.4, "gForce", 0.3),
                 Instant.parse("2026-07-02T11:00:00Z"));
 
         writer.upsertShipmentPosition(event);

@@ -12,6 +12,18 @@ function badgeReading(bayId, value, timestamp) {
   return { scope: 'bay', id: bayId, metric: 'disabled-bay-badge-scan', value, unit: 'bool', timestamp };
 }
 
+function cameraReading(zoneId, count, occlusionPercent, timestamp) {
+  return {
+    scope: 'zone',
+    id: zoneId,
+    metric: 'camera-free-space-count',
+    value: count,
+    occlusionPercent,
+    unit: 'count',
+    timestamp,
+  };
+}
+
 // low readings first so the window fills before crossing up, then a clean push over the up-threshold
 function driveOccupied(fog, bayId) {
   fog.onReading(magReading(bayId, 10, 'd1'));
@@ -142,5 +154,68 @@ describe('BaySensingFog disabled-bay violation flag', () => {
     const fog = new BaySensingFog(bayConfig);
     const events = driveOccupied(fog, 'bay-01');
     expect(events[0].disabledBayViolation).toBe(false);
+  });
+});
+
+describe('BaySensingFog camera free-space reconciliation', () => {
+  test('a camera count within tolerance of the fused-available count raises no event', () => {
+    const fog = new BaySensingFog({});
+    // only bays that have actually reported in exist in the map, so drive two known-UNOCCUPIED
+    // bays plus one OCCUPIED bay to give fusedAvailable a real, non-zero value of 2
+    fog.onReading(magReading('bay-02', 10, 't0'));
+    fog.onReading(magReading('bay-03', 10, 't0'));
+    driveOccupied(fog, 'bay-01'); // bay-01 OCCUPIED, bay-02/bay-03 UNOCCUPIED -> fusedAvailable = 2
+
+    const events = fog.onReading(cameraReading('zone-01', 2, 10, 't1'));
+    expect(events).toHaveLength(0);
+  });
+
+  test('a heavily occluded frame is never trusted, however large the gap', () => {
+    const fog = new BaySensingFog({});
+    driveOccupied(fog, 'bay-01');
+
+    for (let i = 0; i < 5; i += 1) {
+      const events = fog.onReading(cameraReading('zone-01', 0, 90, `t${i}`));
+      expect(events).toHaveLength(0);
+    }
+  });
+
+  test('a genuine multi-bay gap on a trustworthy frame dispatches camera_discrepancy_event immediately', () => {
+    const fog = new BaySensingFog({});
+    // no bay readings yet: fused-available is 0, so a camera count of 4 is a 4-bay gap
+    const events = fog.onReading(cameraReading('zone-01', 4, 5, 't1'));
+
+    expect(events).toHaveLength(1);
+    expect(events[0]).toMatchObject({
+      type: 'camera_discrepancy_event',
+      zoneId: 'zone-01',
+      cameraFreeCount: 4,
+      fusedFreeCount: 0,
+    });
+  });
+
+  test('debounces repeat dispatch to at most once per zone per 3 ticks', () => {
+    const fog = new BaySensingFog({});
+    const first = fog.onReading(cameraReading('zone-01', 4, 5, 't1'));
+    expect(first).toHaveLength(1);
+
+    const secondTick = fog.onReading(cameraReading('zone-01', 4, 5, 't2'));
+    const thirdTick = fog.onReading(cameraReading('zone-01', 4, 5, 't3'));
+    expect(secondTick).toHaveLength(0);
+    expect(thirdTick).toHaveLength(0);
+
+    const fourthTick = fog.onReading(cameraReading('zone-01', 4, 5, 't4'));
+    expect(fourthTick).toHaveLength(1);
+  });
+
+  test('tracks reconciliation independently per zone', () => {
+    const fog = new BaySensingFog({});
+    fog.onReading(cameraReading('zone-01', 4, 5, 't1'));
+    const secondTick = fog.onReading(cameraReading('zone-01', 4, 5, 't2'));
+    expect(secondTick).toHaveLength(0);
+
+    // zone-02 has never reconciled before, so its own debounce window is independent
+    const zone02Events = fog.onReading(cameraReading('zone-02', 4, 5, 't3'));
+    expect(zone02Events).toHaveLength(1);
   });
 });

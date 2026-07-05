@@ -35,8 +35,24 @@ Then, from this folder:
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r sensors/requirements.txt -r fog/requirements.txt -r backend/requirements.txt
 cd infra && pip install -r requirements.txt && npx --yes aws-cdk@2 deploy --require-approval never && cd ..
+```
+
+floci's community edition accepts the CDK deploy but doesn't route `execute-api` HTTP calls (control
+plane only, no data plane — see `local_dev_shim.py`'s docstring). Locally, run the shim in place of
+API Gateway; it forwards real HTTP requests to the real deployed Lambdas via `boto3 invoke`, so every
+line of backend code still runs unchanged:
+
+```
+AWS_ENDPOINT_URL=http://localhost:4566 AWS_REGION=eu-west-1 python local_dev_shim.py &
+```
+
+This listens on `:3701` by default (override with `GREENGRID_SHIM_PORT`). Point both the fog
+dispatcher and the dashboard at it — against real AWS, point `GREENGRID_API_BASE_URL` at the real
+deployed API Gateway URL instead and skip the shim entirely:
+
+```
 MQTT_BROKER_URL=mqtt://localhost:1883 python -m sensors.main &
-GREENGRID_API_BASE_URL=<deployed-api-url> MQTT_BROKER_URL=mqtt://localhost:1883 python -m fog.main &
+GREENGRID_API_BASE_URL=http://localhost:3701 MQTT_BROKER_URL=mqtt://localhost:1883 python -m fog.main &
 ```
 
 Dashboard:
@@ -44,6 +60,13 @@ Dashboard:
 ```
 cd dashboard && npm install && npm run serve
 ```
+
+`npm run serve` is a static file server (`http-server`), so it cannot inject an env var into the
+page — the dashboard reads `window.GREENGRID_API_BASE_URL` (`dashboard/src/main.js`), falling back
+to `http://localhost:3000` if unset. To point it at the shim, either run the browser console once
+(`window.GREENGRID_API_BASE_URL = 'http://localhost:3701'; location.reload();`) or add a
+`<script>window.GREENGRID_API_BASE_URL = 'http://localhost:3701';</script>` line to `index.html`
+above the `main.js` import before serving.
 
 ## Testing
 
@@ -75,8 +98,8 @@ behind manual approval in GitHub Actions (`greengrid-production` environment).
 **Status**: 86 unit tests pass (18 sensors, 53 fog, 15 backend — run each module separately per the
 note below), 5 integration tests prove the real
 WeatherFog/SoilFog/PollutionFog logic and the Lambda handler against floci's DynamoDB, `cdk synth`
-produces a valid template, dashboard passes 22 Playwright tests (functional + visual, across
-desktop and mobile viewports).
+produces a valid template, dashboard passes 26 Playwright tests (13 functional + visual specs,
+each run against both the `chromium-desktop` and `chromium-mobile` projects).
 
 Two bugs found and fixed:
 

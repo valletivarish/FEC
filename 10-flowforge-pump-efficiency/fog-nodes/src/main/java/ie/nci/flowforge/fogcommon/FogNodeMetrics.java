@@ -16,7 +16,8 @@ public class FogNodeMetrics {
     private final AtomicLong processedCount = new AtomicLong();
     private final AtomicLong dispatchedCount = new AtomicLong();
     private volatile long lastProcessingDelayMillis;
-    private volatile long lastActivityEpochMillis = Instant.now().toEpochMilli();
+    // 0 (not "now") until real activity arrives, so a freshly-constructed node reads as Idle, not Running
+    private volatile long lastActivityEpochMillis;
 
     public FogNodeMetrics(String nodeName) {
         this.nodeName = nodeName;

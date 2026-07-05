@@ -74,11 +74,11 @@ Real AWS deployment uses the same CDK app with no code changes — only the AWS 
 differ (no local-emulator endpoint override is set). Deploy is gated behind manual approval in
 GitHub Actions (`chainfrost-production` environment).
 
-**Status**: compiles clean, 43 unit tests pass (9 reefer-sim + 28 fog-nodes + 6 backend),
+**Status**: compiles clean, 60 unit tests pass (9 reefer-sim + 35 fog-nodes + 16 backend),
 `SensorToFogToBackendIT` proves the real fog-node and Lambda-handler code against floci's DynamoDB
-(3 integration tests), `cdk synth` produces a valid CloudFormation template, dashboard passes 12
-Playwright tests (6 functional + 6 visual). Custom-ruleset Checkstyle (`checkstyle.xml`) runs
-clean with 0 violations. One-command `cdk deploy`
+(4 integration tests), `cdk synth` produces a valid CloudFormation template, dashboard passes 16
+Playwright tests (4 functional + 4 visual, each run on both a desktop and a mobile viewport project).
+Custom-ruleset Checkstyle (`checkstyle.xml`) runs clean with 0 violations. One-command `cdk deploy`
 against floci itself needs the `cdklocal` wrapper (plain `cdk`'s bootstrap flow doesn't target
 custom endpoints) — a tooling gap, not a code issue, since the integration test already exercises
 the real handler/DynamoDB code paths directly.

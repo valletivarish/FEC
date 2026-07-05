@@ -44,16 +44,28 @@ mvn install -N
 mvn -f river-gauge-sim/pom.xml install -DskipTests
 mvn -f fog-nodes/pom.xml install -DskipTests
 mvn -f backend/pom.xml package -DskipTests
-cd infra && npx --yes aws-cdk@2 deploy --require-approval never && cd ..
-MQTT_BROKER_URL=tcp://localhost:1883 java -jar river-gauge-sim/target/river-gauge-sim-1.0.0.jar reach-upper.yaml &
+cd infra && AWS_ENDPOINT_URL=http://localhost:4566 AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test \
+  AWS_REGION=eu-west-1 AWS_DEFAULT_REGION=eu-west-1 CDK_DEFAULT_ACCOUNT=000000000000 \
+  CDK_DEFAULT_REGION=eu-west-1 npx --yes aws-cdk@2 deploy --require-approval never && cd ..
+java -jar river-gauge-sim/target/river-gauge-sim-1.0.0.jar reach-upper.yaml &
 java -jar fog-nodes/target/fog-nodes-1.0.0.jar
 ```
+
+The gauge sim reads its MQTT broker URL from the reach's own YAML (`src/main/resources/reach-*.yaml`),
+not an environment variable, so it needs no `MQTT_BROKER_URL` export — the shipped YAMLs already
+point at `tcp://localhost:1883`. `FogRuntimeApp` does read `FLOODWATCH_API_BASE_URL` (defaulting to
+`http://localhost:8080`) and `FLOODWATCH_MQTT_BROKER_URL`; set `FLOODWATCH_API_BASE_URL` to the
+`ApiEndpoint` output printed by `cdk deploy` above so fog events actually reach the deployed API.
 
 Dashboard:
 
 ```
 cd dashboard && npm install && npm run serve
 ```
+
+Open `http://localhost:8100` and set `window.FLOODWATCH_API_BASE_URL` (see `index.html`) to the
+same `cdk deploy` `ApiEndpoint` output before loading the page, or the dashboard shows its
+no-live-data empty state.
 
 ## Testing
 
@@ -83,14 +95,14 @@ builder reads `AWS_ENDPOINT_URL`/`AWS_REGION` from the environment natively; omi
 real AWS. Deploy is gated behind manual approval in GitHub Actions (`floodwatch-production`
 environment).
 
-**Status**: 62 unit tests pass (17 sensors, 39 fog, 6 backend), 5 integration tests prove the real
+**Status**: 68 unit tests pass (17 sensors, 39 fog, 12 backend), 5 integration tests prove the real
 HydroFogNode/QualityFogNode/MeteoFogNode/CatchmentCorrelator logic — including the full cross-reach
 escalation path — the Lambda handler against floci's DynamoDB, and the `/events` relay Lambda
-against a real floci SQS queue, `cdk synth` produces a valid template, dashboard passes 26
-Playwright tests (12 functional + 2 visual regression, each across desktop and mobile viewports).
+against a real floci SQS queue, `cdk synth` produces a valid template, dashboard passes 28
+Playwright tests (13 functional + 2 visual regression, each across desktop and mobile viewports).
 `mvn checkstyle:check` (custom ruleset, `checkstyle.xml`) is clean across all 5 modules.
 
-Four bugs found and fixed:
+Five bugs found and fixed:
 
 1. The infra module's CDK stack referenced the backend Lambda asset as
    `floodwatch-backend-1.0.0.jar`, but the backend module's real Maven artifact is
@@ -115,6 +127,12 @@ Four bugs found and fixed:
    an upstream obstruction, distinct from the existing saturation-amplified threshold check) and
    forces a dispatch on its own. Surfaced on `hydro_event` as `flowRateSlope`/`blockageSuspected`
    and added to the Reach Overview table.
+5. `HydroFogNode` already computed `soilSaturationAmplified` (whether soil-saturation had tightened
+   this reach's flood-stage thresholds) on every `hydro_event`, but no dashboard component ever
+   rendered it — soil-saturation was the one sensor type genuinely processed by a fog node with no
+   visible representation anywhere in the UI. Fixed by adding a "Soil Saturation" column to the
+   Reach Overview table (`reachOverviewTable.js`) and a matching Playwright assertion, rather than
+   inventing a new fog computation for it.
 
 Scalability mechanism (reserved concurrency on the gauge-intake Lambda) load-tested against
 floci: capping `ReachIntakeHandler` at `reservedConcurrentExecutions=2` and ramping direct

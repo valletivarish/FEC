@@ -19,6 +19,9 @@ def _fleet_summary() -> dict:
     alarms_table = dynamodb.Table(os.environ["HARBORPULSE_ALARMS_TABLE"])
     telemetry_table = dynamodb.Table(os.environ["HARBORPULSE_TELEMETRY_TABLE"])
 
+    # a single scan page tops out at 1MB, so a small fleet's full history can still span
+    # several pages once telemetry accumulates -- following LastEvaluatedKey is required
+    # for the dashboard to see the complete fleet, not just the first page.
     alarms_items = []
     scan_kwargs = {}
     while True:
@@ -43,6 +46,7 @@ def _fleet_summary() -> dict:
 def _vessel_telemetry(vessel_id: str) -> list:
     telemetry_table = dynamodb.Table(os.environ["HARBORPULSE_TELEMETRY_TABLE"])
 
+    # same pagination reasoning as _fleet_summary: a query can also be truncated at 1MB
     items = []
     query_kwargs = {"KeyConditionExpression": Key("vesselId").eq(vessel_id)}
     while True:

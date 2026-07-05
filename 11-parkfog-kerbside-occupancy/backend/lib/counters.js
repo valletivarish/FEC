@@ -18,6 +18,8 @@ async function incrementCounter(counterName, by = 1) {
       ReturnValues: 'UPDATED_NEW',
     })
   );
+  // Attributes can come back empty against some emulator/mock configs even though the ADD
+  // itself succeeded; falling back to the delta at least returns a real number, not undefined
   return result.Attributes ? result.Attributes[counterName] : by;
 }
 

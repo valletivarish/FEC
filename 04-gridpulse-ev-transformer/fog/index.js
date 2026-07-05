@@ -42,31 +42,54 @@ function buildKinesisClient() {
   return new KinesisClient({});
 }
 
-function routeReading(reading, bayAgents, transformerGuard, derBalancer, dispatchClient) {
+// category -> which node group's metrics/dispatch a reading of that category belongs to
+const CATEGORY_TO_NODE = { bay: 'bay', transformer: 'transformer', feeder: 'transformer', der: 'der' };
+
+function routeReading(reading, bayAgents, transformerGuard, derBalancer, dispatchClient, nodeMetrics = {}) {
   const { metric } = reading;
   if (!metric) return;
   const category = metric.split('/')[0];
+  const nodeKey = CATEGORY_TO_NODE[category];
+  const metrics = nodeKey && nodeMetrics[nodeKey];
+
+  if (metrics) metrics.recordReceived();
 
   let events = [];
   if (category === 'bay') {
     const agent = bayAgents.get(reading.bayId);
     if (agent) events = agent.onReading(reading);
-  } else if (category === 'transformer') {
+  } else if (category === 'transformer' || category === 'feeder') {
+    // feeder power quality is TransformerGuardAgent's concern too — same hub-level grid-health scope.
     events = transformerGuard.onReading(reading);
   } else if (category === 'der') {
     events = derBalancer.onReading(reading);
   }
-  // feeder readings are informational only in this fog layer — no agent consumes them yet.
+
+  if (metrics) metrics.recordProcessed();
 
   for (const event of events) {
-    dispatchClient.dispatch(event);
+    if (metrics) metrics.recordDispatchStart(reading.timestamp);
+    dispatchClient.dispatch(event).then(() => {
+      if (metrics) metrics.recordDispatchSettled();
+    });
   }
+}
+
+// snapshot every node's counters plus this single Node process's real resource usage —
+// one process hosts all three agent groups, so CPU/memory is reported once, not per-node.
+function buildStatusPayload(nodeMetrics, resourceSampler) {
+  return {
+    nodes: Object.values(nodeMetrics).map((metrics) => metrics.snapshot()),
+    process: resourceSampler.sample(),
+  };
 }
 
 function main() {
   const bayAgents = buildBayAgents();
   const transformerGuard = new TransformerGuardAgent(bayAgents);
   const derBalancer = new DerBalancerAgent();
+  const nodeMetrics = buildNodeMetrics();
+  const resourceSampler = new ProcessResourceSampler();
 
   const kinesisClient = buildKinesisClient();
   const dispatchClient = new KinesisDispatchClient(kinesisClient, STREAM_NAME);
@@ -75,7 +98,7 @@ function main() {
 
   mqttClient.on('connect', () => {
     subscribeAll(mqttClient, (reading) => {
-      routeReading(reading, bayAgents, transformerGuard, derBalancer, dispatchClient);
+      routeReading(reading, bayAgents, transformerGuard, derBalancer, dispatchClient, nodeMetrics);
     });
   });
 
@@ -83,11 +106,20 @@ function main() {
     console.error('MQTT connection error:', err);
   });
 
-  return { mqttClient, bayAgents, transformerGuard, derBalancer, dispatchClient };
+  const statusServer = startFogStatusServer({
+    port: STATUS_PORT,
+    getStatus: () => buildStatusPayload(nodeMetrics, resourceSampler),
+  });
+
+  return {
+    mqttClient, bayAgents, transformerGuard, derBalancer, dispatchClient, nodeMetrics, statusServer,
+  };
 }
 
 if (require.main === module) {
   main();
 }
 
-module.exports = { main, routeReading, buildBayAgents };
+module.exports = {
+  main, routeReading, buildBayAgents, buildNodeMetrics, buildStatusPayload, CATEGORY_TO_NODE,
+};

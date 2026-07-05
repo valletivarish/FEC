@@ -3,8 +3,8 @@
 const http = require('http');
 
 // One instance per fog node process; every counter here is incremented from the node's
-// real ingest/process/dispatch path, never simulated - the dashboard's Fog Node page reads
-// this verbatim via the /metrics HTTP route below.
+// real ingest/process/dispatch path, never simulated. Exposed via the /metrics HTTP route
+// below for ops-style polling (curl/monitoring) - no dashboard view consumes it yet.
 class NodeMetrics {
   constructor(nodeName) {
     this.nodeName = nodeName;

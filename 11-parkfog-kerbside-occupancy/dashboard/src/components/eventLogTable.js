@@ -6,6 +6,7 @@ const EVENT_LABELS = {
   flood_risk_event: 'Flood Risk',
   ev_fault_event: 'EV Fault',
   tariff_changed: 'Tariff Change',
+  camera_discrepancy_event: 'Camera Discrepancy',
 };
 
 function summarize(event) {
@@ -22,6 +23,8 @@ function summarize(event) {
       return '15 consecutive fault readings';
     case 'tariff_changed':
       return `£${Number(event.previousTariff).toFixed(2)} → £${Number(event.newTariff).toFixed(2)}, demand ${Number(event.demandSignal).toFixed(2)}`;
+    case 'camera_discrepancy_event':
+      return `camera ${event.cameraFreeCount} free vs fused ${event.fusedFreeCount} free`;
     default:
       return '';
   }

@@ -9,6 +9,9 @@ function tempReading(zoneId, value, timestamp) {
 function parReading(zoneId, value, timestamp) {
   return { zoneId, metric: 'par-light', value, unit: 'umol/m2/s', timestamp };
 }
+function co2Reading(zoneId, value, timestamp) {
+  return { zoneId, metric: 'co2', value, unit: 'ppm', timestamp };
+}
 
 describe('ClimateFogNode VPD calculation', () => {
   test('computes VPD via Tetens equation against a hand-computed reference', () => {
@@ -111,5 +114,55 @@ describe('ClimateFogNode Daily Light Integral', () => {
     node.onReading(parReading('zone-a', 50, '2026-06-02T06:00:00.000Z'));
     const secondFlag = node.onReading(parReading('zone-a', 50, '2026-06-02T18:00:00.000Z'));
     expect(secondFlag).toHaveLength(1);
+  });
+});
+
+describe('ClimateFogNode CO2 enrichment-band classification', () => {
+  test('dispatches an OK co2_event for the first-ever in-band reading (matches the fertigation nodes\' own first-reading precedent)', () => {
+    const node = new ClimateFogNode();
+    const events = node.onReading(co2Reading('zone-a', 900, '2026-06-01T10:00:00.000Z'));
+    expect(events).toHaveLength(1);
+    expect(events[0]).toMatchObject({ type: 'co2_event', zoneId: 'zone-a', co2Ppm: 900, severity: 'OK' });
+  });
+
+  test('suppresses a second in-band reading since severity has not changed', () => {
+    const node = new ClimateFogNode();
+    node.onReading(co2Reading('zone-a', 900, '2026-06-01T10:00:00.000Z'));
+    const events = node.onReading(co2Reading('zone-a', 950, '2026-06-01T10:05:00.000Z'));
+    expect(events).toEqual([]);
+  });
+
+  test('dispatches a WARNING co2_event on a transition below the band', () => {
+    const node = new ClimateFogNode();
+    node.onReading(co2Reading('zone-a', 900, '2026-06-01T10:00:00.000Z'));
+    const events = node.onReading(co2Reading('zone-a', 500, '2026-06-01T10:05:00.000Z'));
+
+    expect(events).toHaveLength(1);
+    expect(events[0]).toMatchObject({ type: 'co2_event', zoneId: 'zone-a', co2Ppm: 500, severity: 'WARNING' });
+  });
+
+  test('dispatches a WARNING co2_event on a transition above the band', () => {
+    const node = new ClimateFogNode();
+    node.onReading(co2Reading('zone-a', 900, '2026-06-01T10:00:00.000Z'));
+    const events = node.onReading(co2Reading('zone-a', 1800, '2026-06-01T10:05:00.000Z'));
+
+    expect(events).toHaveLength(1);
+    expect(events[0].severity).toBe('WARNING');
+  });
+
+  test('suppresses repeat dispatch while severity stays unchanged', () => {
+    const node = new ClimateFogNode();
+    node.onReading(co2Reading('zone-a', 1800, '2026-06-01T10:00:00.000Z'));
+    const events = node.onReading(co2Reading('zone-a', 1900, '2026-06-01T10:05:00.000Z'));
+    expect(events).toEqual([]);
+  });
+
+  test('dispatches an OK co2_event when the reading returns to the band', () => {
+    const node = new ClimateFogNode();
+    node.onReading(co2Reading('zone-a', 1800, '2026-06-01T10:00:00.000Z'));
+    const events = node.onReading(co2Reading('zone-a', 1000, '2026-06-01T10:05:00.000Z'));
+
+    expect(events).toHaveLength(1);
+    expect(events[0].severity).toBe('OK');
   });
 });

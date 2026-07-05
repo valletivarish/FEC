@@ -5,6 +5,9 @@ const SETPOINT_DELTA_THRESHOLD_PP = 5;
 const HEARTBEAT_READING_COUNT = 10;
 const DLI_TARGET_MOL = 17;
 const DLI_FLAG_HOUR = 18;
+// below this, photosynthesis is CO2-limited even with adequate light; above this, enrichment
+// dosing is being wasted and vent-driven dilution is called for instead
+const CO2_ENRICHMENT_RANGE_PPM = { min: 700, max: 1500 };
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
@@ -24,6 +27,7 @@ class ClimateFogNode {
     this.dliLastDateByZone = new Map();
     this.dliFlaggedTodayByZone = new Map();
     this.previousParReadingByZone = new Map();
+    this.lastDispatchedCo2SeverityByZone = new Map();
   }
 
   onReading(reading) {
@@ -39,7 +43,34 @@ class ClimateFogNode {
     if (metric === 'par-light') {
       return this._handleParReading(zoneId, reading);
     }
+    if (metric === 'co2') {
+      return this._handleCo2Reading(zoneId, reading);
+    }
     return [];
+  }
+
+  // classifies against the horticultural CO2-enrichment band; only dispatches on a severity
+  // transition (not every reading) to match the event-driven contract of the other fog nodes
+  _handleCo2Reading(zoneId, reading) {
+    const ppm = reading.value;
+    const severity =
+      ppm < CO2_ENRICHMENT_RANGE_PPM.min || ppm > CO2_ENRICHMENT_RANGE_PPM.max ? 'WARNING' : 'OK';
+
+    const lastDispatched = this.lastDispatchedCo2SeverityByZone.get(zoneId);
+    if (severity === lastDispatched) {
+      return [];
+    }
+    this.lastDispatchedCo2SeverityByZone.set(zoneId, severity);
+
+    return [
+      {
+        type: 'co2_event',
+        zoneId,
+        co2Ppm: ppm,
+        severity,
+        timestamp: reading.timestamp,
+      },
+    ];
   }
 
   _handleHumidityReading(zoneId, reading) {

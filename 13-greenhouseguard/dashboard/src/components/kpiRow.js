@@ -10,6 +10,7 @@ function isUnacknowledgedFault(fault) {
   if (fault.type === 'enclosure_breach_event') return fault.doorOpen === true;
   if (fault.type === 'enclosure_fault_event') return fault.faultState !== 'ENCLOSURE_OK';
   if (fault.type === 'fertigation_event') return fault.severity === 'WARNING' || fault.severity === 'CRITICAL';
+  if (fault.type === 'co2_event') return fault.severity === 'WARNING';
   return false;
 }
 

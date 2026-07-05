@@ -1,8 +1,10 @@
 # AquaSentinel sensor timing config for pond-01.
 # sample_interval_s: how often the generator produces a new reading.
 # dispatch_interval_s: how often that reading is actually published over MQTT.
-# Kept independent per contract -- e.g. feeder load only needs checking every 5 minutes,
-# while dissolved oxygen needs tight sampling since hypoxia can develop fast.
+# Kept independent per contract -- e.g. salinity/water-level are sampled every 30s locally
+# (cheap, catches a fast drift early) but only dispatched every 60s (slow-moving metrics,
+# no need to spend bandwidth/backend writes at sampling rate); dissolved oxygen needs both
+# tight since hypoxia can develop fast.
 pond_id: pond-01
 sensors:
   dissolved-oxygen:
@@ -19,7 +21,7 @@ sensors:
     dispatch_interval_s: 30
   salinity:
     unit: ppt
-    sample_interval_s: 60
+    sample_interval_s: 30
     dispatch_interval_s: 60
   turbidity:
     unit: NTU
@@ -39,7 +41,7 @@ sensors:
     dispatch_interval_s: 30
   water-level:
     unit: cm
-    sample_interval_s: 60
+    sample_interval_s: 30
     dispatch_interval_s: 60
   feeder-load-cell:
     unit: g/cycle

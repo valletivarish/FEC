@@ -7,7 +7,7 @@ const { EnclosureFogNode } = require('./enclosure-fog/enclosureFogNode');
 const { FogNodeMetrics } = require('./shared/fogNodeMetrics');
 const { startFogMetricsServer } = require('./shared/fogMetricsServer');
 
-const CLIMATE_METRICS = new Set(['air-temperature', 'air-humidity', 'par-light']);
+const CLIMATE_METRICS = new Set(['air-temperature', 'air-humidity', 'par-light', 'co2']);
 const FERTIGATION_METRICS = new Set(['substrate-ec', 'substrate-moisture', 'water-ph', 'water-temperature']);
 const ENCLOSURE_METRICS = new Set(['vent-position', 'door-contact']);
 

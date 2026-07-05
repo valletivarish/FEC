@@ -73,6 +73,16 @@ test.describe("FloodWatch dashboard - functional", () => {
     await expect(midRow).toContainText("--");
   });
 
+  test("reach overview shows soil saturation amplification signal", async ({ page }) => {
+    await mockBackend(page);
+    await page.goto("/");
+    const upperRow = page.locator("#reachOverviewBody tr", { hasText: "reach-upper" });
+    await expect(upperRow.locator("span.badge.text-bg-warning", { hasText: "Amplified" })).toBeVisible();
+
+    const lowerRow = page.locator("#reachOverviewBody tr", { hasText: "reach-lower" });
+    await expect(lowerRow.locator("span.badge.text-bg-secondary", { hasText: "Normal" })).toBeVisible();
+  });
+
   test("water quality table renders mocked entries with correct badges", async ({ page }) => {
     await mockBackend(page);
     await page.goto("/");

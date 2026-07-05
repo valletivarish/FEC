@@ -51,7 +51,7 @@ exports.handler = async (event) => {
       const payload = Buffer.from(record.kinesis.data, 'base64').toString('utf-8');
       const parsedEvent = JSON.parse(payload);
 
-      if (parsedEvent.type === 'bay_setpoint' || parsedEvent.type === 'der_mode' || parsedEvent.type === 'der_summary') {
+      if (parsedEvent.type === 'bay_setpoint' || parsedEvent.type === 'der_mode' || parsedEvent.type === 'der_summary' || parsedEvent.type === 'feeder_status') {
         await writeReadingEvent(parsedEvent);
         stored += 1;
       } else if (parsedEvent.type === 'curtailment_event') {

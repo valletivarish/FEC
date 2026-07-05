@@ -33,6 +33,14 @@ function faultsForLog(zoneId, faults) {
     .map((f) => ({ zoneId, ...f }));
 }
 
+// a co2_event fires on every severity transition, including back to OK, so only a WARNING
+// reading should ever light up the zone chip (matches co2_event's own dashboard fault semantics)
+function isActiveZoneStripEntry(entry) {
+  if (entry.acknowledged) return false;
+  if (entry.type === 'co2_event') return entry.severity === 'WARNING';
+  return true;
+}
+
 // sidebar zone chips mirror the faults log's own definition of "active" (unacknowledged,
 // non-fertigation) so the strip never invents a status the Faults panel doesn't already show
 function updateZoneStrip(zoneStatuses) {
@@ -42,7 +50,7 @@ function updateZoneStrip(zoneStatuses) {
   zoneStatuses.forEach((status) => {
     const chip = strip.querySelector(`[data-zone-chip="${status.zoneId}"] .sidebar-zone-dot`);
     if (!chip) return;
-    const hasActiveFault = faultsForLog(status.zoneId, status.faults).some((f) => !f.acknowledged);
+    const hasActiveFault = faultsForLog(status.zoneId, status.faults).some(isActiveZoneStripEntry);
     chip.classList.remove('gg-zone-fault', 'gg-zone-nominal');
     chip.classList.add(hasActiveFault ? 'gg-zone-fault' : 'gg-zone-nominal');
     chip.title = `${status.zoneId}: ${hasActiveFault ? 'fault' : 'nominal'}`;

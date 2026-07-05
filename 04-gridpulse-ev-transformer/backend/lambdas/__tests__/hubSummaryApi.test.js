@@ -38,6 +38,12 @@ describe('hubSummaryApi handler', () => {
           {
             type: 'der_summary', hubId: 'hub-01', mode: 'idle', solarKw: 2, batterySoc: 51, tariffPrice: 11, timestamp: '2026-07-02T10:06:00.000Z',
           },
+          {
+            type: 'feeder_status', hubId: 'hub-01', status: 'warning', voltage: 239, frequency: 50, timestamp: '2026-07-02T10:04:00.000Z',
+          },
+          {
+            type: 'feeder_status', hubId: 'hub-01', status: 'nominal', voltage: 230, frequency: 50, timestamp: '2026-07-02T10:07:00.000Z',
+          },
         ],
       });
     ddbMock
@@ -59,10 +65,12 @@ describe('hubSummaryApi handler', () => {
     const bay01 = body.bays.find((b) => b.bayId === 'bay-01');
     expect(bay01.setpointAmps).toBe(20);
     expect(body.der.timestamp).toBe('2026-07-02T10:06:00.000Z');
+    expect(body.feeder.timestamp).toBe('2026-07-02T10:07:00.000Z');
+    expect(body.feeder.status).toBe('nominal');
     expect(body.curtailment.rungLabel).toBe('advisory');
   });
 
-  test('returns null der and curtailment when none exist', async () => {
+  test('returns null der, feeder and curtailment when none exist', async () => {
     ddbMock.on(QueryCommand, { TableName: 'GridPulseHubSensorReadings' }).resolves({ Items: [] });
     ddbMock.on(QueryCommand, { TableName: 'GridPulseCurtailmentEvents' }).resolves({ Items: [] });
 
@@ -72,6 +80,7 @@ describe('hubSummaryApi handler', () => {
     const body = JSON.parse(result.body);
     expect(body.bays).toEqual([]);
     expect(body.der).toBeNull();
+    expect(body.feeder).toBeNull();
     expect(body.curtailment).toBeNull();
   });
 });

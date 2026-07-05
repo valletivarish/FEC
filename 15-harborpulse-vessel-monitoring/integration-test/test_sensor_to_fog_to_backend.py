@@ -35,6 +35,7 @@ TELEMETRY_TABLE = os.environ.get("HARBORPULSE_TELEMETRY_TABLE", "harborpulse-tel
 ALARMS_TABLE = os.environ.get("HARBORPULSE_ALARMS_TABLE", "harborpulse-alarms-table")
 
 ddb = boto3.client("dynamodb")
+sqs = boto3.client("sqs")
 
 
 def _ensure_table(table_name, sort_key_name):
@@ -55,10 +56,24 @@ def _ensure_table(table_name, sort_key_name):
     )
 
 
+def _ensure_queue(queue_url: str) -> None:
+    # the relay test needs its target queue to genuinely exist on floci -- unlike the CDK
+    # stack's queues, this is a standalone queue scoped to this test suite, so nothing else
+    # creates it; get_queue_url raises QueueDoesNotExist rather than auto-creating like DynamoDB
+    queue_name = queue_url.rsplit("/", 1)[-1]
+    try:
+        sqs.get_queue_url(QueueName=queue_name)
+    except sqs.exceptions.QueueDoesNotExist:
+        sqs.create_queue(QueueName=queue_name)
+
+
 @pytest.fixture(scope="module", autouse=True)
 def tables():
     _ensure_table(TELEMETRY_TABLE, "metricTypeTimestamp")
     _ensure_table(ALARMS_TABLE, "timestamp")
+    target_queue_url = os.environ.get("HARBORPULSE_TARGET_QUEUE_URL")
+    if target_queue_url:
+        _ensure_queue(target_queue_url)
 
 
 def reading(vessel_id, metric, value, timestamp):

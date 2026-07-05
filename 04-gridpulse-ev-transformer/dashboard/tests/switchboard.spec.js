@@ -6,6 +6,7 @@ function mockSummary(overrides = {}) {
   return {
     transformer: { windingTemp: 88.5, loadAmps: 240 },
     der: { mode: 'charge_battery_from_solar', solarKw: 12.4, batterySoc: 61, tariffPrice: 18.2 },
+    feeder: { status: 'nominal', voltage: 230.4, frequency: 50.02 },
     curtailment: { rung: 0, rungLabel: 'normal' },
     curtailmentEvents: [],
     ...overrides,
@@ -69,6 +70,9 @@ test.describe('Switchboard functional', () => {
     await expect(line).toBeVisible();
     await expect(line).toContainText('88.5');
     await expect(line).toContainText('240.0');
+    await expect(line).toContainText('230.4');
+    await expect(line).toContainText('50.0');
+    await expect(line).toContainText('nominal');
 
     await expect(page.locator('#tab-bays')).not.toHaveClass(/active/);
   });
